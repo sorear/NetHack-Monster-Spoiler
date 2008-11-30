@@ -97,21 +97,30 @@ sub i {
     };
 }
 
-*parser = list(MON => i('name'), i('glyph'),
+my $al = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ@X\'&;:';
+my %gmap = map {$al =~ s/^(.)//; $_ => $1 } qw/ant blob cockatrice dog eye
+    feline gremlin humanoid imp jelly kobold leprechaun mimic nymph orc piercer
+    quadruped rodent spider trapper unicorn vortex worm xan light zruty angel
+    bat centaur dragon elemental fungus gnome giant jabberwock kop lich mummy
+    naga ogre pudding quantmech rustmonst snake troll umber vampire wraith xorn
+    yeti zombie human ghost golem demon eel lizard/;
+
+
+*parser = list(MON => i('name'), i('glyph', %gmap),
     list(LVL => i('hitdice'), i('speed'), i('ac'), i('mr'), i('alignment')),
     flag_set('G', 'rarity'),
 
     list(A => attack, attack, attack, attack, attack, attack),
 
-    list(SIZ => i('corpse/weight'), i('corpse/nutrition'),
-        sub { s/^0|sizeof\(.*?\)//; }, # extension
+    list(SIZ => i('weight', human => 1450, elf => 800, dragon => 4500),
+        i('nutrition'), sub { s/^0|sizeof\(.*?\)//; }, # extension
         i('sound'), i('size')),
 
-    flag_set('MR'), nest('corpse', flag_set('MR')),
+    nest('resist', flag_set('MR')), nest('corpse', flag_set('MR')),
 
     flag_set('M1'), flag_set('M2'), flag_set('M3'),
 
-    i('color'));
+    i('color', qw/domestic white lord magenta/));
 
 my %allmons = ();
 
