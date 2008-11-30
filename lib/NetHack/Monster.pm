@@ -1,19 +1,31 @@
 #!/usr/bin/env perl
 package NetHack::Monster;
-use strict;
-use warnings;
+use Moose;
 
 our $VERSION = '0.01';
 
+=head1 NAME
+
+NetHack::Monster - represent a monster in NetHack
+
+=cut
+
+has [qw/x y/] => (
+    isa => 'Int',
+);
+
+has [qw/glyph color/] => (
+    isa => 'Str',
+);
+
+has farlooked => (
+    isa => 'Maybe[Str]',
+);
 
 
 1;
 
 __END__
-
-=head1 NAME
-
-NetHack::Monster - ???
 
 =head1 SYNOPSIS
 
