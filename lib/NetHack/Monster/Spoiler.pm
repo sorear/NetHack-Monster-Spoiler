@@ -1,6 +1,7 @@
 package NetHack::Monster::Spoiler;
 use Moose;
 use YAML qw();
+use MooseX::ClassAttribute;
 
 our $VERSION = '0.01';
 
@@ -24,8 +25,6 @@ class_has list => (
 
 
 1;
-
-__END__
 
 =head1 SYNOPSIS
 
