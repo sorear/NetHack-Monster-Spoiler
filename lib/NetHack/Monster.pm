@@ -11,14 +11,17 @@ NetHack::Monster - represent a monster in NetHack
 =cut
 
 has [qw/x y/] => (
+    is  => 'rw',
     isa => 'Int',
 );
 
 has [qw/glyph color/] => (
+    is  => 'rw',
     isa => 'Str',
 );
 
 has farlooked => (
+    is  => 'rw',
     isa => 'Maybe[Str]',
 );
 

@@ -7,4 +7,4 @@ use_ok('NetHack::Monster::Spoiler');
 
 my $list = NetHack::Monster::Spoiler->list;
 
-is(ref $list, 'ARRAY');
+is(ref $list, 'HASH');
