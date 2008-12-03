@@ -61,7 +61,8 @@ sub nest {
 }
 
 my %modes = qw/butt headbutt  tuch touch  stng sting  hugs crush  engl engulf
-    brea breathe  expl explode  tent tentacle  weap weapon  magc magic/;
+    brea breathe  expl explode  tent tentacle  weap weapon  magc magic
+    none passive/;
 my %types = qw/phys physical  magm magicmissile  slee sleep
     disn disintegration  elec electricity  drst poison  blnd blind
     plys paralyze  drli drain  dren drainenergy  ston petrify  stck stick
@@ -92,7 +93,7 @@ sub i {
         s/^\"?([^"),]*)\"?//;
 
         my $v = $1;
-        $v =~ s/[A-Z]+_([A-Z]+)/lc $1/e;
+        $v =~ s/[A-Z]+_([A-Z_]+)/lc $1/e;
         set($name, $rw{$v} || $v);
     };
 }
@@ -120,7 +121,8 @@ my %gmap = map {$al =~ s/^(.)//; $_ => $1 } qw/ant blob cockatrice dog eye
 
     flag_set('M1'), flag_set('M2'), flag_set('M3'),
 
-    i('color', qw/domestic white lord magenta/));
+    i('color', qw/domestic white lord magenta zap bright_blue silver gray
+        metal cyan gold yellow paper white leather brown wood brown/));
 
 my %allmons = ();
 

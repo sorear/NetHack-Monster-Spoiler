@@ -893,7 +893,7 @@ Green-elf:
       mode: weapon
       type: physical
   collect: 1
-  color: bright_GREEN
+  color: bright_green
   corpse:
     sleep: 1
   elf: 1
@@ -1047,7 +1047,7 @@ Juiblex:
     - damage: 3d6
       mode: spit
       type: acid
-  color: bright_GREEN
+  color: bright_green
   corpse: {}
   demon: 1
   fly: 1
@@ -1500,7 +1500,7 @@ Medusa:
     - damage: 1d6
       mode: bite
       type: poison
-  color: bright_GREEN
+  color: bright_green
   corpse:
     poison: 1
     stone: 1
@@ -1808,9 +1808,9 @@ Oracle:
   alignment: 0
   attacks:
     - damage: 0d4
-      mode: none
+      mode: passive
       type: magicmissile
-  color: zap
+  color: bright_blue
   corpse: {}
   female: 1
   glyph: '@'
@@ -2404,7 +2404,7 @@ acid blob:
   amorphous: 1
   attacks:
     - damage: 1d8
-      mode: none
+      mode: passive
       type: acid
   breathless: 1
   color: green
@@ -2957,7 +2957,7 @@ baby silver dragon:
       mode: bite
       type: physical
   carnivore: 1
-  color: silver
+  color: gray
   corpse: {}
   fly: 1
   geno: 1
@@ -3406,7 +3406,7 @@ black pudding:
       mode: bite
       type: corrode
     - damage: 0d0
-      mode: none
+      mode: passive
       type: corrode
   breathless: 1
   color: black
@@ -3520,7 +3520,7 @@ blue jelly:
   amorphous: 1
   attacks:
     - damage: 0d6
-      mode: none
+      mode: passive
       type: cold
   breathless: 1
   color: blue
@@ -3589,7 +3589,7 @@ brown mold:
   alignment: 0
   attacks:
     - damage: 0d6
-      mode: none
+      mode: passive
       type: cold
   breathless: 1
   color: brown
@@ -3903,7 +3903,7 @@ chickatrice:
       mode: touch
       type: petrify
     - damage: 0d0
-      mode: none
+      mode: passive
       type: petrify
   color: brown
   corpse:
@@ -4034,7 +4034,7 @@ cockatrice:
       mode: touch
       type: petrify
     - damage: 0d0
-      mode: none
+      mode: passive
       type: petrify
   color: yellow
   corpse:
@@ -4229,7 +4229,7 @@ disenchanter:
       mode: claw
       type: disenchant
     - damage: 0d0
-      mode: none
+      mode: passive
       type: disenchant
   carnivore: 1
   color: blue
@@ -4592,7 +4592,7 @@ electric eel:
       mode: touch
       type: wrap
   carnivore: 1
-  color: bright_BLUE
+  color: bright_blue
   corpse:
     elec: 1
   geno: 1
@@ -4724,7 +4724,7 @@ elf-lord:
       mode: weapon
       type: physical
   collect: 1
-  color: bright_BLUE
+  color: bright_blue
   corpse:
     sleep: 1
   elf: 1
@@ -4761,10 +4761,10 @@ energy vortex:
       mode: engulf
       type: drainenergy
     - damage: 0d4
-      mode: none
+      mode: passive
       type: electricity
   breathless: 1
-  color: zap
+  color: bright_blue
   corpse: {}
   fly: 1
   geno: 1
@@ -4975,7 +4975,7 @@ fire elemental:
       mode: claw
       type: fire
     - damage: 0d4
-      mode: none
+      mode: passive
       type: fire
   color: yellow
   corpse: {}
@@ -5046,7 +5046,7 @@ fire vortex:
       mode: engulf
       type: fire
     - damage: 0d4
-      mode: none
+      mode: passive
       type: fire
   breathless: 1
   color: yellow
@@ -5154,7 +5154,7 @@ floating eye:
   amphibious: 1
   attacks:
     - damage: 0d70
-      mode: none
+      mode: passive
       type: paralyze
   color: blue
   corpse: {}
@@ -5464,7 +5464,7 @@ gelatinous cube:
       mode: touch
       type: paralyze
     - damage: 1d4
-      mode: none
+      mode: passive
       type: paralyze
   color: cyan
   corpse:
@@ -6113,7 +6113,7 @@ gnomish wizard:
     - damage: 0d0
       mode: magic
       type: wizardspell
-  color: zap
+  color: bright_blue
   corpse: {}
   geno: 1
   glyph: G
@@ -6171,7 +6171,7 @@ gold golem:
       mode: claw
       type: physical
   breathless: 1
-  color: gold
+  color: yellow
   corpse: {}
   glyph: "'"
   hitdice: 5
@@ -6203,7 +6203,7 @@ golden naga:
     - damage: 4d6
       mode: magic
       type: wizardspell
-  color: gold
+  color: yellow
   corpse:
     poison: 1
   geno: 1
@@ -6233,7 +6233,7 @@ golden naga hatchling:
     - damage: 1d4
       mode: bite
       type: physical
-  color: gold
+  color: yellow
   corpse:
     poison: 1
   geno: 1
@@ -6418,7 +6418,7 @@ green mold:
   alignment: 0
   attacks:
     - damage: 0d4
-      mode: none
+      mode: passive
       type: acid
   breathless: 1
   color: green
@@ -6455,7 +6455,7 @@ green slime:
       mode: touch
       type: slime
     - damage: 0d0
-      mode: none
+      mode: passive
       type: slime
   breathless: 1
   color: green
@@ -7443,7 +7443,7 @@ iron golem:
       type: poison
   breathless: 1
   collect: 1
-  color: metal
+  color: cyan
   corpse: {}
   glyph: "'"
   hitdice: 18
@@ -7640,7 +7640,7 @@ ki-rin:
     - damage: 2d6
       mode: magic
       type: wizardspell
-  color: gold
+  color: yellow
   corpse: {}
   fly: 1
   glyph: A
@@ -7851,7 +7851,7 @@ kobold shaman:
     - damage: 0d0
       mode: magic
       type: wizardspell
-  color: zap
+  color: bright_blue
   corpse: {}
   geno: 1
   glyph: k
@@ -8073,7 +8073,7 @@ leather golem:
       mode: claw
       type: physical
   breathless: 1
-  color: leather
+  color: brown
   corpse: {}
   glyph: "'"
   hitdice: 6
@@ -8232,7 +8232,7 @@ lichen:
       mode: touch
       type: stick
   breathless: 1
-  color: bright_GREEN
+  color: bright_green
   corpse: {}
   geno: 1
   glyph: F
@@ -8437,7 +8437,7 @@ mail daemon:
   ac: 10
   alignment: 0
   breathless: 1
-  color: bright_BLUE
+  color: bright_blue
   corpse: {}
   fly: 1
   glyph: '&'
@@ -9068,7 +9068,7 @@ ochre jelly:
       mode: engulf
       type: acid
     - damage: 3d6
-      mode: none
+      mode: passive
       type: acid
   breathless: 1
   color: brown
@@ -9304,7 +9304,7 @@ orc shaman:
     - damage: 0d0
       mode: magic
       type: wizardspell
-  color: zap
+  color: bright_blue
   corpse: {}
   geno: 1
   glyph: o
@@ -9500,7 +9500,7 @@ paper golem:
       mode: claw
       type: physical
   breathless: 1
-  color: paper
+  color: white
   corpse: {}
   glyph: "'"
   hitdice: 3
@@ -10135,7 +10135,7 @@ red mold:
   alignment: 0
   attacks:
     - damage: 0d4
-      mode: none
+      mode: passive
       type: fire
   breathless: 1
   color: red
@@ -10468,7 +10468,7 @@ rust monster:
       mode: touch
       type: rust
     - damage: 0d0
-      mode: none
+      mode: passive
       type: rust
   color: brown
   corpse: {}
@@ -10803,7 +10803,7 @@ shocking sphere:
       mode: explode
       type: electricity
   breathless: 1
-  color: zap
+  color: bright_blue
   corpse:
     elec: 1
   fly: 1
@@ -10903,7 +10903,7 @@ silver dragon:
       mode: claw
       type: physical
   carnivore: 1
-  color: silver
+  color: gray
   corpse: {}
   fly: 1
   geno: 1
@@ -11105,7 +11105,7 @@ spotted jelly:
   amorphous: 1
   attacks:
     - damage: 0d6
-      mode: none
+      mode: passive
       type: acid
   breathless: 1
   color: green
@@ -12561,7 +12561,7 @@ wood golem:
       mode: claw
       type: physical
   breathless: 1
-  color: wood
+  color: brown
   corpse: {}
   glyph: "'"
   hitdice: 7
@@ -12863,7 +12863,7 @@ yellow mold:
   alignment: 0
   attacks:
     - damage: 0d4
-      mode: none
+      mode: passive
       type: stun
   breathless: 1
   color: yellow
