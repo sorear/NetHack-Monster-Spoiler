@@ -137,7 +137,7 @@ my %expand = (
     amorphous      => 'is_amorphous',
     amphibious     => 'is_amphibious',
     animal         => 'is_animal',
-    breathless     => 'is_breathless',
+    breathless     => ['is_breathless', 'is_amphibious'],
     carnivore      => 'is_carnivorous',
     cling          => 'clings_to_ceiling',
     close          => 'immobile_until_disturbed',
@@ -251,6 +251,10 @@ sub process {
 
     if ($_{tunnels_with_pick}) {
         delete $_{can_eat_rock};
+    }
+
+    if (grep { $_->{mode} eq 'weapon' } @{$_{attacks}}) {
+        $_{wants_wargear} = 1;
     }
 
     print Dump \%_ unless $blacklist{$_{name}};

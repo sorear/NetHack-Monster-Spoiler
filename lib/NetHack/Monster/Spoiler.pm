@@ -291,8 +291,6 @@ sub is_nonliving {
 
 # vegan & vegetarian omitted: NHI domain
 
-# TODO a lot
-
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
@@ -534,6 +532,7 @@ corpse_nutrition: 10
 glyph: b
 hitdice: 1
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -1181,6 +1180,7 @@ corpse: {}
 corpse_nutrition: 10
 glyph: e
 hitdice: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -1243,6 +1243,7 @@ corpse_nutrition: 10
 glyph: e
 hitdice: 6
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -1275,6 +1276,7 @@ corpse_nutrition: 10
 glyph: e
 hitdice: 6
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -1307,6 +1309,7 @@ corpse_nutrition: 10
 glyph: e
 hitdice: 6
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -1590,6 +1593,7 @@ glyph: g
 has_thick_hide: 1
 hitdice: 6
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_very_strong: 1
@@ -1625,6 +1629,7 @@ glyph: g
 has_thick_hide: 1
 hitdice: 9
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_rank_lord: 1
@@ -2097,6 +2102,7 @@ corpse_nutrition: 20
 glyph: j
 hitdice: 4
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -2130,6 +2136,7 @@ corpse_nutrition: 20
 glyph: j
 hitdice: 5
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -2166,6 +2173,7 @@ corpse_nutrition: 20
 glyph: j
 hitdice: 6
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -2347,6 +2355,7 @@ has_thick_hide: 1
 hides_on_ceiling: 1
 hitdice: 7
 is_amorphous: 1
+is_amphibious: 1
 is_animal: 1
 is_breathless: 1
 is_carnivorous: 1
@@ -2380,6 +2389,7 @@ has_thick_hide: 1
 hides_on_ceiling: 1
 hitdice: 8
 is_amorphous: 1
+is_amphibious: 1
 is_animal: 1
 is_breathless: 1
 is_carnivorous: 1
@@ -2417,6 +2427,7 @@ has_thick_hide: 1
 hides_on_ceiling: 1
 hitdice: 9
 is_amorphous: 1
+is_amphibious: 1
 is_animal: 1
 is_breathless: 1
 is_carnivorous: 1
@@ -3642,6 +3653,7 @@ corpse: {}
 glyph: v
 hitdice: 3
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -3676,6 +3688,7 @@ color: brown
 corpse: {}
 glyph: v
 hitdice: 4
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -3711,6 +3724,7 @@ corpse: {}
 glyph: v
 hitdice: 5
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -3751,6 +3765,7 @@ color: bright_blue
 corpse: {}
 glyph: v
 hitdice: 6
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -3789,6 +3804,7 @@ gehennom_exclusive: 1
 glyph: v
 hitdice: 7
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -3829,6 +3845,7 @@ gehennom_exclusive: 1
 glyph: v
 hitdice: 8
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -4037,6 +4054,7 @@ glyph: y
 hitdice: 3
 infravision_detectable: 1
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -4078,6 +4096,7 @@ corpse: {}
 glyph: y
 hitdice: 5
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5344,6 +5363,7 @@ glyph: E
 has_thick_hide: 1
 hitdice: 8
 ignores_walls: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -5410,6 +5430,7 @@ corpse: {}
 corpse_nutrition: 200
 glyph: F
 hitdice: 0
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5441,6 +5462,7 @@ corpse:
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5473,6 +5495,7 @@ corpse:
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5506,6 +5529,7 @@ corpse:
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5540,6 +5564,7 @@ corpse_nutrition: 30
 glyph: F
 hitdice: 1
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5561,6 +5586,7 @@ weight: 50
 ac: 7
 alignment: 0
 always_hostile: 1
+attacks: []
 cannot_pickup_items: 1
 color: magenta
 corpse:
@@ -5568,6 +5594,7 @@ corpse:
 corpse_nutrition: 100
 glyph: F
 hitdice: 3
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -5602,6 +5629,7 @@ corpse:
 corpse_nutrition: 100
 glyph: F
 hitdice: 3
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_genocidable: 1
@@ -6211,6 +6239,7 @@ glyph: L
 has_infravision: 1
 hitdice: 11
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -6248,6 +6277,7 @@ glyph: L
 has_infravision: 1
 hitdice: 14
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -6287,6 +6317,7 @@ glyph: L
 has_infravision: 1
 hitdice: 17
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -6328,6 +6359,7 @@ glyph: L
 has_infravision: 1
 hitdice: 25
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -6364,6 +6396,7 @@ glyph: M
 has_infravision: 1
 hitdice: 3
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -6396,6 +6429,7 @@ glyph: M
 has_infravision: 1
 hitdice: 4
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_gnome: 1
@@ -6429,6 +6463,7 @@ glyph: M
 has_infravision: 1
 hitdice: 5
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -6464,6 +6499,7 @@ glyph: M
 has_infravision: 1
 hitdice: 5
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_dwarf: 1
 is_genocidable: 1
@@ -6499,6 +6535,7 @@ glyph: M
 has_infravision: 1
 hitdice: 6
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_elf: 1
 is_genocidable: 1
@@ -6535,6 +6572,7 @@ glyph: M
 has_infravision: 1
 hitdice: 6
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -6570,6 +6608,7 @@ glyph: M
 has_infravision: 1
 hitdice: 7
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -6606,6 +6645,7 @@ glyph: M
 has_infravision: 1
 hitdice: 8
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_giant: 1
@@ -7004,6 +7044,7 @@ corpse_nutrition: 250
 glyph: P
 hitdice: 3
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_carnivorous: 1
 is_genderless: 1
@@ -7044,6 +7085,7 @@ corpse_nutrition: 250
 glyph: P
 hitdice: 5
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_carnivorous: 1
 is_genderless: 1
@@ -7087,6 +7129,7 @@ corpse_nutrition: 250
 glyph: P
 hitdice: 10
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_carnivorous: 1
 is_genderless: 1
@@ -7128,6 +7171,7 @@ gehennom_exclusive: 1
 glyph: P
 hitdice: 6
 is_amorphous: 1
+is_amphibious: 1
 is_breathless: 1
 is_carnivorous: 1
 is_genderless: 1
@@ -7486,6 +7530,7 @@ resist: {}
 size: large
 sound: grunt
 speed: 12
+wants_wargear: 1
 weight: 800
 ---
 absent_from_gehennom: 1
@@ -7524,6 +7569,7 @@ resist:
 size: large
 sound: grunt
 speed: 10
+wants_wargear: 1
 weight: 1000
 ---
 ac: 0
@@ -7596,6 +7642,7 @@ resist: {}
 size: large
 sound: grunt
 speed: 14
+wants_wargear: 1
 weight: 1200
 ---
 ac: -4
@@ -7688,6 +7735,7 @@ glyph: V
 hitdice: 10
 humanoid_body: 1
 infravision_detectable: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -7727,6 +7775,7 @@ hitdice: 12
 humanoid_body: 1
 infravision_detectable: 1
 is_always_male: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_rank_lord: 1
@@ -7770,6 +7819,7 @@ immobile_until_seen: 1
 infravision_detectable: 1
 invalid_polymorph_target: 1
 is_always_male: 1
+is_amphibious: 1
 is_breathless: 1
 is_rank_prince: 1
 is_undead: 1
@@ -7788,6 +7838,7 @@ size: human
 sound: vampire
 speed: 18
 wants_candelabrum: 1
+wants_wargear: 1
 weight: 1450
 ---
 ac: 5
@@ -7809,6 +7860,7 @@ follows_stair_users: 1
 glyph: W
 hitdice: 3
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -7841,6 +7893,7 @@ follows_stair_users: 1
 glyph: W
 hitdice: 6
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -7877,6 +7930,7 @@ hitdice: 13
 humanoid_body: 1
 invalid_polymorph_target: 1
 is_always_male: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_undead: 1
@@ -7921,6 +7975,7 @@ glyph: X
 has_thick_hide: 1
 hitdice: 8
 ignores_walls: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_very_strong: 1
@@ -8148,6 +8203,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 0
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -8181,6 +8237,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 1
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_gnome: 1
@@ -8215,6 +8272,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 2
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -8250,6 +8308,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 2
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_dwarf: 1
 is_genocidable: 1
@@ -8285,6 +8344,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 3
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_elf: 1
 is_genocidable: 1
@@ -8319,6 +8379,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 4
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -8355,6 +8416,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 6
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -8391,6 +8453,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 8
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_giant: 1
@@ -8427,6 +8490,7 @@ glyph: Z
 has_infravision: 1
 hitdice: 3
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genocidable: 1
 is_mindless: 1
@@ -8465,6 +8529,7 @@ has_infravision: 1
 has_thick_hide: 1
 hitdice: 12
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_mindless: 1
 is_undead: 1
@@ -8500,6 +8565,7 @@ corpse: {}
 glyph: "'"
 hitdice: 3
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -8528,6 +8594,7 @@ corpse: {}
 glyph: "'"
 hitdice: 3
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -8562,6 +8629,7 @@ corpse: {}
 glyph: "'"
 hitdice: 4
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -8594,6 +8662,7 @@ glyph: "'"
 has_thick_hide: 1
 hitdice: 5
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -8626,6 +8695,7 @@ corpse: {}
 glyph: "'"
 hitdice: 6
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -8655,6 +8725,7 @@ glyph: "'"
 has_thick_hide: 1
 hitdice: 7
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_genderless: 1
 is_mindless: 1
@@ -8692,6 +8763,7 @@ corpse_nutrition: 600
 glyph: "'"
 hitdice: 9
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_mindless: 1
 is_very_strong: 1
@@ -8722,6 +8794,7 @@ glyph: "'"
 has_thick_hide: 1
 hitdice: 11
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_mindless: 1
 is_very_strong: 1
@@ -8751,6 +8824,7 @@ glyph: "'"
 has_thick_hide: 1
 hitdice: 14
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_mindless: 1
 is_very_strong: 1
@@ -8784,6 +8858,7 @@ glyph: "'"
 has_thick_hide: 1
 hitdice: 16
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_mindless: 1
 is_very_strong: 1
@@ -8817,6 +8892,7 @@ glyph: "'"
 has_thick_hide: 1
 hitdice: 18
 humanoid_body: 1
+is_amphibious: 1
 is_breathless: 1
 is_mindless: 1
 is_very_strong: 1
@@ -9682,6 +9758,7 @@ resist:
 size: large
 sound: hiss
 speed: 12
+wants_wargear: 1
 weight: 1450
 ---
 ac: -8
@@ -9710,6 +9787,7 @@ immobile_until_seen: 1
 infravision_detectable: 1
 invalid_polymorph_target: 1
 is_always_male: 1
+is_amphibious: 1
 is_breathless: 1
 is_carnivorous: 1
 is_herbivorous: 1
@@ -9792,6 +9870,7 @@ hitdice: 10
 humanoid_body: 1
 ignores_walls: 1
 invalid_polymorph_target: 1
+is_amphibious: 1
 is_breathless: 1
 is_undead: 1
 made_of_gas: 1
@@ -9832,6 +9911,7 @@ hitdice: 12
 humanoid_body: 1
 ignores_walls: 1
 invalid_polymorph_target: 1
+is_amphibious: 1
 is_breathless: 1
 is_undead: 1
 is_wanderer: 1
@@ -9932,6 +10012,7 @@ resist:
 size: human
 sound: silent
 speed: 9
+wants_wargear: 1
 weight: 1450
 ---
 ac: 0
@@ -10929,6 +11010,7 @@ weight: 1450
 ac: 10
 alignment: 0
 always_peaceful: 1
+attacks: []
 can_fly: 1
 can_swim: 1
 color: bright_blue
@@ -10941,6 +11023,7 @@ hitdice: 56
 humanoid_body: 1
 infravision_detectable: 1
 invalid_polymorph_target: 1
+is_amphibious: 1
 is_breathless: 1
 mr: 127
 name: mail daemon
