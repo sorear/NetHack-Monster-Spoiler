@@ -1,6 +1,6 @@
 package NetHack::Monster::Spoiler;
 use Moose;
-use YAML qw();
+use YAML::Any qw(Load);
 use MooseX::ClassAttribute;
 
 our $VERSION = '0.01';
@@ -16,13 +16,59 @@ class_has list => (
     isa     => 'HashRef',
     lazy    => 1,
     default => sub {
-        local $/ = undef;
-        my $hash = YAML::Load(<DATA>);
+        my $data;
         close DATA;
-        $hash;
+        my $h = Load($data);
+
+        for my $name (keys %$h) {
+            $h->{$name} = NetHack::Monster::Spoiler->new(%{ $h->{$name} });
+        }
+
+        $h;
     }
 );
 
+has [qw/acid amorphous amphibious animal breathless carnivore cling close
+  collect conceal demon domestic dwarf elf female fly geno giant gnome greedy
+  hell herbivore hide hostile human humanoid infravisible infravision jewels
+  lgroup lord magic male merc metallivore mindless minion nasty needpick neuter
+  nocorpse noeyes nogen nohands nohead nohell nolimbs nopoly notake orc
+  oviparous peaceful pname pois prince regen rockthrow see_invis sgroup slithy
+  stalk strong swim thick_hide tport tport_cntrl tunnel undead uniq unsolid
+  waitforu wallwalk wander wantsamul wantsarti wantsbook wantscand were/] => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0,
+);
+
+has [qw/weight speed rarity nutrition mr hitdice ac/] => (
+    is      => 'ro',
+    isa     => 'Int',
+    default => 0,
+);
+
+has alignment => (
+    is      => 'ro',
+    isa     => 'Str'
+);
+
+has [qw/sound size name glyph color/] => (
+    is      => 'ro',
+    isa     => 'Str',
+);
+
+has [qw/resist corpse/] => (
+    is      => 'ro',
+    isa     => 'HashRef',
+);
+
+has attacks => (
+    is      => 'ro',
+    isa     => 'ArrayRef',
+);
+
+__PACKAGE__->meta->make_immutable;
+no Moose;
 
 1;
 
