@@ -253,7 +253,7 @@ sub process {
         delete $_{can_eat_rock};
     }
 
-    $allmons{$_{name}} = { %_ } unless $blacklist{$_{name}};
+    print Dump \%_ unless $blacklist{$_{name}};
 }
 
 while (defined (my $line = <>)) {
@@ -263,5 +263,3 @@ while (defined (my $line = <>)) {
     }
     $_ .= $line;
 }
-
-print Dump \%allmons;
