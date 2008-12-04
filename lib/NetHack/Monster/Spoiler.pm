@@ -12,10 +12,11 @@ NetHack::Monster::Spoiler - information on a type of monster
 =cut
 
 class_has _list => (
-    is      => 'ro',
-    isa     => 'ArrayRef',
-    lazy    => 1,
-    default => sub {
+    is         => 'ro',
+    isa        => 'ArrayRef',
+    lazy       => 1,
+    auto_deref => 1,
+    default    => sub {
         local $/ = undef;
         my $data = <DATA>;
         close DATA;
@@ -23,9 +24,21 @@ class_has _list => (
     }
 );
 
+class_has list => (
+    is         => 'ro',
+    isa        => 'ArrayRef',
+    lazy       => 1,
+    auto_deref => 1,
+    default    => sub {
+        my $class = shift->name;
+
+        [ map { $class->new(%$_) } $class->_list ];
+    },
+);
+
 has [qw/absent_from_gehennom acidic_corpse always_hostile always_peaceful
   can_eat_metal can_eat_rock can_fly can_swim cannot_pickup_items
-  clings_to_ceiling corpse_nutrition extra_nasty follows_stair_users
+  clings_to_ceiling extra_nasty follows_stair_users
   food_makes_peaceful gehennom_exclusive has_infravision has_proper_name
   has_teleport_control has_teleportitis has_thick_hide hides_on_ceiling
   hides_under_item humanoid_body ignores_walls immobile_until_disturbed
@@ -45,7 +58,7 @@ has [qw/absent_from_gehennom acidic_corpse always_hostile always_peaceful
     default => 0,
 );
 
-has [qw/weight speed rarity nutrition mr hitdice ac/] => (
+has [qw/weight speed rarity corpse_nutrition mr hitdice ac/] => (
     is      => 'ro',
     isa     => 'Int',
     default => 0,
@@ -86,9 +99,10 @@ my @numcolor = qw(black red green brown blue magenta cyan gray none orange brigh
 sub lookup {
     my ($class, %props) = @_;
 
-    $props{color} = $numcolor[$props{color}] if $props{color} =~ /^[0-9]+$/;
+    $props{color} = $numcolor[$props{color}] if
+        defined $props{color} && $props{color} =~ /^[0-9]+$/;
 
-    my @cand = grep { $_->match(%props) } @{$class->list};
+    my @cand = grep { $_->match(%props) } $class->list;
 
     if (!wantarray) {
         return @cand == 1 ? $class->new(%{$cand[0]}) : undef;
