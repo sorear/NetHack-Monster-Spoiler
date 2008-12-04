@@ -111,6 +111,188 @@ sub lookup {
     }
 }
 
+sub is_rider {
+    my $self = shift;
+
+    return $self->name =~ /Death|Pestilence|Famine/ ? 1 : 0;
+}
+
+sub ignores_elbereth {
+    my $self = shift;
+
+    return 1 if $self->glyph =~ /[A@]/;
+    return 1 if $self->name eq 'minotaur';
+    return 1 if $self->is_rider;
+    return 0;
+}
+
+sub has_attack {
+    my ($self, $mode) = @_;
+
+    my @atk = grep { defined $mode ? $_->mode eq $mode : 1 } $self->attacks;
+
+    return @atk ? $atk[0] : undef;
+}
+
+sub is_spellcaster {
+    my $cast = shift->has_attack('magic');
+
+    return $cast ? ($cast->type =~ /(.*)spell/)[0] : undef;
+}
+
+my %elements = qw(petrification stone  stoning stone  electricity elec
+    shock elec  disintegration disint);
+
+sub resists {
+    my ($self, $element) = @_;
+
+    $element = $elements{$element} || $element;
+
+    return $self->resist->{$element} || 0;
+}
+
+sub can_float {
+    my ($self) = @_;
+
+    return $self->glyph eq 'e';
+}
+
+sub is_noncorporeal {
+    my ($self) = @_;
+
+    return $self->name =~ /shadow|shade|ghost/;
+}
+
+sub is_whirly {
+    my ($self) = @_;
+
+    return $self->glyph eq 'v' || $self->name eq 'air elemental';
+}
+
+sub is_flaming {
+    my ($self) = @_;
+
+    return $self->name =~ /fire (?:vortex|elemental)|flaming sphere|salamander/;
+}
+
+sub is_telepathic {
+    my ($self) = @_;
+
+    return $self->name =~ /floating eye|mind flayer/;
+}
+
+sub uses_weapons {
+    return defined shift->has_attack('weapon');
+}
+
+sub is_unicorn {
+    my ($self) = @_;
+
+    return undef if $self->glyph ne 'u';
+
+    return 'Law' if $self->color eq 'white';
+    return 'Neu' if $self->color eq 'gray';
+    return 'Cha' if $self->color eq 'black';
+
+    return undef;
+}
+
+sub is_bat {
+    return shift->name =~ /^(vampire |giant |)bat$/;
+}
+
+sub is_golem {
+    return shift->glyph eq "'";
+}
+
+# size system, could_dualwield deferred
+
+sub is_normal_demon {
+    my ($self) = @_;
+
+    return $self->is_demon && !$self->is_rank_lord && !$self->is_rank_prince;
+}
+
+sub is_demon_prince {
+    my ($self) = @_;
+
+    return $self->is_demon && $self->is_rank_prince;
+}
+
+sub is_demon_lord {
+    my ($self) = @_;
+
+    return $self->is_demon && $self->is_rank_lord;
+}
+
+sub makes_webs {
+    return shift->name =~ /^(cave|giant) spider$/;
+}
+
+sub can_breathe {
+    return defined shift->has_attack('breathe');
+}
+
+# is_longworm omitted
+
+sub is_player_monster {
+    my ($self) = @_;
+
+    return $self->hitdice == 10 && $self->glyph eq '@' &&
+        $self->color eq 'white' && $self->name ne 'elf';
+}
+
+sub is_covetous {
+    my ($self) = @_;
+
+    return $self->wants_amulet || $self->wants_book || $self->wants_bell ||
+        $self->wants_candelabrum || $self->wants_quest_artifact;
+}
+
+# reviver omitted: NHI
+
+sub emits_light {
+    my ($self) = @_;
+
+    return $self->glyph eq 'y' || $self->name =~
+        /^(?:(?:flam|shock)ing sphere|fire (?:vortex|elemental))$/;
+}
+
+sub likes_lava {
+    my ($self) = @_;
+
+    return $self->name eq 'salamander' || $self->name eq 'fire elemental';
+}
+
+sub naturally_invisible {
+    my ($self) = @_;
+
+    return $self->name eq 'stalker' || $self->name eq 'black light';
+}
+
+sub likes_fire {
+    shift->is_flaming;
+}
+
+sub touch_petrifies {
+    shift->name =~ /^c(?:o|hi)ckatrice$/;
+}
+
+sub is_mind_flayer {
+    shift->name =~ /mind flayer/;
+}
+
+sub is_nonliving {
+    my ($self) = @_;
+
+    return $self->name eq 'manes' || $self->is_undead || $self->glyph eq 'v' ||
+        $self->is_golem;
+}
+
+# vegan & vegetarian omitted: NHI domain
+
+# TODO a lot
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
