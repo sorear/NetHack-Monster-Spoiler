@@ -76,6 +76,32 @@ has attacks => (
     isa     => 'ArrayRef',
 );
 
+sub match {
+    my ($self, %props) = @_;
+
+    for my $field (keys %props) {
+        return 0 unless $self->$field() eq $props{$field};
+    }
+
+    return 1;
+}
+
+my @numcolor = qw(black red green brown blue magenta cyan gray none orange bright_green yellow bright_blue bright_magenta bright_cyan white);
+
+sub lookup {
+    my ($class, %props) = @_;
+
+    $props{color} = $numcolor[$props{color}] if $props{color} =~ /^[0-9]+$/;
+
+    my @cand = grep { $_->match(%props) } @{$class->list};
+
+    if (!wantarray) {
+        return @cand == 1 ? $cand[0] : undef;
+    } else {
+        return @cand;
+    }
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
