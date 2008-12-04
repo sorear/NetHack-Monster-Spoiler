@@ -130,6 +130,96 @@ my %blacklist = map {$_ => 1} 'Cerberus', 'beholder', 'baby shimmering dragon',
     'shimmering dragon', 'vorpal jabberwock', 'vampire mage', 'Charon',
     'long worm tail', 'Earendil', 'Elwing', 'Goblin King', 'High-elf';
 
+my %expand = (
+    # ac fine
+    acid           => 'acidic_corpse',
+    # alignment fine
+    amorphous      => 'is_amorphous',
+    amphibious     => 'is_amphibious',
+    animal         => 'is_animal',
+    breathless     => 'is_breathless',
+    carnivore      => 'is_carnivorous',
+    cling          => 'clings_to_ceiling',
+    close          => 'immobile_until_disturbed',
+    collect        => 'wants_wargear',
+    conceal        => 'hides_under_item',
+    covetous       => [qw/wants_amulet wants_quest_artifact wants_bell
+        wants_book wants_candelabrum/],
+    demon          => 'is_demon',
+    domestic       => 'food_makes_peaceful',
+    dwarf          => 'is_dwarf',
+    elf            => 'is_elf',
+    female         => 'is_always_female',
+    fly            => 'can_fly',
+    geno           => 'is_genocidable',
+    giant          => 'is_giant',
+    gnome          => 'is_gnome',
+    greedy         => 'wants_gold',
+    hell           => 'gehennom_exclusive',
+    herbivore      => 'is_herbivorous',
+    hide           => 'hides_on_ceiling',
+    hostile        => 'always_hostile',
+    human          => 'is_human',
+    humanoid       => 'humanoid_body',
+    infravisible   => 'infravision_detectable',
+    infravision    => 'has_infravision',
+    jewels         => 'wants_gems',
+    lgroup         => 'large_group',
+    lord           => 'is_rank_lord', #better eq, better combat
+    magic          => 'wants_magic_items',
+    male           => 'is_always_male',
+    merc           => 'is_mercenary', #throw gold, bugles make hostile
+    metallivore    => 'can_eat_metal',
+    mindless       => 'is_mindless', #does not register on telepathy
+    minion         => 'is_minion', #ignores sanctuary, hostile to - alignment
+    # mr fine?
+    nasty          => 'extra_nasty', #ignores webs, better eq, bonus XP
+    needpick       => 'tunnels_with_pick',
+    neuter         => 'is_genderless',
+    nocorpse       => 'never_drops_corpse',
+    noeyes         => 'lacks_eyes',
+    nogen          => 'not_randomly_generated',
+    nohands        => 'lacks_hands',
+    nohead         => 'lacks_head',
+    nohell         => 'absent_from_gehennom',
+    nolimbs        => 'lacks_limbs',
+    nopoly         => 'invalid_polymorph_target',
+    notake         => 'cannot_pickup_items',
+    nutrition      => 'corpse_nutrition',
+    omnivore       => ['is_herbivorous', 'is_carnivorous'],
+    orc            => 'is_orc',
+    oviparous      => 'lays_eggs',
+    peaceful       => 'always_peaceful',
+    pname          => 'has_proper_name',
+    pois           => 'poisonous_corpse',
+    prince         => 'is_rank_prince', # better equipment, combat, makes noise
+    regen          => 'regenerates_quickly',
+    rockthrow      => 'throws_boulders',
+    see_invis      => 'sees_invisible',
+    sgroup         => 'small_group',
+    slithy         => 'serpentine_body', # no feet, cannot #ride, messages
+    stalk          => 'follows_stair_users',
+    strong         => 'is_very_strong', # 18/** for polyself, double carrying
+    # uses twohanders, cannot be grappled
+    swim           => 'can_swim',
+    thick_hide     => 'has_thick_hide', # cannot be damaged with weapons
+    # of soft materials
+    tport          => 'has_teleportitis',
+    tport_cntrl    => 'has_teleport_control',
+    tunnel         => 'can_eat_rock',
+    undead         => 'is_undead',
+    uniq           => 'is_unique',
+    unsolid        => 'made_of_gas',
+    waitforu       => 'immobile_until_seen',
+    wallwalk       => 'ignores_walls',
+    wander         => 'is_wanderer', # sometimes acts confused
+    wantsamul      => 'wants_amulet',
+    wantsarti      => 'wants_quest_artifact',
+    wantsbook      => 'wants_book',
+    wantscand      => 'wants_candelabrum',
+    were           => 'is_lycanthrope',
+);
+
 sub process {
     s#/\*.*?\*/# #sg;
 
@@ -141,6 +231,27 @@ sub process {
     %_ = ();
 
     parser();
+
+    for my $k (keys %expand) {
+        my $x = $_{$k};
+
+        if ($x) {
+            delete $_{$k};
+            my @dst = ref $expand{$k} ? @{$expand{$k}} : $expand{$k};
+
+            for my $d (@dst) {
+                $_{$d} = $x;
+            }
+        }
+    }
+
+    if ($_{glyph} eq 'm') {
+        delete $_{hide};
+    }
+
+    if ($_{tunnels_with_pick}) {
+        delete $_{can_eat_rock};
+    }
 
     $allmons{$_{name}} = { %_ } unless $blacklist{$_{name}};
 }
