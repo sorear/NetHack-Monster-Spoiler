@@ -145,7 +145,8 @@ sub ignores_elbereth {
 sub has_attack {
     my ($self, $mode) = @_;
 
-    my @atk = grep { defined $mode ? $_->mode eq $mode : 1 } $self->attacks;
+    my @atk = grep { defined $mode ? $_->{mode} eq $mode : 1 }
+        @{$self->attacks};
 
     return @atk ? $atk[0] : undef;
 }
@@ -153,7 +154,7 @@ sub has_attack {
 sub is_spellcaster {
     my $cast = shift->has_attack('magic');
 
-    return $cast ? ($cast->type =~ /(.*)spell/)[0] : undef;
+    return $cast ? ($cast->{type} =~ /(.*)spell/)[0] : undef;
 }
 
 my %elements = qw(petrification stone  stoning stone  electricity elec
@@ -176,7 +177,7 @@ sub can_float {
 sub is_noncorporeal {
     my ($self) = @_;
 
-    return $self->name =~ /shadow|shade|ghost/;
+    return $self->name =~ /shade|ghost/;
 }
 
 sub is_whirly {
@@ -238,14 +239,14 @@ sub could_wield {
 sub could_wear_armor {
     my ($self) = @_;
 
-    return !$self->would_break_armour && !$self->would_slip_armour;
+    return !$self->would_break_armor && !$self->would_slip_armor;
 }
 
 sub can_dualwield {
     my ($self) = @_;
 
     # Yes, this is the NetHack check!
-    return @{$self->attacks} >= 2 && $self->attacks->[1]->mode eq 'weapon';
+    return @{$self->attacks} >= 2 && $self->attacks->[1]->{mode} eq 'weapon';
 }
 
 sub is_normal_demon {
@@ -372,17 +373,17 @@ sub ignores_bars {
         $self->is_verysmall || ($self->serpentine_body && !$self->is_bigmonst);
 }
 
-sub would_slip_armour {
+sub would_slip_armor {
     my ($self) = @_;
 
     return $self->is_whirly || $self->is_noncorporeal || $self->numeric_size <=
         numeric_size('small');
 }
 
-sub would_break_armour {
+sub would_break_armor {
     my ($self) = @_;
 
-    return 0 if $self->would_slip_armour;
+    return 0 if $self->would_slip_armor;
 
     return !$self->humanoid_body || $self->is_bigmonst
         || $self->name eq 'marilith' || $self->name eq 'winged gargoyle';
@@ -1712,7 +1713,7 @@ name: gargoyle
 rarity: 2
 resist:
   stone: 1
-size: human
+size: medium
 sound: grunt
 speed: 10
 weight: 1000
@@ -1750,7 +1751,7 @@ name: winged gargoyle
 rarity: 1
 resist:
   stone: 1
-size: human
+size: medium
 sound: grunt
 speed: 15
 wants_magic_items: 1
@@ -1807,7 +1808,7 @@ mr: 10
 name: dwarf
 rarity: 3
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 6
 tunnels_with_pick: 1
@@ -1872,7 +1873,7 @@ mr: 10
 name: dwarf lord
 rarity: 2
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 6
 tunnels_with_pick: 1
@@ -1909,7 +1910,7 @@ mr: 20
 name: dwarf king
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 6
 tunnels_with_pick: 1
@@ -1952,7 +1953,7 @@ name: mind flayer
 rarity: 1
 resist: {}
 sees_invisible: 1
-size: human
+size: medium
 sound: hiss
 speed: 12
 wants_gems: 1
@@ -2000,7 +2001,7 @@ name: master mind flayer
 rarity: 1
 resist: {}
 sees_invisible: 1
-size: human
+size: medium
 sound: hiss
 speed: 12
 wants_gems: 1
@@ -2462,7 +2463,6 @@ corpse: {}
 corpse_nutrition: 200
 glyph: m
 has_thick_hide: 1
-hides_on_ceiling: 1
 hitdice: 7
 is_amorphous: 1
 is_amphibious: 1
@@ -2496,7 +2496,6 @@ corpse: {}
 corpse_nutrition: 400
 glyph: m
 has_thick_hide: 1
-hides_on_ceiling: 1
 hitdice: 8
 is_amorphous: 1
 is_amphibious: 1
@@ -2534,7 +2533,6 @@ corpse: {}
 corpse_nutrition: 500
 glyph: m
 has_thick_hide: 1
-hides_on_ceiling: 1
 hitdice: 9
 is_amorphous: 1
 is_amphibious: 1
@@ -2580,7 +2578,7 @@ mr: 20
 name: wood nymph
 rarity: 2
 resist: {}
-size: human
+size: medium
 sound: seduce
 speed: 12
 wants_wargear: 1
@@ -2611,7 +2609,7 @@ mr: 20
 name: water nymph
 rarity: 2
 resist: {}
-size: human
+size: medium
 sound: seduce
 speed: 12
 wants_wargear: 1
@@ -2641,7 +2639,7 @@ mr: 20
 name: mountain nymph
 rarity: 2
 resist: {}
-size: human
+size: medium
 sound: seduce
 speed: 12
 wants_wargear: 1
@@ -2698,7 +2696,7 @@ mr: 0
 name: hobgoblin
 rarity: 2
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 9
 wants_wargear: 1
@@ -2729,7 +2727,7 @@ mr: 0
 name: orc
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 9
 wants_gems: 1
@@ -2761,7 +2759,7 @@ mr: 0
 name: hill orc
 rarity: 2
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 9
 wants_gems: 1
@@ -2793,7 +2791,7 @@ mr: 0
 name: Mordor orc
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 5
 wants_gems: 1
@@ -2825,7 +2823,7 @@ mr: 0
 name: Uruk-hai
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 7
 wants_gems: 1
@@ -2856,7 +2854,7 @@ mr: 10
 name: orc shaman
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 9
 wants_gems: 1
@@ -2890,7 +2888,7 @@ mr: 0
 name: orc-captain
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: orc
 speed: 5
 wants_gems: 1
@@ -4340,7 +4338,7 @@ resist:
   poison: 1
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: imitate
 speed: 8
 wants_wargear: 1
@@ -4386,7 +4384,7 @@ resist:
   poison: 1
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: cuss
 speed: 10
 wants_wargear: 1
@@ -6237,7 +6235,7 @@ mr: 10
 name: Keystone Kop
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: arrest
 speed: 6
 wants_wargear: 1
@@ -6266,7 +6264,7 @@ mr: 10
 name: Kop Sergeant
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 small_group: 1
 sound: arrest
 speed: 8
@@ -6296,7 +6294,7 @@ mr: 20
 name: Kop Lieutenant
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: arrest
 speed: 10
 wants_wargear: 1
@@ -6325,7 +6323,7 @@ mr: 20
 name: Kop Kaptain
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: arrest
 speed: 12
 wants_wargear: 1
@@ -6363,7 +6361,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: mumble
 speed: 6
 wants_magic_items: 1
@@ -6401,7 +6399,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: mumble
 speed: 9
 wants_magic_items: 1
@@ -6442,7 +6440,7 @@ resist:
   fire: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: mumble
 speed: 9
 wants_book: 1
@@ -6485,7 +6483,7 @@ resist:
   fire: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: mumble
 speed: 9
 wants_book: 1
@@ -6588,7 +6586,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: silent
 speed: 10
 wants_gems: 1
@@ -6624,7 +6622,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: silent
 speed: 10
 wants_gems: 1
@@ -6660,7 +6658,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: silent
 speed: 12
 weight: 800
@@ -6696,7 +6694,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: silent
 speed: 12
 weight: 1450
@@ -7330,7 +7328,7 @@ poisonous_corpse: 1
 rarity: 3
 resist:
   poison: 1
-size: human
+size: medium
 sound: humanoid
 speed: 12
 weight: 1450
@@ -7859,7 +7857,7 @@ regenerates_quickly: 1
 resist:
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: vampire
 speed: 12
 weight: 1450
@@ -7900,7 +7898,7 @@ regenerates_quickly: 1
 resist:
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: vampire
 speed: 14
 weight: 1450
@@ -7944,7 +7942,7 @@ regenerates_quickly: 1
 resist:
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: vampire
 speed: 18
 wants_candelabrum: 1
@@ -7983,7 +7981,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: spell
 speed: 12
 wants_wargear: 1
@@ -8017,7 +8015,7 @@ resist:
   poison: 1
   sleep: 1
   stone: 1
-size: human
+size: medium
 sound: silent
 speed: 12
 weight: 0
@@ -8054,7 +8052,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 sound: spell
 speed: 12
 wants_wargear: 1
@@ -8397,7 +8395,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 small_group: 1
 sound: silent
 speed: 6
@@ -8433,7 +8431,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 small_group: 1
 sound: silent
 speed: 6
@@ -8468,7 +8466,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 small_group: 1
 sound: silent
 speed: 6
@@ -8502,7 +8500,7 @@ resist:
   cold: 1
   poison: 1
   sleep: 1
-size: human
+size: medium
 small_group: 1
 sound: silent
 speed: 6
@@ -8654,7 +8652,7 @@ resist:
   poison: 1
   sleep: 1
   stone: 1
-size: human
+size: medium
 sound: bones
 speed: 8
 wants_wargear: 1
@@ -9046,7 +9044,7 @@ mr: 0
 name: human
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -9078,7 +9076,7 @@ rarity: 1
 regenerates_quickly: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: were
 speed: 12
 wants_wargear: 1
@@ -9110,7 +9108,7 @@ rarity: 1
 regenerates_quickly: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: were
 speed: 12
 wants_wargear: 1
@@ -9142,7 +9140,7 @@ rarity: 1
 regenerates_quickly: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: were
 speed: 12
 wants_wargear: 1
@@ -9174,7 +9172,7 @@ not_randomly_generated: 1
 resist:
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -9205,7 +9203,7 @@ rarity: 2
 resist:
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 small_group: 1
 sound: humanoid
 speed: 12
@@ -9237,7 +9235,7 @@ rarity: 2
 resist:
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 small_group: 1
 sound: humanoid
 speed: 12
@@ -9269,7 +9267,7 @@ rarity: 2
 resist:
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 small_group: 1
 sound: humanoid
 speed: 12
@@ -9307,7 +9305,7 @@ rarity: 2
 resist:
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 small_group: 1
 sound: humanoid
 speed: 12
@@ -9345,7 +9343,7 @@ rarity: 1
 resist:
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -9376,7 +9374,7 @@ name: doppelganger
 rarity: 1
 resist:
   sleep: 1
-size: human
+size: medium
 sound: imitate
 speed: 12
 wants_wargear: 1
@@ -9407,7 +9405,7 @@ name: nurse
 rarity: 3
 resist:
   poison: 1
-size: human
+size: medium
 sound: nurse
 speed: 6
 weight: 1450
@@ -9438,7 +9436,7 @@ mr: 50
 name: shopkeeper
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: sell
 speed: 18
 wants_magic_items: 1
@@ -9469,7 +9467,7 @@ mr: 40
 name: guard
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guard
 speed: 12
 wants_wargear: 1
@@ -9499,7 +9497,7 @@ mr: 0
 name: prisoner
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: djinni
 speed: 12
 wants_wargear: 1
@@ -9529,7 +9527,7 @@ mr: 50
 name: Oracle
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: oracle
 speed: 0
 weight: 1450
@@ -9564,7 +9562,7 @@ name: aligned priest
 not_randomly_generated: 1
 resist:
   elec: 1
-size: human
+size: medium
 sound: priest
 speed: 12
 wants_wargear: 1
@@ -9609,7 +9607,7 @@ resist:
   poison: 1
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: priest
 speed: 15
 wants_magic_items: 1
@@ -9642,7 +9640,7 @@ mr: 0
 name: soldier
 rarity: 1
 resist: {}
-size: human
+size: medium
 small_group: 1
 sound: soldier
 speed: 10
@@ -9675,7 +9673,7 @@ mr: 5
 name: sergeant
 rarity: 1
 resist: {}
-size: human
+size: medium
 small_group: 1
 sound: soldier
 speed: 10
@@ -9711,7 +9709,7 @@ mr: 15
 name: lieutenant
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: soldier
 speed: 10
 wants_wargear: 1
@@ -9746,7 +9744,7 @@ mr: 15
 name: captain
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: soldier
 speed: 10
 wants_wargear: 1
@@ -9779,7 +9777,7 @@ name: watchman
 not_randomly_generated: 1
 rarity: 1
 resist: {}
-size: human
+size: medium
 small_group: 1
 sound: soldier
 speed: 10
@@ -9816,7 +9814,7 @@ name: watch captain
 not_randomly_generated: 1
 rarity: 1
 resist: {}
-size: human
+size: medium
 sound: soldier
 speed: 10
 wants_wargear: 1
@@ -9913,7 +9911,7 @@ resist:
   fire: 1
   poison: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: cuss
 speed: 12
 wants_amulet: 1
@@ -9954,7 +9952,7 @@ name: Croesus
 not_randomly_generated: 1
 resist: {}
 sees_invisible: 1
-size: human
+size: medium
 sound: guard
 speed: 15
 wants_gems: 1
@@ -9995,7 +9993,7 @@ resist:
   poison: 1
   sleep: 1
   stone: 1
-size: human
+size: medium
 sound: silent
 speed: 3
 weight: 1450
@@ -10038,7 +10036,7 @@ resist:
   sleep: 1
   stone: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: wail
 speed: 10
 weight: 1450
@@ -10077,7 +10075,7 @@ poisonous_corpse: 1
 resist:
   fire: 1
   poison: 1
-size: human
+size: medium
 sound: djinni
 speed: 12
 wants_wargear: 1
@@ -10119,7 +10117,7 @@ rarity: 2
 resist:
   fire: 1
   poison: 1
-size: human
+size: medium
 sound: silent
 speed: 9
 wants_wargear: 1
@@ -10159,7 +10157,7 @@ rarity: 1
 resist:
   fire: 1
   poison: 1
-size: human
+size: medium
 sound: seduce
 speed: 12
 weight: 1450
@@ -10198,7 +10196,7 @@ rarity: 1
 resist:
   fire: 1
   poison: 1
-size: human
+size: medium
 sound: seduce
 speed: 12
 weight: 1450
@@ -10233,7 +10231,7 @@ rarity: 2
 resist:
   fire: 1
   poison: 1
-size: human
+size: medium
 small_group: 1
 sound: silent
 speed: 12
@@ -10273,7 +10271,7 @@ rarity: 2
 resist:
   fire: 1
   poison: 1
-size: human
+size: medium
 small_group: 1
 sound: silent
 speed: 12
@@ -10843,7 +10841,7 @@ resist:
   fire: 1
   poison: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: bribe
 speed: 15
 wants_amulet: 1
@@ -11026,7 +11024,7 @@ resist:
   sleep: 1
   stone: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: rider
 speed: 12
 weight: 1450
@@ -11069,7 +11067,7 @@ resist:
   sleep: 1
   stone: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: rider
 speed: 12
 weight: 1450
@@ -11112,7 +11110,7 @@ resist:
   sleep: 1
   stone: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: rider
 speed: 12
 weight: 1450
@@ -11148,7 +11146,7 @@ resist:
   sleep: 1
   stone: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: silent
 speed: 24
 weight: 600
@@ -11177,7 +11175,7 @@ poisonous_corpse: 1
 resist:
   poison: 1
   stone: 1
-size: human
+size: medium
 sound: djinni
 speed: 12
 wants_wargear: 1
@@ -11210,7 +11208,7 @@ never_drops_corpse: 1
 rarity: 1
 resist:
   stone: 1
-size: human
+size: medium
 sound: cuss
 speed: 12
 wants_wargear: 1
@@ -11641,7 +11639,7 @@ resist:
   fire: 1
   sleep: 1
 serpentine_body: 1
-size: human
+size: medium
 sound: mumble
 speed: 12
 wants_magic_items: 1
@@ -11673,7 +11671,7 @@ mr: 1
 name: archeologist
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 tunnels_with_pick: 1
@@ -11706,7 +11704,7 @@ name: barbarian
 not_randomly_generated: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11735,7 +11733,7 @@ mr: 0
 name: caveman
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11764,7 +11762,7 @@ mr: 0
 name: cavewoman
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11793,7 +11791,7 @@ name: healer
 not_randomly_generated: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11824,7 +11822,7 @@ mr: 1
 name: knight
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11855,7 +11853,7 @@ mr: 2
 name: monk
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11884,7 +11882,7 @@ mr: 2
 name: priest
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11913,7 +11911,7 @@ mr: 2
 name: priestess
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11941,7 +11939,7 @@ mr: 2
 name: ranger
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -11972,7 +11970,7 @@ mr: 1
 name: rogue
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_gems: 1
@@ -12005,7 +12003,7 @@ mr: 1
 name: samurai
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -12036,7 +12034,7 @@ mr: 1
 name: tourist
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -12069,7 +12067,7 @@ name: valkyrie
 not_randomly_generated: 1
 resist:
   cold: 1
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -12097,7 +12095,7 @@ mr: 3
 name: wizard
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_magic_items: 1
@@ -12131,7 +12129,7 @@ mr: 30
 name: Lord Carnarvon
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: leader
 speed: 12
 tunnels_with_pick: 1
@@ -12167,7 +12165,7 @@ name: Pelias
 not_randomly_generated: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12201,7 +12199,7 @@ mr: 30
 name: Shaman Karnov
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12236,7 +12234,7 @@ name: Hippocrates
 not_randomly_generated: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12273,7 +12271,7 @@ mr: 40
 name: King Arthur
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12319,7 +12317,7 @@ resist:
   poison: 1
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12364,7 +12362,7 @@ resist:
   poison: 1
   sleep: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12402,7 +12400,7 @@ name: Orion
 not_randomly_generated: 1
 resist: {}
 sees_invisible: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12442,7 +12440,7 @@ name: Master of Thieves
 not_randomly_generated: 1
 resist:
   stone: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_gems: 1
@@ -12481,7 +12479,7 @@ mr: 30
 name: Lord Sato
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12518,7 +12516,7 @@ mr: 20
 name: Twoflower
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12555,7 +12553,7 @@ name: Norn
 not_randomly_generated: 1
 resist:
   cold: 1
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12592,7 +12590,7 @@ mr: 60
 name: Neferet the Green
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: leader
 speed: 12
 wants_magic_items: 1
@@ -12688,7 +12686,7 @@ not_randomly_generated: 1
 resist:
   poison: 1
   stone: 1
-size: human
+size: medium
 sound: nemesis
 speed: 12
 wants_magic_items: 1
@@ -12902,7 +12900,7 @@ resist:
   poison: 1
   stone: 1
 sees_invisible: 1
-size: human
+size: medium
 sound: nemesis
 speed: 12
 wants_magic_items: 1
@@ -12996,7 +12994,7 @@ poisonous_corpse: 1
 resist:
   poison: 1
   stone: 1
-size: human
+size: medium
 sound: nemesis
 speed: 12
 wants_magic_items: 1
@@ -13038,7 +13036,7 @@ name: Master Assassin
 not_randomly_generated: 1
 resist:
   stone: 1
-size: human
+size: medium
 sound: nemesis
 speed: 12
 wants_magic_items: 1
@@ -13083,7 +13081,7 @@ never_drops_corpse: 1
 not_randomly_generated: 1
 resist:
   stone: 1
-size: human
+size: medium
 sound: nemesis
 speed: 12
 wants_magic_items: 1
@@ -13177,7 +13175,7 @@ never_drops_corpse: 1
 not_randomly_generated: 1
 resist:
   stone: 1
-size: human
+size: medium
 sound: nemesis
 speed: 12
 wants_magic_items: 1
@@ -13208,7 +13206,7 @@ mr: 10
 name: student
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 tunnels_with_pick: 1
@@ -13239,7 +13237,7 @@ name: chieftain
 not_randomly_generated: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13268,7 +13266,7 @@ mr: 10
 name: neanderthal
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13298,7 +13296,7 @@ name: attendant
 not_randomly_generated: 1
 resist:
   poison: 1
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13330,7 +13328,7 @@ mr: 10
 name: page
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13364,7 +13362,7 @@ mr: 20
 name: abbot
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13396,7 +13394,7 @@ mr: 20
 name: acolyte
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13427,7 +13425,7 @@ name: hunter
 not_randomly_generated: 1
 resist: {}
 sees_invisible: 1
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13459,7 +13457,7 @@ mr: 10
 name: thug
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_gold: 1
@@ -13492,7 +13490,7 @@ mr: 10
 name: ninja
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: humanoid
 speed: 12
 wants_wargear: 1
@@ -13524,7 +13522,7 @@ mr: 10
 name: roshi
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13556,7 +13554,7 @@ mr: 20
 name: guide
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_magic_items: 1
@@ -13590,7 +13588,7 @@ mr: 10
 name: warrior
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_wargear: 1
@@ -13622,7 +13620,7 @@ mr: 30
 name: apprentice
 not_randomly_generated: 1
 resist: {}
-size: human
+size: medium
 sound: guardian
 speed: 12
 wants_magic_items: 1

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use Test::More tests => 20;
+use Test::More tests => 134;
 
 use NetHack::Monster::Spoiler;
 
@@ -10,7 +10,8 @@ sub mon {
 
     $m =~ s/_/ /g;
 
-    NetHack::Monster::Spoiler->lookup(name => $m) ||
+    NetHack::Monster::Spoiler->lookup(name => $m, #hack to avoid ambiguity
+           ($m eq 'werewolf' ? (glyph => '@') : ())) ||
         die "Cannot lookup $m";  # Should this count as a test?
 }
 
@@ -39,7 +40,7 @@ test_pred wants_candelabrum => [qw/Wizard_of_Yendor Vlad_the_Impaler/],
 
 test_pred can_eat_rock => [qw/rock_mole/], [qw/dwarf gnome/];
 
-test_pred is_amphibious => [qw/xorn rust_monster/], [qw/human/];
+test_pred is_amphibious => [qw/xorn crocodile/], [qw/human/];
 
 test_pred hides_on_ceiling => [qw/lurker_above/], [qw/small_mimic warhorse/];
 
@@ -50,13 +51,13 @@ test_pred is_carnivorous => [qw/dwarf kitten/], [qw/abbot/];
 test_pred is_rider => [qw/Death Pestilence Famine/], [qw/kitten/];
 
 test_pred ignores_elbereth => [qw/Grey-elf Archon minotaur Death/],
-    [qw/water_moccassin/];
+    [qw/water_moccasin/];
 
 test_pred is_spellcaster => [qw/Master_Kaen apprentice/], [qw/minotaur/];
 
 test_pred can_float => [qw/gas_spore/], [qw/bat/];
 
-test_pred is_noncorporeal => [qw/shade ghost shadow/], [qw/xorn/];
+test_pred is_noncorporeal => [qw/shade ghost/], [qw/xorn/];
 
 test_pred is_whirly => [qw/fire_vortex air_elemental/], [qw/water_elemental/];
 
@@ -75,7 +76,7 @@ test_pred is_bat => [qw/bat giant_bat vampire_bat/], [qw/vampire raven/];
 
 test_pred is_golem => [qw/iron_golem/], [qw/skeleton/];
 
-test_pred is_verysmall => [qw/sewer rat/], [qw/human/];
+test_pred is_verysmall => [qw/sewer_rat/], [qw/human/];
 
 test_pred is_bigmonst => [qw/black_dragon/], [qw/Oracle/];
 
@@ -88,20 +89,20 @@ test_pred can_dualwield => [qw/marilith/], [qw/gnome/];
 
 test_pred is_normal_demon => [qw/succubus/], [qw/Baalzebub orc/];
 
-test_pred is_demon_lord => [qw/Juiblex Asmodeus/], [qw/Orcus orc/];
+test_pred is_demon_lord => [qw/Juiblex Yeenoghu/], [qw/Orcus orc/];
 
 test_pred is_demon_prince => [qw/Orcus/], [qw/Juiblex orc/];
 
 test_pred makes_webs => [qw/giant_spider cave_spider/], [qw/Scorpius/];
 
-test_pred can_breathe => [qw/red_naga/], [qw/baby_grey_dragon/];
+test_pred can_breathe => [qw/red_naga/], [qw/baby_gray_dragon/];
 
 test_pred is_player_monster => [qw/priest priestess caveman wizard/],
     [qw/aligned_priest elf/];
 
 test_pred resists_blinding => [qw/Archon yellow_light fog_cloud/], [qw/raven/];
 
-test_pred is_vulnerable_to_silver => [qw/werewolf vampire nalfanshee/],
+test_pred is_vulnerable_to_silver => [qw/werewolf vampire nalfeshnee/],
     [qw/human wraith lich/];
 
 test_pred ignores_bars => [qw/xorn acid_blob air_elemental sewer_rat

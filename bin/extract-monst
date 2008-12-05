@@ -115,7 +115,7 @@ my %gmap = map {$al =~ s/^(.)//; $_ => $1 } qw/ant blob cockatrice dog eye
 
     list(SIZ => i('weight', human => 1450, elf => 800, dragon => 4500),
         i('nutrition'), sub { s/^0|sizeof\(.*?\)//; }, # extension
-        i('sound'), i('size')),
+        i('sound'), i('size', human => 'medium')),
 
     nest('resist', flag_set('MR')), nest('corpse', flag_set('MR')),
 
@@ -246,7 +246,7 @@ sub process {
     }
 
     if ($_{glyph} eq 'm') {
-        delete $_{hide};
+        delete $_{hides_on_ceiling};
     }
 
     if ($_{tunnels_with_pick}) {
