@@ -10,6 +10,28 @@ our $VERSION = '0.01';
 
 NetHack::Monster::Spoiler - information on a type of monster
 
+=head1 SYNOPSIS
+
+    use NetHack::Monster::Spoiler;
+
+    my $s = NetHack::Monster::Spoiler->lookup(glyph => 'A', color => 'magenta');
+
+    $s->is_spellcaster;          # returns 'wizard'
+    $s->name                     # 'Archon'
+    $s->never_leaves_corpse      # 1
+    $s->ignores_elbereth         # 1
+    $s->resists('petrification') # 0
+
+=head1 DESCRIPTION
+
+NetHack::Monster::Spoiler is a machine-readable database of information
+on the various monsters that inhabit the NetHack universe.  It is a sort
+of metaclass of monsters; an instance of NetHack::Monster::Spoiler is
+associated with each type of monster, so there is one for Archons, one
+for black puddings, et cetera.  The C<lookup> class method allows one
+to find the correct instance for an observed monster, from which general
+information can be obtained using accessors.
+
 =cut
 
 class_has _list => (
@@ -36,6 +58,255 @@ class_has list => (
         [ map { $class->new(%$_) } $class->_list ];
     },
 );
+
+sub match {
+    my ($self, %props) = @_;
+
+    for my $field (keys %props) {
+        return 0 unless $self->$field() eq $props{$field};
+    }
+
+    return 1;
+}
+
+my @numcolor = qw(black red green brown blue magenta cyan gray none orange bright_green yellow bright_blue bright_magenta bright_cyan white);
+
+=head2 lookup %ARGS
+
+C<lookup> is used to find instances of NetHack::Monster::Spoiler.  It takes
+an optional named argument for each accessor, and returns only those monsters
+that match the fields.  As a special exception, ANSI color numbers are
+automatically translated into the correct NetHack colors.  Note that there
+is no munging for name, so in general directly using the return from farlook
+will do the wrong thing.
+
+Returns all matches in list context; in scalar context it returns an unambiguous
+result, or undef on failure or ambiguity.
+
+=cut
+
+sub lookup {
+    my ($class, %props) = @_;
+
+    $props{color} = $numcolor[$props{color}] if
+        defined $props{color} && $props{color} =~ /^[0-9]+$/;
+
+    my @cand = grep { $_->match(%props) } $class->list;
+
+    if (!wantarray) {
+        return @cand == 1 ? $class->new(%{$cand[0]}) : undef;
+    } else {
+        return map { $class->new(%$_) } @cand;
+    }
+}
+
+=head2 PRIMITIVE ACCESSORS
+
+The following primitive accessors are availiable.  Each of them corresponds to
+one field in the NetHack monster structure, with three exceptions: all
+breathless monsters get amphibious for free, mimics do not cling to the ceiling,
+and dwarves do not eat rock.
+
+The return values of C<resist> and C<corpse> are hashrefs which map a true
+value to each resistance the monster possesses or will grant on eating,
+respectively.  The return value of C<attacks> is an arrayref of hashrefs which
+describe each of the monster's attack(s) in terms of mode, type, and damage.
+
+=over
+
+=item absent_from_gehennom
+
+=item ac
+
+=item acidic_corpse
+
+=item alignment
+
+=item always_hostile
+
+=item always_peaceful
+
+=item attacks
+
+=item can_eat_metal
+
+=item can_eat_rock
+
+=item can_fly
+
+=item can_swim
+
+=item cannot_pickup_items
+
+=item clings_to_ceiling
+
+=item color
+
+=item corpse
+
+=item corpse_nutrition
+
+=item extra_nasty
+
+=item follows_stair_users
+
+=item food_makes_peaceful
+
+=item gehennom_exclusive
+
+=item glyph
+
+=item has_infravision
+
+=item has_proper_name
+
+=item has_teleport_control
+
+=item has_teleportitis
+
+=item has_thick_hide
+
+=item hides_on_ceiling
+
+=item hides_under_item
+
+=item hitdice
+
+=item humanoid_body
+
+=item ignores_walls
+
+=item immobile_until_disturbed
+
+=item immobile_until_seen
+
+=item infravision_detectable
+
+=item invalid_polymorph_target
+
+=item is_always_female
+
+=item is_always_male
+
+=item is_amorphous
+
+=item is_amphibious
+
+=item is_animal
+
+=item is_breathless
+
+=item is_carnivorous
+
+=item is_demon
+
+=item is_dwarf
+
+=item is_elf
+
+=item is_genderless
+
+=item is_genocidable
+
+=item is_giant
+
+=item is_gnome
+
+=item is_herbivorous
+
+=item is_human
+
+=item is_lycanthrope
+
+=item is_mercenary
+
+=item is_mindless
+
+=item is_minion
+
+=item is_orc
+
+=item is_rank_lord
+
+=item is_rank_prince
+
+=item is_undead
+
+=item is_unique
+
+=item is_very_strong
+
+=item is_wanderer
+
+=item lacks_eyes
+
+=item lacks_hands
+
+=item lacks_head
+
+=item lacks_limbs
+
+=item large_group
+
+=item lays_eggs
+
+=item made_of_gas
+
+=item mr
+
+=item name
+
+=item never_drops_corpse
+
+=item not_randomly_generated
+
+=item poisonous_corpse
+
+=item rarity
+
+=item regenerates_quickly
+
+=item resist
+
+=item sees_invisible
+
+=item serpentine_body
+
+=item size
+
+=item small_group
+
+=item sound
+
+=item speed
+
+=item throws_boulders
+
+=item tunnels_with_pick
+
+=item wants_amulet
+
+=item wants_bell
+
+=item wants_book
+
+=item wants_candelabrum
+
+=item wants_gems
+
+=item wants_gold
+
+=item wants_magic_items
+
+=item wants_quest_artifact
+
+=item wants_wargear
+
+=item weight
+
+=back
+
+=cut
 
 has [qw/absent_from_gehennom acidic_corpse always_hostile always_peaceful
   can_eat_metal can_eat_rock can_fly can_swim cannot_pickup_items
@@ -77,6 +348,15 @@ has size => (
     isa     => 'NetHack::Monster::Size',
 );
 
+=head2 numeric_size :: Int
+
+C<numeric_size> returns a number with the correct ordering properties for
+the monster's size if called as a method, or translates strings into the
+same set of numbers if called as a function.  The numbers used are the
+same as NetHack's MZ_XXX defines.
+
+=cut
+
 my %numeric_sizes = qw/tiny 0 small 1 medium 2 large 3 huge 4 gigantic 7/;
 
 sub numeric_size {
@@ -100,38 +380,25 @@ has attacks => (
     isa     => 'ArrayRef',
 );
 
-sub match {
-    my ($self, %props) = @_;
+=head2 is_rider
 
-    for my $field (keys %props) {
-        return 0 unless $self->$field() eq $props{$field};
-    }
+Returns true if the monster is one of the three Riders of the Astral
+Plane^W^WApocalypse.
 
-    return 1;
-}
-
-my @numcolor = qw(black red green brown blue magenta cyan gray none orange bright_green yellow bright_blue bright_magenta bright_cyan white);
-
-sub lookup {
-    my ($class, %props) = @_;
-
-    $props{color} = $numcolor[$props{color}] if
-        defined $props{color} && $props{color} =~ /^[0-9]+$/;
-
-    my @cand = grep { $_->match(%props) } $class->list;
-
-    if (!wantarray) {
-        return @cand == 1 ? $class->new(%{$cand[0]}) : undef;
-    } else {
-        return map { $class->new(%$_) } @cand;
-    }
-}
+=cut
 
 sub is_rider {
     my $self = shift;
 
     return $self->name =~ /Death|Pestilence|Famine/ ? 1 : 0;
 }
+
+=head2 ignores_elbereth
+
+Returns true if the monster will always ignore Elbereth.  Peacefuls, blind
+monsters, and monsters with special AIs will ignore regardless.
+
+=cut
 
 sub ignores_elbereth {
     my $self = shift;
@@ -142,6 +409,12 @@ sub ignores_elbereth {
     return 0;
 }
 
+=head2 has_attack MODE
+
+Return true if the monster has an attack of the specified mode.
+
+=cut
+
 sub has_attack {
     my ($self, $mode) = @_;
 
@@ -151,14 +424,29 @@ sub has_attack {
     return @atk ? $atk[0] : undef;
 }
 
+=head2 is_spellcaster
+
+Return undef if the monster is not a spellcaster.  Otherwise return the type
+of magic used.
+
+=cut
+
 sub is_spellcaster {
     my $cast = shift->has_attack('magic');
 
-    return $cast ? ($cast->{type} =~ /(.*)spell/)[0] : undef;
+    return $cast ? $cast->{type} : undef;
 }
 
 my %elements = qw(petrification stone  stoning stone  electricity elec
     shock elec  disintegration disint);
+
+=head2 resists ELEMENT
+
+Return true if the monster resists the provided element.  Supported elements
+are fire, cold, elec, electricity, acid, petrification, stoning, stone, shock,
+disintegration, disint, sleep, and poison.
+
+=cut
 
 sub resists {
     my ($self, $element) = @_;
@@ -168,11 +456,23 @@ sub resists {
     return $self->resist->{$element} || 0;
 }
 
+=head2 can_float
+
+Return true if the monster is capable of levitation, if not flight.
+
+=cut
+
 sub can_float {
     my ($self) = @_;
 
     return $self->glyph eq 'e';
 }
+
+=head2 is_noncorporeal
+
+Return true if the monster is non-corporeal (a ghost or shade).
+
+=cut
 
 sub is_noncorporeal {
     my ($self) = @_;
@@ -180,11 +480,24 @@ sub is_noncorporeal {
     return $self->name =~ /shade|ghost/;
 }
 
+=head2 is_whirly
+
+Return true if the monster is made of whirls of gas, and for instance can be
+disrupted with slowing.
+
+=cut
+
 sub is_whirly {
     my ($self) = @_;
 
     return $self->glyph eq 'v' || $self->name eq 'air elemental';
 }
+
+=head2 is_flaming
+
+Return true if the monster is already on fire and cannot be ignited further.
+
+=cut
 
 sub is_flaming {
     my ($self) = @_;
@@ -192,15 +505,35 @@ sub is_flaming {
     return $self->name =~ /fire (?:vortex|elemental)|flaming sphere|salamander/;
 }
 
+=head2 is_telepathic
+
+Return true if the monster is intrinsically telepathic.
+
+=cut
+
 sub is_telepathic {
     my ($self) = @_;
 
     return $self->name =~ /floating eye|mind flayer/;
 }
 
+=head2 uses_weapons
+
+Return true if the monster uses weapons in the wild.  If you are polymorphed,
+you want could_wield, not this.
+
+=cut
+
 sub uses_weapons {
     return defined shift->has_attack('weapon');
 }
+
+=head2 is_unicorn
+
+Return true (specifically, the 3-letter code for the unicorn's alignment) if
+this monster is a unicorn.
+
+=cut
 
 sub is_unicorn {
     my ($self) = @_;
@@ -214,21 +547,52 @@ sub is_unicorn {
     return undef;
 }
 
+=head2 is_bat
+
+Return true if the current monster is a true bat, not a bird.
+
+=cut
+
 sub is_bat {
     return shift->name =~ /^(vampire |giant |)bat$/;
 }
+
+=head2 is_golem
+
+Return true for golems.
+
+=cut
 
 sub is_golem {
     return shift->glyph eq "'";
 }
 
+=head2 is_verysmall
+
+Return true if this monster is very small (can pass between bars, etc).
+
+=cut
+
 sub is_verysmall {
     return shift->size eq 'tiny';
 }
 
+=head2 is_bigmonst
+
+Return true if this monster is quite large (cannot fit through crevice, etc).
+
+=cut
+
 sub is_bigmonst {
     return shift->numeric_size >= numeric_size('large');
 }
+
+=head2 could_wield
+
+Return true if this monster is capable of using weapons.  For whether it will
+use weapons in the wild, see uses_weapons.
+
+=cut
 
 sub could_wield {
     my ($self) = @_;
@@ -236,11 +600,25 @@ sub could_wield {
     return !$self->lacks_hands && !$self->is_verysmall;
 }
 
+=head2 could_wear_armor
+
+Return true if the current monster is capable of wearing armor.  Note that
+animals, mindless monsters, and monsters which do not wants_wargear will
+not actually ever wear anything.
+
+=cut
+
 sub could_wear_armor {
     my ($self) = @_;
 
     return !$self->would_break_armor && !$self->would_slip_armor;
 }
+
+=head2 can_dualwield
+
+Return true if the player can dualwield while polymorphed into this.
+
+=cut
 
 sub can_dualwield {
     my ($self) = @_;
@@ -249,11 +627,23 @@ sub can_dualwield {
     return @{$self->attacks} >= 2 && $self->attacks->[1]->{mode} eq 'weapon';
 }
 
+=head2 is_normal_demon
+
+Return true if this is a non-unique true demon.
+
+=cut
+
 sub is_normal_demon {
     my ($self) = @_;
 
     return $self->is_demon && !$self->is_rank_lord && !$self->is_rank_prince;
 }
+
+=head2 is_demon_prince
+
+Return true if this is a demon prince.
+
+=cut
 
 sub is_demon_prince {
     my ($self) = @_;
@@ -261,15 +651,33 @@ sub is_demon_prince {
     return $self->is_demon && $self->is_rank_prince;
 }
 
+=head2 is_demon_lord
+
+Return true if this is a demon lord.
+
+=cut
+
 sub is_demon_lord {
     my ($self) = @_;
 
     return $self->is_demon && $self->is_rank_lord;
 }
 
+=head2 makes_webs
+
+Returns true if this monster is capable of spinning webs.
+
+=cut
+
 sub makes_webs {
     return shift->name =~ /^(cave|giant) spider$/;
 }
+
+=head2 can_breathe
+
+Returns true if this monster has a breath weapon.
+
+=cut
 
 sub can_breathe {
     return defined shift->has_attack('breathe');
@@ -277,12 +685,25 @@ sub can_breathe {
 
 # is_longworm omitted
 
+=head2 is_player_monster
+
+Return true if this is a role monster (valkyrie, etc).
+
+=cut
+
 sub is_player_monster {
     my ($self) = @_;
 
     return $self->hitdice == 10 && $self->glyph eq '@' &&
         $self->color eq 'white' && $self->name ne 'elf';
 }
+
+=head2 is_covetous
+
+Returns true if this uses the covetous AI extension (teleporting to stairs,
+you, picking up invocation items; does B<not> imply a theft attack).
+
+=cut
 
 sub is_covetous {
     my ($self) = @_;
@@ -293,6 +714,12 @@ sub is_covetous {
 
 # reviver omitted: NHI
 
+=head2 emits_light
+
+Return true if this monster is always surrounded by a 1-square lit region.
+
+=cut
+
 sub emits_light {
     my ($self) = @_;
 
@@ -300,11 +727,23 @@ sub emits_light {
         /^(?:(?:flam|shock)ing sphere|fire (?:vortex|elemental))$/;
 }
 
+=head2 likes_lava
+
+Return true if this monster suffers no penalties in lava.
+
+=cut
+
 sub likes_lava {
     my ($self) = @_;
 
     return $self->name eq 'salamander' || $self->name eq 'fire elemental';
 }
+
+=head2 naturally_invisible
+
+Return true if this monster is automatically invisible.
+
+=cut
 
 sub naturally_invisible {
     my ($self) = @_;
@@ -312,17 +751,41 @@ sub naturally_invisible {
     return $self->name eq 'stalker' || $self->name eq 'black light';
 }
 
+=head2 likes_fire
+
+Return true if this monster is not penalized by fire.
+
+=cut
+
 sub likes_fire {
     shift->is_flaming;
 }
+
+=head2 touch_petrifies
+
+Return true for monsters whose flesh is fatal on contact petrification.
+
+=cut
 
 sub touch_petrifies {
     shift->name =~ /^c(?:o|hi)ckatrice$/;
 }
 
+=head2 is_mind_flayer
+
+Can this monster use mental blasts?
+
+=cut
+
 sub is_mind_flayer {
     shift->name =~ /mind flayer/;
 }
+
+=head2 is_nonliving
+
+Return true if this monster is not considered alive.
+
+=cut
 
 sub is_nonliving {
     my ($self) = @_;
@@ -335,6 +798,12 @@ sub is_nonliving {
 
 # polymorphs_when_stoned omitted, requires geno data
 
+=head2 resists_drain_life
+
+Return true if this monster intrinsically cannot be life drained.
+
+=cut
+
 sub resists_drain_life {
     my ($self) = @_;
 
@@ -342,11 +811,25 @@ sub resists_drain_life {
        $self->name eq 'Death';
 }
 
+=head2 resists_magic
+
+Return true if this monster has the C<magic resistance> special property,
+giving it immunity to several special attacks.  This is distinct from the 
+mr accessor, which is a percentage save against a much wider range of attacks.
+
+=cut
+
 sub resists_magic {
     my ($self) = @_;
 
     return $self->name =~ /gray dragon|Yeenoghu|Oracle|Angel|Chromatic Dragon/;
 }
+
+=head2 resists_blinding
+
+Return true if this monster intrinsically cannot be blinded.
+
+=cut
 
 sub resists_blinding {
     my ($self) = @_;
@@ -358,6 +841,12 @@ sub resists_blinding {
 
 # could_range_attack omitted - probably useless without has-ammo tracking
 
+=head2 is_vulnerable_to_silver
+
+Return true if this monster takes d20 bonus damage from silver attacks.
+
+=cut
+
 sub is_vulnerable_to_silver {
     my ($self) = @_;
 
@@ -366,6 +855,12 @@ sub is_vulnerable_to_silver {
         || $self->name eq 'shade';
 }
 
+=head2 ignores_bars
+
+Return true if this monster can walk through, between, or around iron bars.
+
+=cut
+
 sub ignores_bars {
     my ($self) = @_;
 
@@ -373,12 +868,24 @@ sub ignores_bars {
         $self->is_verysmall || ($self->serpentine_body && !$self->is_bigmonst);
 }
 
+=head2 would_slip_armor
+
+Return true if body armor would always fall off this monster.
+
+=cut
+
 sub would_slip_armor {
     my ($self) = @_;
 
     return $self->is_whirly || $self->is_noncorporeal || $self->numeric_size <=
         numeric_size('small');
 }
+
+=head2 would_break_armor
+
+Return true if any armor worn by this monster would break.
+
+=cut
 
 sub would_break_armor {
     my ($self) = @_;
@@ -389,12 +896,25 @@ sub would_break_armor {
         || $self->name eq 'marilith' || $self->name eq 'winged gargoyle';
 }
 
+=head2 can_stick
+
+Return true if this monster has an adhesion/grabbing attack, and is immune to
+such attacks.
+
+=cut
+
 sub can_stick {
     my ($self) = @_;
 
     return scalar grep { $_->{mode} eq 'crush' || $_->{type} eq 'stick'
         || $_->{type} eq 'wrap' } @{ $self->attacks };
 }
+
+=head2 has_horns
+
+Return true if this monster has one or more horns preventing the use of helmets.
+
+=cut
 
 sub has_horns {
     shift->name =~ /horned devil|minotaur|Asmodeus|balrog|ki-rin|unicorn/;
@@ -406,23 +926,6 @@ __PACKAGE__->meta->make_immutable;
 no Moose;
 
 1;
-
-=head1 SYNOPSIS
-
-    use NetHack::Monster::Spoiler;
-
-    my $s = NetHack::Monster::Spoiler->lookup(glyph => 'A', color => 'magenta');
-
-    $s->is_spellcaster;          # returns 'wizard'
-    $s->name                     # 'Archon'
-    $s->nocorpse                 # 1
-    $s->ignores_elbereth         # 1
-    $s->resists('petrification') # 0
-
-=head1 DESCRIPTION
-
-NetHack::Monster::Spoiler is a machine-readable database of information
-on the various monsters that inhabit the NetHack univers.
 
 =head1 AUTHOR
 
