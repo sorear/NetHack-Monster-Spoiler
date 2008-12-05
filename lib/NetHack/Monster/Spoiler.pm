@@ -2,6 +2,7 @@ package NetHack::Monster::Spoiler;
 use Moose;
 use YAML::Any qw(Load);
 use MooseX::ClassAttribute;
+use Moose::Util::TypeConstraints;
 
 our $VERSION = '0.01';
 
