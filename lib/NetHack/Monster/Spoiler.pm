@@ -329,6 +329,75 @@ sub is_nonliving {
         $self->is_golem;
 }
 
+# attacktype_fordmg omitted, dead code in NH
+
+# polymorphs_when_stoned omitted, requires geno data
+
+sub resists_drain_life {
+    my ($self) = @_;
+
+    return $self->is_lycanthrope || $self->is_undead || $self->is_demon ||
+       $self->name eq 'Death';
+}
+
+sub resists_magic {
+    my ($self) = @_;
+
+    return $self->name =~ /gray dragon|Yeenoghu|Oracle|Angel|Chromatic Dragon/;
+}
+
+sub resists_blinding {
+    my ($self) = @_;
+
+    return $self->lacks_eyes || $self->name =~ /yellow light|Archon/;
+}
+
+# can_blind omitted, depends too much on mon data
+
+# could_range_attack omitted - probably useless without has-ammo tracking
+
+sub is_vulnerable_to_silver {
+    my ($self) = @_;
+
+    return 0 if $self->name eq 'tengu';
+    return $self->glyph =~ /[iV]/ || $self->is_lycanthrope || $self->is_demon
+        || $self->name eq 'shade';
+}
+
+sub ignores_bars {
+    my ($self) = @_;
+
+    return $self->ignores_walls || $self->is_amorphous || $self->is_whirly ||
+        $self->is_verysmall || ($self->serpentine_body && !$self->is_bigmonst);
+}
+
+sub would_slip_armour {
+    my ($self) = @_;
+
+    return $self->is_whirly || $self->is_noncorporeal || $self->numeric_size <=
+        numeric_size('small');
+}
+
+sub would_break_armour {
+    my ($self) = @_;
+
+    return 0 if $self->would_slip_armour;
+
+    return !$self->humanoid_body || $self->is_bigmonst
+        || $self->name eq 'marilith' || $self->name eq 'winged gargoyle';
+}
+
+sub can_stick {
+    my ($self) = @_;
+
+    return scalar grep { $_->{mode} eq 'crush' || $_->{type} eq 'stick'
+        || $_->{type} eq 'wrap' } @{ $self->attacks };
+}
+
+sub has_horns {
+    shift->name =~ /horned devil|minotaur|Asmodeus|balrog|ki-rin|unicorn/;
+}
+
 # vegan & vegetarian omitted: NHI domain
 
 __PACKAGE__->meta->make_immutable;
