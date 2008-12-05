@@ -69,7 +69,22 @@ has alignment => (
     isa     => 'Str'
 );
 
-has [qw/sound size name glyph color/] => (
+enum 'NetHack::Monster::Size' => qw/tiny small medium large huge gigantic/;
+
+has size => (
+    is      => 'ro',
+    isa     => 'NetHack::Monster::Size',
+);
+
+my %numeric_sizes = qw/tiny 0 small 1 medium 2 large 3 huge 4 gigantic 7/;
+
+sub numeric_size {
+    my $thing = shift;
+
+    $numeric_sizes{ ref $thing ? $thing->size : $thing };
+}
+
+has [qw/sound name glyph color/] => (
     is      => 'ro',
     isa     => 'Str',
 );
@@ -205,7 +220,32 @@ sub is_golem {
     return shift->glyph eq "'";
 }
 
-# size system, could_dualwield deferred
+sub is_verysmall {
+    return shift->size eq 'tiny';
+}
+
+sub is_bigmonst {
+    return shift->numeric_size >= numeric_size('large');
+}
+
+sub could_wield {
+    my ($self) = @_;
+
+    return !$self->lacks_hands && !$self->is_verysmall;
+}
+
+sub could_wear_armor {
+    my ($self) = @_;
+
+    return !$self->would_break_armour && !$self->would_slip_armour;
+}
+
+sub can_dualwield {
+    my ($self) = @_;
+
+    # Yes, this is the NetHack check!
+    return @{$self->attacks} >= 2 && $self->attacks->[1]->mode eq 'weapon';
+}
 
 sub is_normal_demon {
     my ($self) = @_;
