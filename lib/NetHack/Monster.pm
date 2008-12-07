@@ -182,30 +182,36 @@ has farlooked => (
     predicate => 'was_farlooked',
 );
 
-#sub parse_description {
-#    my ($class, $s, %args) = @_;
-#
-#    my %r;
-#
-#    # Only look at the bit in parens
-#
-#    return () unless $s =~ /\((.*)\)(?: \[seen: ([^]]*)\])?/;
-#    $s = $1;
-#    my $modes = $2 || 'normal vision';
-#
-#    my %modes = map { s/ .*//; s/paranoid/warned/; $_ => 1 } split ', ', $modes;
-#
-#    $r{seen} = \%modes; # see normal astral telepathy monster infravision warned
-#
-#    # Trim suffixes, risks confusion with calls, oh well.
-#        (,\ holding\ you)?
-#        (,\ leashed\ to\ you)?
-#        (?:,\ trapped\ in\ a\ (bear\ trap|spiked\ pit|pit|web))?
-#    $r{trapped_in} = $1 if $s =~ s/, trapped in a (bear trap|spiked pit|pit|web)$//;
-#    $r{leashed} = 1     if $s =~ s/, leashed you$//;
-#    $r{holding} = 1     if $s =~ s/, holding you$//;
-#    $r{stuck} = 1       if $s =~ s/, stuck to you$//;
-#}
+sub parse_description {
+    my ($class, $s, %args) = @_;
+
+    my %r;
+
+    # Only look at the bit in parens
+
+    return () unless $s =~ /\((.*)\)(?: \[seen: ([^]]*)\])?/;
+    $s = $1;
+    my $modes = $2 || 'normal vision';
+
+    my %modes = map { s/ .*//; s/paranoid/warned/; $_ => 1 } split ', ', $modes;
+
+    $r{seen} = \%modes; # see normal astral telepathy monster infravision warned
+
+    # Trim suffixes, risks confusion with calls, oh well.
+    $r{trapped_in} = $1 if $s =~ s/, trapped in a (bear trap|spiked pit|pit|web)$//;
+    $r{leashed} = 1     if $s =~ s/, leashed you$//;
+    $r{holding} = 1     if $s =~ s/, holding you$//;
+    $r{stuck} = 1       if $s =~ s/, being held$//;
+
+    # Trim prefixes
+    $r{tail_of} = 1     if $s =~ s/^tail of (?:an? )? //;
+    $r{peaceful} = 1    if $s =~ s/^peaceful //;
+    $r{tame} = 1        if $s =~ s/^tame //;
+
+    my $m = spoiler_class->parse_description($s);
+
+    return { %r, %$m };
+}
 
 
 
