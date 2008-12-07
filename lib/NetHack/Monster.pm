@@ -115,19 +115,109 @@ C<turn> represents the turn for which this monster exists.  It is, naturally,
 required to exist.  If not specified, it defaults to 1 more than the highest
 turn number of any parent monster, or 1.
 
+=cut
+
+has turn => (
+    is  => 'ro',
+    isa => 'Int',
+);
+
+sub BUILD {
+    my ($self) = @_;
+
+    if (!defined($self->{turn})) {
+        my $t = 0;
+
+        for my $p ($self->parents) {
+            my $t2 = $p->turn;
+
+            $t = $t2 if $t2 > $t;
+        }
+
+        $self->{turn} = $t + 1; # NOTE NOTE modifying a readonly attribute
+    }
+}
+
 =head2 parents :: CPV
 
 C<parents> represents the NetHack::Monster(s) that the monster tracker (beyond
 our concern) considers as candidates for identity with the NetHack monster
 under consideration.
 
+=cut
+
+has parents => (
+    is  => 'ro',
+    isa => 'ArrayRef',
+    default => sub { [] },
+    auto_deref => 1,
+);
+
 =head1 THE OBSERVABLES
+
+=head2 x, y :: Int
+
+=head2 glyph, color :: Str
+
+These four observables give the position and appearance of a monster, and
+should be set if the monster is directly observed.
+
+=cut
+
+has [qw/x y/] => (
+    is  => 'rw',
+    isa => 'Int',
+);
+
+has [qw/glyph color/] => (
+    is  => 'rw',
+    isa => 'Str',
+);
+
+=head2 farlooked :: Str
+
+Set this to the response line from a farlook.
+
+=cut
+
+has farlooked => (
+    is  => 'rw',
+    isa => 'Maybe[Str]',
+    predicate => 'was_farlooked',
+);
+
+#sub parse_description {
+#    my ($class, $s, %args) = @_;
+#
+#    my %r;
+#
+#    # Only look at the bit in parens
+#
+#    return () unless $s =~ /\((.*)\)(?: \[seen: ([^]]*)\])?/;
+#    $s = $1;
+#    my $modes = $2 || 'normal vision';
+#
+#    my %modes = map { s/ .*//; s/paranoid/warned/; $_ => 1 } split ', ', $modes;
+#
+#    $r{seen} = \%modes; # see normal astral telepathy monster infravision warned
+#
+#    # Trim suffixes, risks confusion with calls, oh well.
+#        (,\ holding\ you)?
+#        (,\ leashed\ to\ you)?
+#        (?:,\ trapped\ in\ a\ (bear\ trap|spiked\ pit|pit|web))?
+#    $r{trapped_in} = $1 if $s =~ s/, trapped in a (bear trap|spiked pit|pit|web)$//;
+#    $r{leashed} = 1     if $s =~ s/, leashed you$//;
+#    $r{holding} = 1     if $s =~ s/, holding you$//;
+#    $r{stuck} = 1       if $s =~ s/, stuck to you$//;
+#}
+
+
 
 =head1 THE HIDDEN VARIABLES
 
 =head1 THE DERIVED ATTRIBUTES
 
-=head1 FINALIZATION
+=head1 FINALIZATION (todo)
 
 The algorithm, as described thus far, requires exponential time (with a rather
 large base) in the length of chains.  This is bad.  To avoid this,
@@ -153,21 +243,6 @@ If you have subclassed NetHack::Monster::Spoiler, you should use an augment
 to provide a new package name to the C<spoiler> method.
 
 =cut
-
-has [qw/x y/] => (
-    is  => 'rw',
-    isa => 'Int',
-);
-
-has [qw/glyph color/] => (
-    is  => 'rw',
-    isa => 'Str',
-);
-
-has farlooked => (
-    is  => 'rw',
-    isa => 'Maybe[Str]',
-);
 
 
 1;
