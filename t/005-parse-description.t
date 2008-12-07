@@ -2,7 +2,7 @@
 # vim: sw=4 et
 use strict;
 use warnings;
-use Test::More tests => 134;
+use Test::More tests => 19;
 
 use NetHack::Monster::Spoiler;
 sub NHMS{ 'NetHack::Monster::Spoiler' }
@@ -26,7 +26,7 @@ parse 'Asidonhopo' =>
 parse 'Asidonhopo the yellow dragon' =>
     { name => 'Asidonhopo', monster => 'yellow dragon' };
 parse 'the invisible guardian naga hatchling renegade priest of Amaterasu Omikami' =>
-    { god => 'Amaterasu Omikami', monster = 'guardian naga hatchling', priest => 1, renegade => 1, invisible => 1 };
+    { god => 'Amaterasu Omikami', monster => 'guardian naga hatchling', priest => 1, renegade => 1, invisible => 1 };
 parse 'guardian Angel of Kos' =>
     { monster => 'Angel', god => 'Kos', tame => 1 };
 parse 'invisible saddled warhorse called Smasher' =>
@@ -49,3 +49,11 @@ parse 'Neferet the Green' =>
     { monster => 'Neferet the Green' };
 parse 'coyote - Canis latrans' =>
     { monster => 'coyote' };
+parse 'high priestess' =>
+    { monster => 'high priest', priest => 1, high_priest => 1 };
+parse 'high priestess of Kos' =>
+    { monster => 'high priest', priest => 1, high_priest => 1, god => 'Kos' };
+parse 'poobah of Moloch' =>
+    { monster => 'aligned priest', priest => 1, god => 'Moloch' };
+parse 'Y-crad the invisible shopkeeper' =>
+    { monster => 'shopkeeper', invisible => 1, name => 'Y-crad' };

@@ -1000,7 +1000,8 @@ my %roledata = (
          "Mage"] ],
 );
 
-my %valid_god = map { $_ => 1 } map { @{ $_->[0] } } values %roledata;
+my %valid_god = map { if (/_(.*)/) { $_ = $1; } $_ => 1 }
+    'Moloch', map { @{ $_->[0] } } values %roledata;
 my %rank2mon = map { my $k = $_; map { lc $_, lc $k } @{$roledata{$k}->[1]} }
     keys %roledata;
 
@@ -1074,9 +1075,9 @@ sub parse_description {
 
     my $article = '';
 
-    $article = 'the'    if $s =~ s/the //i;
-    $article = 'a'      if $s =~ s/an? //i;
-    $article = 'your'   if $s =~ s/your //i;
+    $article = 'the'    if $s =~ s/^the //i;
+    $article = 'a'      if $s =~ s/^an? //i;
+    $article = 'your'   if $s =~ s/^your //i;
 
     # Avoid ambiguity caused by user-provided names whenever possible.
     my $g_or_c = $s =~ /ghost|called/;
@@ -1085,7 +1086,16 @@ sub parse_description {
     # in a couple situations.  If someone names a pet with 'of God' in it, they
     # get what they deserve...  be careful with monk titles.
 
-    if ($s =~ /(.*) of (.*)/ && $valid_god{$2} && !$g_or_c) {
+    # special case #2.1 for Astral obfuscation
+    if ($s =~ /^(?:the )?high priest(?:ess)?$/) {
+        $r{priest} = 1;
+        $r{high_priest} = 1;
+        $r{monster} = 'high priest';
+        return \%r;
+    }
+
+    if ($s !~ /Minion of Huhetotl/ && $s =~ /(.*) of (.*)/ && $valid_god{$2}
+            && !$g_or_c) {
 
         $r{god} = $2;
         $s = $1;
@@ -1106,7 +1116,7 @@ sub parse_description {
             $r{monster} = $s || ($r{high_priest} ?
                 'high priest' : 'aligned priest');
         } else {
-            $s =~ s/^guardian //; # Redendant with tame
+            $r{tame} = 1        if $s =~ s/^guardian //;
 
             $r{monster} = $s;
         }
@@ -1117,7 +1127,8 @@ sub parse_description {
     # case #3: things with internal the: polymorphed shopkeepers, invisible
     # shopkeepers, mplayers.  The same comments about pets apply.
 
-    if ($s =~ /(.*) the (.*)/ && !$g_or_c) {
+    if ($s !~ /Neferet the Green/ && $s !~ /Vlad the Impaler/ &&
+            $s =~ /(.*) the (.*)/ && !$g_or_c) {
         $r{name} = $1;
         $s = $2;
     }
@@ -1148,6 +1159,8 @@ sub parse_description {
 
     # case #7: normal monsters
 
+    $s =~ s/coyote - .*/coyote/;
+
     if ($class->lookup(name => $s)) {
         $r{monster} = $s;
 
@@ -1159,6 +1172,8 @@ sub parse_description {
     if ($shkname{$s}) {
         $r{monster} = 'shopkeeper';
     }
+
+    return \%r;
 }
 
 __PACKAGE__->meta->make_immutable;
