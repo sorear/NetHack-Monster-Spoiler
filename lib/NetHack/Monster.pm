@@ -215,9 +215,38 @@ sub farlooked_parsed {
     return { %r, %$m };
 }
 
-
-
 =head1 THE HIDDEN VARIABLES
+
+All of the hidden variables are methods which return conditional probability
+vectors.
+
+=head2 immobile :: CPV Bool
+
+Is the monster immobile?  Sleep, paralysis, plain unmovement.
+
+=cut
+
+# spec for hidden vars: function which returns cpv
+# cpvs use simple update rules, then throw out what is inconsistent with
+# observation
+
+hidden_var sleeping => [0, 1], sub {
+    my ($self, $olds) = @_;
+
+    return { $olds => 1 };
+}, sub {
+    my ($self, $nv) = @_;
+
+    my $movec = $self->moved->{'.'};
+
+    if ($nv) {
+        # absolutely inconsistent with motion
+        return $movec;
+    } else {
+        # any specific motion is dissuggestive of random walking
+        return 1 / 9;
+    }
+};
 
 =head1 THE DERIVED ATTRIBUTES
 
