@@ -11,19 +11,25 @@ NetHack::Monster - represent a monster in NetHack
 =head1 SYNOPSIS
 
     use NetHack::Monster;
+    use NetHack::Monster::Turn;
+
+    my @turns;
+    for my $turn (0 .. 20) {
+        $turns[$turn] = NetHack::Monster::Turn->new(count => $turn);
+    }
 
     my $m1 = NetHack::Monster->new(glyph => '@', color => 'bright_blue',
-        x => 10, y => 10);
+        x => 10, y => 10, turn => $turns[1]);
 
-    my $m2 = NetHack::Monster->new(parents => [ $m1 ]);
+    my $m2 = NetHack::Monster->new(parents => [ $m1 ], turn => $turns[2]);
 
     $m2->y(11);
 
     scalar $m2->is_sleeping   # 0
     scalar $m2->spoiler->name # Elf-lord
 
-    for (0 .. 20) {
-        $m2 = NetHack::Monster->new(parents => [ $m2 ]);
+    for (3 .. 20) {
+        $m2 = NetHack::Monster->new(parents => [ $m2 ], turn => $turns[$_]);
         $m2->x(10);
         $m2->y(11);
     }
@@ -109,28 +115,17 @@ knowledge.  A good example is "Will this monster respect Elbereth?".
 
 =head1 THE META ATTRIBUTES
 
-=head2 turn :: Int
+=head2 turn :: NetHack::Monster::Turn
 
 C<turn> represents the turn for which this monster exists.  It is, naturally,
-required to exist.  If not specified, it defaults to 1 more than the highest
-turn number of any parent monster, or 1.
+required to exist.
 
 =cut
 
 has turn => (
     is  => 'ro',
-    isa => 'Int',
-    default => sub {
-        my $t = 0;
-
-        for my $p (shift->parents) {
-            my $t2 = $p->turn;
-
-            $t = $t2 if $t2 > $t;
-        }
-
-        $t + 1;
-    },
+    isa => 'NetHack::Monster::Turn',
+    required => 1,
 );
 
 =head2 parents :: CPV
@@ -146,7 +141,6 @@ has parents => (
     isa => 'ArrayRef',
     default    => sub { [] },
     auto_deref => 1,
-    lazy       => 1,
 );
 
 =head1 THE OBSERVABLES
