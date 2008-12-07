@@ -182,8 +182,10 @@ has farlooked => (
     predicate => 'was_farlooked',
 );
 
-sub parse_description {
-    my ($class, $s, %args) = @_;
+sub farlooked_parsed {
+    my ($self) = @_;
+
+    my $s = $self->farlooked;
 
     my %r;
 
