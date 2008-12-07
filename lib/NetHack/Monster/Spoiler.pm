@@ -922,31 +922,11 @@ sub has_horns {
 
 # vegan & vegetarian omitted: NHI domain
 
-=head2 parse_description $name, %args
+=head2 parse_description $name
 
-Attempt to decypher a monster description returned by NetHack.  Arguments
-control the style of description expected:
-
-=over
-
-=item B<article> The article which is used for improper monsters, one of 'the', 'a', 'your', or undef (default, no article).
-
-=item B<adjective> An adjective which will be inserted, like "poor".
-
-=item B<use_called> Named monsters other than ghosts and shopkeepers will be described with "X called Y".
-
-=item B<ignore_hallu> Hallucination is not considered.
-
-=item B<ignore_vis> Visibility is not considered.
-
-=item B<ignore_invisible> Invisibility is not considered.
-
-=item B<ignore_saddle> Saddles are not considered.
-
-=back
-
-The return value is a hash of information about the monster which could be
-obtained from the string:
+Attempt to decypher a monster description returned by NetHack. The return
+value is a hashref of information about the monster which could be obtained
+from the string:
 
 =over
 
@@ -1082,7 +1062,7 @@ my %shkname = map { $_ => 1 } "Abisko", "Abitibi", "Adjama", "Akalapi",
     "Zum Loch";
 
 sub parse_description {
-    my ($class, $s, %args) = @_;
+    my ($class, $s) = @_;
 
     my %r;
 
@@ -1149,7 +1129,6 @@ sub parse_description {
         $s = $1;
     }
 
-    s/${\ $args{adjective} } //i;
     $r{invisible} = 1       if $s =~ s/invisible //i;
     $r{saddled} = 1         if $s =~ s/saddled //i;
 
