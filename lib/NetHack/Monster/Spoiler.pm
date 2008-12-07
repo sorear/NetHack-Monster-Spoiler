@@ -922,6 +922,266 @@ sub has_horns {
 
 # vegan & vegetarian omitted: NHI domain
 
+=head2 parse_description $name, %args
+
+Attempt to decypher a monster description returned by NetHack.  Arguments
+control the style of description expected:
+
+=over
+
+=item B<article> The article which is used for improper monsters, one of 'the', 'a', 'your', or undef (default, no article).
+
+=item B<adjective> An adjective which will be inserted, like "poor".
+
+=item B<use_called> Named monsters other than ghosts and shopkeepers will be described with "X called Y".
+
+=item B<ignore_hallu> Hallucination is not considered.
+
+=item B<ignore_vis> Visibility is not considered.
+
+=item B<ignore_invisible> Invisibility is not considered.
+
+=item B<ignore_saddle> Saddles are not considered.
+
+=back
+
+The return value is a hash of information about the monster which could be
+obtained from the string:
+
+=over
+
+=item B<name> Monster's (C)alled name, or shopkeeper name.
+
+=item B<god> Monster's god of minionhood.
+
+=item B<priest> Monster is a priest.
+
+=item B<renegade> Monster is a renegade priest.
+
+=item B<high_priest> Monster is a high priest.
+
+=item B<tame> Monster is tame.
+
+=item B<invisible> Monster is invisible.
+
+=item B<saddled> Monster is saddled.
+
+=back
+
+If an item is undef, the field cannot be determined from the information given.
+
+=cut
+
+my %roledata = (
+    Archeologist => [ ["Quetzalcoatl", "Camaxtli", "Huhetotl"],
+        ["Digger", "Field Worker", "Investigator", "Exhumer", "Excavator",
+         "Spelunker", "Speleologist", "Collector", "Curator"] ],
+    Barbarian    => [ ["Mitra", "Crom", "Set"],
+        ["Plunderer", "Plunderess", "Pillager", "Bandit", "Brigand", "Raider",
+         "Reaver", "Slayer", "Chieftain", "Chieftainess", "Conqueror",
+         "Conqueress"] ],
+    Caveman      => [ ["Anu", "_Ishtar", "Anshar"],
+        ["Cavewoman", "Troglodyte", "Aborigine", "Wanderer", "Vagrant",
+         "Wayfarer", "Roamer", "Nomad", "Rover", "Pioneer"] ],
+    Healer       => [ ["_Athena", "Hermes", "Poseidon"],
+        ["Rhizotomist", "Empiric", "Embalmer", "Dresser", "Medicus ossium",
+         "Medica ossium", "Herbalist", "Magister", "Magistra", "Physician",
+         "Chirurgeon"] ],
+    Knight       => [ ["Lugh", "_Brigit", "Manannan Mac Lir"],
+        ["Gallant", "Esquire", "Bachelor", "Sergeant", "Knight", "Banneret",
+         "Chevalier", "Chevaliere", "Seignieur", "Dame", "Paladin"] ],
+    Monk         => [ ["Shan Lai Ching", "Chih Sung-tzu", "Huan Ti"],
+        ["Candidate", "Novice", "Initiate", "Student of Stones",
+         "Student of Waters", "Student of Metals", "Student of Winds",
+         "Student of Fire", "Master"] ],
+    Priest       => [ ["Matriarch", "High Priest", "High Priestess"],
+        ["Priestess", "Aspirant", "Acolyte", "Adept", "Priest", "Priestess",
+         "Curate", "Canon", "Canoness", "Lama", "Patriarch"] ],
+    Rogue        => [ ["Issek", "Mog", "Kos"],
+        ["Footpad", "Cutpurse", "Rogue", "Pilferer", "Robber", "Burglar",
+         "Filcher", "Magsman", "Magswoman", "Thief"] ],
+    Ranger       => [ ["Hiril", "Aredhel", "Arwen"],
+        ["Edhel", "Elleth", "Edhel", "Elleth", "Ohtar", "Ohtie", "Kano",
+         "Kanie", "Arandur", "Aranduriel", "Hir"] ],
+    Samurai      => [ ["_Amaterasu Omikami", "Raijin", "Susanowo"],
+        ["Hatamoto", "Ronin", "Ninja", "Kunoichi", "Joshu", "Ryoshu",
+         "Kokushu", "Daimyo", "Kuge", "Shogun"] ],
+    Tourist      => [ ["Blind Io", "_The Lady", "Offler"],
+        ["Rambler", "Sightseer", "Excursionist", "Peregrinator",
+         "Peregrinatrix", "Traveler", "Journeyer", "Voyager", "Explorer",
+         "Adventurer"] ],
+    Valkyrie     => [ ["Tyr", "Odin", "Loki"],
+        ["Stripling", "Skirmisher", "Fighter", "Man-at-arms", "Woman-at-arms",
+         "Warrior", "Swashbuckler", "Hero", "Heroine", "Champion", "Lord",
+         "Lady"] ],
+    Wizard       => [ ["Ptah", "Thoth", "Anhur"],
+        ["Evoker", "Conjurer", "Thaumaturge", "Magician", "Enchanter",
+         "Enchantress", "Sorcerer", "Sorceress", "Necromancer", "Wizard",
+         "Mage"] ],
+);
+
+my %valid_god = map { $_ => 1 } map { @{ $_->[0] } } values %roledata;
+my %rank2mon = map { my $k = $_; map { lc $_, lc $k } @{$roledata{$k}->[1]} }
+    keys %roledata;
+
+my %shkname = map { $_ => 1 } "Abisko", "Abitibi", "Adjama", "Akalapi",
+    "Akhalataki", "Aklavik", "Akranes", "Aksaray", "Akureyri", "Alaca", "Aned",
+    "Angmagssalik", "Annootok", "Ardjawinangun", "Artvin", "Asidonhopo",
+    "Avasaksa", "Ayancik", "Babadag", "Baliga", "Ballingeary", "Balya",
+    "Bandjar", "Banjoewangi", "Bayburt", "Beddgelert", "Beinn a Ghlo",
+    "Berbek", "Berhala", "Bicaz", "Birecik", "Bnowr Falr", "Bojolali",
+    "Bordeyri", "Boyabai", "Braemar", "Brienz", "Brig", "Brzeg", "Budereyri",
+    "Burglen", "Caergybi", "Cahersiveen", "Cannich", "Carignan", "Cazelon",
+    "Chibougamau", "Chicoutimi", "Cire Htims", "Clonegal", "Corignac", "Corsh",
+    "Cubask", "Culdaff", "Curig", "Demirci", "Dirk", "Djasinga", "Djombang",
+    "Dobrinishte", "Donmyar", "Dorohoi", "Droichead Atha", "Drumnadrochit",
+    "Dunfanaghy", "Dunvegan", "Eauze", "Echourgnac", "Eed-morra", "Eforie",
+    "Ekim-p", "Elm", "Enniscorthy", "Ennistymon", "Enontekis", "Enrobwem",
+    "Ermenak", "Erreip", "Ettaw-noj", "Evad'kh", "Eygurande", "Eymoutiers",
+    "Eypau", "Falo", "Fauske", "Fenouilledes", "Fetesti", "Feyfer", "Fleac",
+    "Flims", "Flugi", "Gairloch", "Gaziantep", "Gellivare", "Gheel",
+    "Glenbeigh", "Gliwice", "Gomel", "Gorlowka", "Guizengeard", "Gweebarra",
+    "Haparanda", "Haskovo", "Havic", "Haynin", "Hebiwerie", "Hoboken",
+    "Holmavik", "Hradec Kralove", "Htargcm", "Hyeghu", "Imbyze", "Inishbofin",
+    "Inniscrone", "Inuvik", "Inverurie", "Iskenderun", "Ivrajimsal", "Izchak",
+    "Jiu", "Jonzac", "Jumilhac", "Juyn", "Kabalebo", "Kachzi Rellim",
+    "Kadirli", "Kahztiy", "Kajaani", "Kalecik", "Kanturk", "Karangkobar",
+    "Kars", "Kautekeino", "Kediri", "Kerloch", "Kesh", "Kilgarvan", "Kilmihil",
+    "Kiltamagh", "Kinnegad", "Kinojevis", "Kinsky", "Kipawa", "Kirikkale",
+    "Kirklareli", "Kittamagh", "Kivenhoug", "Klodzko", "Konosja", "Kopasker",
+    "Krnov", "Kyleakin", "Kyzyl", "Labouheyre", "Laguiolet", "Lahinch", "Lapu",
+    "Lechaim", "Lerignac", "Leuk", "Lexa", "Lez-tneg", "Liorac", "Lisnaskea",
+    "Llandrindod", "Llanerchymedd", "Llanfair-ym-muallt", "Llanrwst",
+    "Lochnagar", "Lom", "Lonzac", "Lovech", "Lucrezia", "Ludus",
+    "Lugnaquillia", "Lulea", "Maesteg", "Maganasipi", "Makharadze", "Makin",
+    "Malasgirt", "Malazgirt", "Mallwyd", "Mamaia", "Manlobbi", "Massis",
+    "Matagami", "Matray", "Melac", "Midyat", "Monbazillac", "Morven", "Moy",
+    "Mron", "Mured-oog", "Nairn", "Nallihan", "Narodnaja", "Nehoiasu",
+    "Nehpets", "Nenagh", "Nenilukah", "Neuvicq", "Ngebel", "Nhoj-lee", "Nieb",
+    "Niknar", "Niod", "Nisipitu", "Niskal", "Nivram", "Njalindoeng", "Njezjin",
+    "Nosalnef", "Nosid-da'r", "Noskcirdneh", "Noslo", "Nosnehpets", "Oeloe",
+    "Olycan", "Oryahovo", "Ossipewsk", "Ouiatchouane", "Pakka Pakka",
+    "Pameunpeuk", "Panagyuritshte", "Papar", "Parbalingga", "Pasawahan",
+    "Patjitan", "Pemboeang", "Pengalengan", "Pernik", "Pervari", "Picq",
+    "Polatli", "Pons", "Pontarfynach", "Possogroenoe", "Queyssac", "Raciborz",
+    "Rastegaisa", "Rath Luirc", "Razboieni", "Rebrol-nek", "Regien", "Rellenk",
+    "Renrut", "Rewuorb", "Rhaeader", "Rhydaman", "Rouffiac", "Rovaniemi",
+    "Sablja", "Sadelin", "Samoe", "Sarangan", "Sarnen", "Saujon", "Schuls",
+    "Semai", "Sgurr na Ciche", "Siboga", "Sighisoara", "Siirt", "Silistra",
+    "Sipaliwini", "Siverek", "Skibbereen", "Slanic", "Sliven", "Smolyan",
+    "Sneem", "Snivek", "Sperc", "Stewe", "Storr", "Svaving", "Swidnica",
+    "Syktywkar", "Tapper", "Tefenni", "Tegal", "Telloc Cyaj", "Terwen", "Thun",
+    "Tipor", "Tirebolu", "Tirgu Neamt", "Tjibarusa", "Tjisolok", "Tjiwidej",
+    "Tonbar", "Touverac", "Trahnil", "Trallwng", "Trenggalek", "Tringanoe",
+    "Troyan", "Tsew-mot", "Tsjernigof", "Tuktoyaktuk", "Tulovo", "Turriff",
+    "Uist", "Upernavik", "Urignac", "Vals", "Vanzac", "Varjag Njarga",
+    "Varvara", "Vaslui", "Vergt", "Voulgezac", "Walbrzych", "Weliki Oestjoeg",
+    "Wirix", "Wonotobo", "Y-Fenni", "Y-crad", "Yad", "Yao-hang", "Yawolloh",
+    "Ydna-s", "Yelpur", "Yildizeli", "Yl-rednow", "Ymla", "Ypey",
+    "Yr Wyddgrug", "Ytnu-haled", "Zarnesti", "Zimnicea", "Zlatna", "Zonguldak",
+    "Zum Loch";
+
+sub parse_description {
+    my ($class, $s, %args) = @_;
+
+    my %r;
+
+    # case #1, It.
+
+    if ($s =~ /^[iI]t$/) {
+        return \%r;
+    }
+
+    my $article = '';
+
+    $article = 'the'    if $s =~ s/the //i;
+    $article = 'a'      if $s =~ s/an? //i;
+    $article = 'your'   if $s =~ s/your //i;
+
+    # Avoid ambiguity caused by user-provided names whenever possible.
+    my $g_or_c = $s =~ /ghost|called/;
+
+    # case #2, priests and minions.  These are identified by of... except
+    # in a couple situations.  If someone names a pet with 'of God' in it, they
+    # get what they deserve...  be careful with monk titles.
+
+    if ($s =~ /(.*) of (.*)/ && $valid_god{$2} && !$g_or_c) {
+
+        $r{god} = $2;
+        $s = $1;
+
+        $s =~ s/^the //i;
+        $r{invisible} = 1   if $s =~ s/^invisible //i;
+
+        if ($s =~ s/(?:poobah|priest|priestess)$//i) {
+            $r{priest} = 1;
+
+            $r{high_priest} = 1 if $s =~ s/high $//i;
+            $r{renegade} = 1    if $s =~ s/renegade $//i;
+
+            # If anything's left, it's a monster.
+
+            $s =~ s/ $//;
+
+            $r{monster} = $s || ($r{high_priest} ?
+                'high priest' : 'aligned priest');
+        } else {
+            $s =~ s/^guardian //; # Redendant with tame
+
+            $r{monster} = $s;
+        }
+
+        return \%r;
+    }
+
+    # case #3: things with internal the: polymorphed shopkeepers, invisible
+    # shopkeepers, mplayers.  The same comments about pets apply.
+
+    if ($s =~ /(.*) the (.*)/ && !$g_or_c) {
+        $r{name} = $1;
+        $s = $2;
+    }
+
+    # case #4: things that have 'called'
+
+    if ($s =~ /(.*?) called (.*)/) {
+        $r{name} = $2;
+        $s = $1;
+    }
+
+    s/${\ $args{adjective} } //i;
+    $r{invisible} = 1       if $s =~ s/invisible //i;
+    $r{saddled} = 1         if $s =~ s/saddled //i;
+
+    # case #5: ghosts
+
+    if ($s =~ /(.*?)'?s? ghost/) {
+        $r{name} = $1;
+        $r{monster} = 'ghost';
+        return \%r;
+    }
+
+    # case #6: mplayers (name was stripped above)
+
+    if ($r{monster} = $rank2mon{lc $s}) {
+        return \%r;
+    }
+
+    # case #7: normal monsters
+
+    if ($class->lookup(name => $s)) {
+        $r{monster} = $s;
+
+        return \%r;
+    }
+
+    $r{name} = $s;
+
+    if ($shkname{$s}) {
+        $r{monster} = 'shopkeeper';
+    }
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moose;
 
