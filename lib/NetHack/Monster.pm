@@ -120,23 +120,18 @@ turn number of any parent monster, or 1.
 has turn => (
     is  => 'ro',
     isa => 'Int',
-);
-
-sub BUILD {
-    my ($self) = @_;
-
-    if (!defined($self->{turn})) {
+    default => sub {
         my $t = 0;
 
-        for my $p ($self->parents) {
+        for my $p (shift->parents) {
             my $t2 = $p->turn;
 
             $t = $t2 if $t2 > $t;
         }
 
-        $self->{turn} = $t + 1; # NOTE NOTE modifying a readonly attribute
-    }
-}
+        $t + 1;
+    },
+);
 
 =head2 parents :: CPV
 
@@ -149,8 +144,9 @@ under consideration.
 has parents => (
     is  => 'ro',
     isa => 'ArrayRef',
-    default => sub { [] },
+    default    => sub { [] },
     auto_deref => 1,
+    lazy       => 1,
 );
 
 =head1 THE OBSERVABLES
