@@ -220,6 +220,28 @@ Is the monster immobile?  Sleep, paralysis, plain unmovement.
 
 =cut
 
+sub moved {
+    my ($self) = @_;
+
+    my $remwt = 1;
+    my %ret;
+
+    for my $p ($self->parents) {
+        my $wt = defined($p->[1]) ? $p->[1] : 1;
+        my $pa = $p->[0];
+
+        my $cls = ($pa->x == $self->x && $pa->y == $self->y) ? 'hold' :
+            'wander';
+
+        $ret{$cls} += $wt;
+        $remwt -= $wt;
+    }
+
+    for (qw/hold wander/) { $ret{$_} += $remwt / 2 }
+
+    return \%ret;
+}
+
 sub historical {
     my ($self, $hvar, $spectrum, $evolve) = @_;
     my %would;
@@ -291,7 +313,7 @@ __PACKAGE__->hidden_var(sleeping => [0, 1], sub {
 }, sub {
     my ($self, $nv) = @_;
 
-    my $movec = $self->moved->{'.'};
+    my $movec = $self->moved->{hold};
 
     if ($nv) {
         # absolutely inconsistent with motion
