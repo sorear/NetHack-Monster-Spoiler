@@ -227,7 +227,7 @@ sub moved {
     my %ret;
 
     for my $p ($self->parents) {
-        my $wt = defined($p->[1]) ? $p->[1] : 1;
+        my $wt = $p->[1];
         my $pa = $p->[0];
 
         my $cls = ($pa->x == $self->x && $pa->y == $self->y) ? 'hold' :
@@ -252,7 +252,6 @@ sub historical {
 
     for my $p ($self->parents) {
         my ($parent, $weight) = @$p;
-        $weight = 1 if !defined($weight);
 
         my %old_hidden = $parent->$hvar;
         my %adv;
