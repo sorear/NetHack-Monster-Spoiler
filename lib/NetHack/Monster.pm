@@ -220,12 +220,72 @@ Is the monster immobile?  Sleep, paralysis, plain unmovement.
 
 =cut
 
-# spec for hidden vars: function which returns cpv
-# cpvs use simple update rules, then throw out what is inconsistent with
-# observation
+sub historical {
+    my ($self, $hvar, $spectrum, $evolve) = @_;
+    my %would;
 
-hidden_var sleeping => [0, 1], sub {
-    my ($self, $olds) = @_;
+    for my $p ($self->parents) {
+        my ($parent, $weight) = @$p;
+        $weight = 1 if !defined($weight);
+
+        my %old_hidden = $parent->$hvar;
+        my %adv;
+        my $gap = $self->turn->count - $parent->turn->count;
+
+        for my $oval (keys %old_hidden) {
+            my $owt = $old_hidden{$oval};
+
+            my $n = $evolve->($self, $oval, $gap);
+
+            for my $nkey (keys %$n) {
+                $adv{$nkey} += $n->{$nkey} * $owt;
+            }
+        }
+
+        # Simulate incomplete knowledge with a 0.1% arbitrary transition
+        my $fuzz = 1 - (0.999 ** $gap);
+        for my $key (@$spectrum) {
+            $would{$key} += $weight * (($fuzz / @$spectrum) +
+                (1 - $fuzz) * $adv{$key});
+        }
+    }
+
+    return \%would;
+}
+
+sub hidden_var {
+    my ($pkg, $name, $spectrum, $evolve, $filter) = @_;
+
+    $pkg->meta->add_method($name, sub {
+        my ($self) = @_;
+
+        my $would = $self->historical($name, $spectrum, $evolve);
+
+        my $total;
+
+        for my $now (keys %$would) {
+            $would->{$now} *= $filter->($self, $now);
+            $total += $would->{$now};
+        }
+
+        for my $now (keys %$would) {
+            $would->{$now} /= $total;
+        }
+
+        if (wantarray) {
+            return %$would;
+        } else {
+            for my $key (keys %$would) {
+                return $key if $would->{$key} >= 0.7;
+            }
+
+            return undef;
+        }
+    });
+}
+
+__PACKAGE__->hidden_var(sleeping => [0, 1], sub {
+    my ($self, $olds, $time) = @_;
 
     return { $olds => 1 };
 }, sub {
@@ -240,7 +300,7 @@ hidden_var sleeping => [0, 1], sub {
         # any specific motion is dissuggestive of random walking
         return 1 / 9;
     }
-};
+});
 
 =head1 THE DERIVED ATTRIBUTES
 
@@ -261,16 +321,26 @@ NetHack::Monster which is used as a parent will be automatically finalized.
 
 =head1 CONSIDERATIONS FOR SUBCLASSERS
 
-NetHack::Monster uses Moose metaprogramming to perform the steps in the
-propagation process, and the two regular types of attribute are implemented
-as traits.  See the documentation for L<NetHack::Monster::Meta::Observable>
-and L<NetHack::Monster::Meta::HiddenVar> for details.
+If you have subclassed NetHack::Monster::Spoiler, you should override
+spoiler_class.
 
-If you have subclassed NetHack::Monster::Spoiler, you should use an augment
-to provide a new package name to the C<spoiler> method.
+New observables should simply be Moose attributes (XXX there needs to be magic
+here due to the finalization).  New hidden variables should be methods which
+take no arguments and "return a CPV" as described earlier.  To make this easier,
+NetHack::Monster provides a class method hidden_var which installs a new
+hidden variable for a discrete spectrum.
+
+=head2 __PACKAGE__->hidden_var(name => [qw/VALUES/], sub { EVOLVE }, sub { FILTER }
+
+Hidden variables created by hidden_var update in two steps.  First, the old
+value (determined from all ancestors) is updated using EVOLVE, which will
+be passed $self and an old value, and should return a CPV of new values without
+regard for observations.  Then, FILTER is used, passing it $self and a new
+value; it should return a value from 0 to 1 reflecting how well this hidden
+variable explains the observation.  If your hidden variable lacks a discrete
+spectrum, several lower-level functions are available.
 
 =cut
-
 
 1;
 
