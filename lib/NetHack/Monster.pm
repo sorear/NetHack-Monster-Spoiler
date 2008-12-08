@@ -246,6 +246,10 @@ sub historical {
     my ($self, $hvar, $spectrum, $evolve) = @_;
     my %would;
 
+    if (!@{ $self->parents }) {
+        return { map { $_ => (1/@$spectrum) } @$spectrum };
+    }
+
     for my $p ($self->parents) {
         my ($parent, $weight) = @$p;
         $weight = 1 if !defined($weight);
