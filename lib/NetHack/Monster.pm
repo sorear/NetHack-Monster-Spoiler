@@ -237,7 +237,9 @@ sub moved {
         $remwt -= $wt;
     }
 
-    for (qw/hold wander/) { $ret{$_} += $remwt / 2 }
+    # A simpler approximation of the null observation breaks sleeping, sadly
+    $ret{hold}   += $remwt / 9;
+    $ret{wander} += $remwt * 8 / 9;
 
     return \%ret;
 }
