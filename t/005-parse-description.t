@@ -2,15 +2,14 @@
 # vim: sw=4 et
 use strict;
 use warnings;
-use Test::More tests => 19;
+use Test::More tests => 30;
 
 use NetHack::Monster::Spoiler;
-sub NHMS{ 'NetHack::Monster::Spoiler' }
 
 sub parse {
     my ($str, $want) = @_;
 
-    my $got = NHMS->parse_description($str);
+    my $got = NetHack::Monster::Spoiler->parse_description($str);
 
     for my $k (keys %$got) {
         delete $got->{$k} if !exists($want->{$k});
@@ -57,3 +56,43 @@ parse 'poobah of Moloch' =>
     { monster => 'aligned priest', priest => 1, god => 'Moloch' };
 parse 'Y-crad the invisible shopkeeper' =>
     { monster => 'shopkeeper', invisible => 1, name => 'Y-crad' };
+
+#####
+
+use NetHack::Monster;
+use NetHack::Monster::Turn;
+
+my $turn = NetHack::Monster::Turn->new(count => 0);
+my $mon  = NetHack::Monster->new(turn => $turn);
+
+sub parsem {
+    my ($str, $want) = @_;
+    $mon->farlooked($str);
+
+    is_deeply(scalar $mon->farlooked_parsed, $want, $str);
+}
+
+parsem 'random trash' => undef;
+parsem 'H       a giant humanoid (minotaur)' =>
+    { monster => 'minotaur', seen => { normal => 1 } };
+parsem 'A       an angelic being (tame guardian Angel of Thoth)' =>
+    { monster => 'Angel', god => 'Thoth', tame => 1, seen => { normal => 1 } };
+parsem 'A       an angelic being (peaceful couatl)' =>
+    { monster => 'couatl', peaceful => 1, seen => { normal => 1 } };
+parsem 'r       a rodent (sewer rat) [seen: normal vision, infravision]' =>
+    { monster => 'sewer rat', seen => { normal => 1, infravision => 1 } };
+parsem '@       a human or elf (Medusa) [seen: telepathy]' =>
+    { monster => 'Medusa', seen => { telepathy => 1 } };
+parsem '@       a human or elf (Wizard of Yendor) [seen: paranoid delusion]' =>
+    { monster => 'Wizard of Yendor', seen => { warned => 1 } };
+parsem '@       a human or elf (tame Elvenking, leashed to you)' =>
+    { monster => 'Elvenking', tame => 1, leashed => 1, seen => { normal => 1 }};
+parsem 'F       a fungus (lichen, holding you)' =>
+    { monster => 'lichen', holding => 1, seen => { normal => 1 } };
+parsem 'F       a fungus (red mold, being held)' =>
+    { monster => 'red mold', stuck => 1, seen => { normal => 1 } };
+parsem '~       a worm tail (tail of a peaceful long worm called Sally)' =>
+    { monster => 'long worm', peaceful => 1, tail_of => 1, name => 'Sally',
+        seen => { normal => 1 } };
+
+

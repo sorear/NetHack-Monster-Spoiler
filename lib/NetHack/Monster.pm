@@ -195,16 +195,16 @@ sub farlooked_parsed {
 
     # Trim suffixes, risks confusion with calls, oh well.
     $r{trapped_in} = $1 if $s =~ s/, trapped in a (bear trap|spiked pit|pit|web)$//;
-    $r{leashed} = 1     if $s =~ s/, leashed you$//;
+    $r{leashed} = 1     if $s =~ s/, leashed to you$//;
     $r{holding} = 1     if $s =~ s/, holding you$//;
     $r{stuck} = 1       if $s =~ s/, being held$//;
 
     # Trim prefixes
-    $r{tail_of} = 1     if $s =~ s/^tail of (?:an? )? //;
+    $r{tail_of} = 1     if $s =~ s/^tail of (?:an? )?//;
     $r{peaceful} = 1    if $s =~ s/^peaceful //;
     $r{tame} = 1        if $s =~ s/^tame //;
 
-    my $m = spoiler_class->parse_description($s);
+    my $m = $self->spoiler_class->parse_description($s);
 
     return { %r, %$m };
 }
@@ -249,7 +249,7 @@ sub historical {
     my %would;
 
     if (!@{ $self->parents }) {
-        return { map { $_ => (1/@$spectrum) } @$spectrum };
+        return $spectrum ? { map { $_ => (1/@$spectrum) } @$spectrum } : {};
     }
 
     for my $p ($self->parents) {
@@ -262,7 +262,7 @@ sub historical {
         for my $oval (keys %old_hidden) {
             my $owt = $old_hidden{$oval};
 
-            my $n = $evolve->($self, $oval, $gap);
+            my $n = $evolve ? $evolve->($self, $oval, $gap) : { $oval => 1 };
 
             for my $nkey (keys %$n) {
                 $adv{$nkey} += $n->{$nkey} * $owt;
@@ -270,14 +270,36 @@ sub historical {
         }
 
         # Simulate incomplete knowledge with a 0.1% arbitrary transition
-        my $fuzz = 1 - (0.999 ** $gap);
+        my $fuzz = (0.999 ** $gap);
+        for my $key (keys %adv) {
+            $would{$key} += $weight * $fuzz * $adv{$key};
+        }
+    }
+
+    if ($spectrum) {
+        my $total = 0;
+        for (values %would) { $total += $_; }
+
         for my $key (@$spectrum) {
-            $would{$key} += $weight * (($fuzz / @$spectrum) +
-                (1 - $fuzz) * $adv{$key});
+            $would{$key} += (1 - $total) / @$spectrum;
         }
     }
 
     return \%would;
+}
+
+sub return_cpv {
+    my ($self, $would) = @_;
+
+    if (wantarray) {
+        return %$would;
+    } else {
+        for my $key (keys %$would) {
+            return $key if $would->{$key} >= 0.7;
+        }
+
+        return undef;
+    }
 }
 
 sub hidden_var {
@@ -299,16 +321,61 @@ sub hidden_var {
             $would->{$now} /= $total;
         }
 
-        if (wantarray) {
-            return %$would;
-        } else {
-            for my $key (keys %$would) {
-                return $key if $would->{$key} >= 0.7;
-            }
-
-            return undef;
-        }
+        $self->return_cpv($would);
     });
+}
+
+=head2 type :: String
+
+The type of monster (eg "minotaur", "guardian naga hatchling").
+
+=cut
+
+# We have to do this by hand because of a continuous spectrum.
+sub type {
+    my ($self) = @_;
+
+    my $parents = $self->historical('type');
+
+    my $observe_type;
+    my @observe_glyph;
+
+    if ($self->glyph && $self->glyph !~ /[I1-5]/) {
+        # Currently, we gain no information from warning numbers.  This could
+        # potentially be improved, but it doesn't seem worth it.
+
+        @observe_glyph = map { $_->name } $self->spoiler_class->lookup(
+            glyph => $self->glyph, color => $self->color);
+
+        @observe_glyph = keys %{+{ map { $_ => 1} @observe_glyph }};
+    }
+
+    if ($self->was_farlooked) {
+        my $f = $self->farlooked_parsed;
+
+        $observe_type ||= $f->{monster};
+    }
+
+    # XXX handle other forms of recognition (hit messages) here
+
+    # Renormalization is a bit tricky
+
+    if (defined $observe_type) {
+        $parents = { $observe_type => 1 };
+    } elsif (@observe_glyph) {
+        my %obs = map { $_ => 1 } @observe_glyph;
+        my $change = 1;
+        for (keys %$parents) {
+            delete $parents->{$_} if !$obs{$_};
+            $change -= $parents->{$_} if $obs{$_};
+        }
+
+        for (@observe_glyph) {
+            $parents->{$_} += $change / @observe_glyph;
+        }
+    }
+
+    $self->return_cpv($parents);
 }
 
 __PACKAGE__->hidden_var(sleeping => [0, 1], sub {
@@ -368,6 +435,11 @@ variable explains the observation.  If your hidden variable lacks a discrete
 spectrum, several lower-level functions are available.
 
 =cut
+
+sub spoiler_class {
+    require NetHack::Monster::Spoiler;
+    'NetHack::Monster::Spoiler';
+}
 
 1;
 
