@@ -338,41 +338,44 @@ sub type {
     my $parents = $self->historical('type');
 
     my $observe_type;
-    my @observe_glyph;
+    my @constraints;
+    my $hallu = $self->turn->hallucination;
 
-    if ($self->glyph && $self->glyph !~ /[I1-5]/) {
+    if (!$hallu && $self->glyph && $self->glyph !~ /[I1-5]/) {
         # Currently, we gain no information from warning numbers.  This could
         # potentially be improved, but it doesn't seem worth it.
 
-        @observe_glyph = map { $_->name } $self->spoiler_class->lookup(
-            glyph => $self->glyph, color => $self->color);
-
-        @observe_glyph = keys %{+{ map { $_ => 1} @observe_glyph }};
+        push @constraints, [ glyph => $self->glyph, color => $self->color ];
     }
 
     if ($self->was_farlooked) {
         my $f = $self->farlooked_parsed;
 
-        $observe_type ||= $f->{monster};
+        push @constraints, [ name => $f->{monster} ] unless $hallu;
     }
 
     # XXX handle other forms of recognition (hit messages) here
 
     # Renormalization is a bit tricky
 
-    if (defined $observe_type) {
-        $parents = { $observe_type => 1 };
-    } elsif (@observe_glyph) {
-        my %obs = map { $_ => 1 } @observe_glyph;
-        my $change = 1;
-        for (keys %$parents) {
-            delete $parents->{$_} if !$obs{$_};
-            $change -= $parents->{$_} if $obs{$_};
+    my $change = 1;
+    for (keys %$parents) {
+        $change -= $parents->{$_};
+    }
+    $change /= scalar @{ $self->spoiler_class->list };
+
+    for my $con (@constraints) {
+        my %iter = (%$parents, map { $_->name => 'add' }
+            $self->spoiler_class->lookup(@$con));
+        my $tot = 0;
+
+        for my $mon (keys %iter) {
+            $parents->{$mon} ||= $change;
+            delete $parents->{$mon} if $iter{$mon} ne 'add';
+            $tot += $parents->{$mon} || 0;
         }
 
-        for (@observe_glyph) {
-            $parents->{$_} += $change / @observe_glyph;
-        }
+        for (keys %$parents) { $parents->{$_} /= $tot }
     }
 
     $self->return_cpv($parents);
