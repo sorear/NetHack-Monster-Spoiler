@@ -352,6 +352,7 @@ sub type {
         my $f = $self->farlooked_parsed;
 
         push @constraints, [ name => $f->{monster} ] unless $hallu;
+        push @constraints, [ is_orc => 1 ] if $hallu && $f->{seen}{warned};
     }
 
     # XXX handle other forms of recognition (hit messages) here
