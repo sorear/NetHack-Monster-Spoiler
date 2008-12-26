@@ -1,11 +1,11 @@
 use inc::Module::Install;
 
-name     'NetHack-Monster';
-all_from 'lib/NetHack/Monster.pm';
+name     'NetHack-Monster-Spoiler';
+all_from 'lib/NetHack/Monster/Spoiler.pm';
 
 requires       'YAML';
 requires       'Moose';
-requires       'MooseX::ClassAttributes';
+requires       'MooseX::ClassAttribute';
 requires       'MooseX::Role::Matcher';
 
 build_requires 'Test::More';
