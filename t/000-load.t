@@ -3,5 +3,5 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-use_ok 'NetHack::Monster';
+use_ok 'NetHack::Monster::Spoiler';
 
