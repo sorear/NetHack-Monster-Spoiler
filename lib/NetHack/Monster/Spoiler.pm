@@ -77,7 +77,7 @@ result, or undef on failure or ambiguity.
 sub lookup {
     my ($class, @props) = @_;
 
-    my @cand = grep { $_->match(@props) } $class->list;
+    my @cand = $class->grep_matches((scalar $class->list), @props);
 
     wantarray ? @cand : (@cand == 1 ? $cand[0] : undef );
 }
