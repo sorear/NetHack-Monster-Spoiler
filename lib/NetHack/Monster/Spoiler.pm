@@ -89,7 +89,7 @@ one field in the NetHack monster structure, with three exceptions: all
 breathless monsters get amphibious for free, mimics do not cling to the ceiling,
 and dwarves do not eat rock.
 
-The return values of C<resist> and C<corpse> are hashrefs which map a true
+The return values of C<resist> and C<corpse> are hashrefs which map a truth
 value to each resistance the monster possesses or will grant on eating,
 respectively.  The return value of C<attacks> is an arrayref of hashrefs which
 describe each of the monster's attack(s) in terms of mode, type, and damage.
@@ -1181,6 +1181,10 @@ Copyright 2008 Stefan O'Rear.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+L<NetHack::Item>, L<MooseX::Role::Matcher>
 
 =cut
 
