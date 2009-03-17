@@ -85,9 +85,9 @@ sub lookup {
 =head2 PRIMITIVE ACCESSORS
 
 The following primitive accessors are availiable.  Each of them corresponds to
-one field in the NetHack monster structure, with three exceptions: all
+one field in the NetHack monster structure, with a few exceptions: all
 breathless monsters get amphibious for free, mimics do not cling to the ceiling,
-and dwarves do not eat rock.
+and dwarves do not eat rock. Also, vegan and vegetarian are included.
 
 The return values of C<resist> and C<corpse> are hashrefs which map a truth
 value to each resistance the monster possesses or will grant on eating,
@@ -265,6 +265,10 @@ describe each of the monster's attack(s) in terms of mode, type, and damage.
 =item throws_boulders
 
 =item tunnels_with_pick
+
+=item vegan
+
+=item vegetarian
 
 =item wants_amulet
 
