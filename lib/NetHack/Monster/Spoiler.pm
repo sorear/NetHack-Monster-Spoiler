@@ -85,9 +85,9 @@ sub lookup {
 =head2 PRIMITIVE ACCESSORS
 
 The following primitive accessors are availiable.  Each of them corresponds to
-one field in the NetHack monster structure, with a few exceptions: all
+one field in the NetHack monster structure, with three exceptions: all
 breathless monsters get amphibious for free, mimics do not cling to the ceiling,
-and dwarves do not eat rock. Also, vegan and vegetarian are included.
+and dwarves do not eat rock.
 
 The return values of C<resist> and C<corpse> are hashrefs which map a truth
 value to each resistance the monster possesses or will grant on eating,
@@ -266,10 +266,6 @@ describe each of the monster's attack(s) in terms of mode, type, and damage.
 
 =item tunnels_with_pick
 
-=item vegan
-
-=item vegetarian
-
 =item wants_amulet
 
 =item wants_bell
@@ -308,9 +304,9 @@ has [qw/absent_from_gehennom acidic_corpse always_hostile always_peaceful
   is_undead is_unique is_very_strong is_wanderer lacks_eyes lacks_hands
   lacks_head lacks_limbs large_group lays_eggs made_of_gas never_drops_corpse
   not_randomly_generated poisonous_corpse regenerates_quickly sees_invisible
-  serpentine_body small_group throws_boulders tunnels_with_pick vegan
-  vegetarian wants_amulet wants_bell wants_book wants_candelabrum wants_gems
-  wants_gold wants_magic_items wants_quest_artifact wants_wargear/] => (
+  serpentine_body small_group throws_boulders tunnels_with_pick wants_amulet
+  wants_bell wants_book wants_candelabrum wants_gems wants_gold
+  wants_magic_items wants_quest_artifact wants_wargear/] => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0,
@@ -1424,8 +1420,6 @@ resist:
 size: tiny
 sound: silent
 speed: 3
-vegan: 1
-vegetarian: 1
 weight: 30
 ---
 ac: 8
@@ -1457,8 +1451,6 @@ resist:
 size: small
 sound: silent
 speed: 1
-vegan: 1
-vegetarian: 1
 weight: 200
 ---
 ac: 8
@@ -1504,8 +1496,6 @@ resist:
 size: large
 sound: silent
 speed: 6
-vegan: 1
-vegetarian: 1
 weight: 600
 ---
 ac: 8
@@ -2997,8 +2987,6 @@ resist:
 size: medium
 sound: silent
 speed: 0
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 8
@@ -3033,8 +3021,6 @@ resist:
 size: medium
 sound: silent
 speed: 0
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 8
@@ -3072,8 +3058,6 @@ resist:
 size: medium
 sound: silent
 speed: 3
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 10
@@ -4555,8 +4539,6 @@ resist:
 size: huge
 sound: silent
 speed: 1
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 2
@@ -4591,8 +4573,6 @@ resist:
 size: huge
 sound: silent
 speed: 20
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 absent_from_gehennom: 1
@@ -4630,8 +4610,6 @@ resist:
 size: huge
 sound: silent
 speed: 20
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 2
@@ -4675,8 +4653,6 @@ resist:
 size: huge
 sound: silent
 speed: 20
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 2
@@ -4715,8 +4691,6 @@ resist:
 size: huge
 sound: silent
 speed: 22
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 2
@@ -4758,8 +4732,6 @@ resist:
 size: huge
 sound: silent
 speed: 22
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 5
@@ -4973,8 +4945,6 @@ resist:
 size: small
 sound: silent
 speed: 15
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 0
@@ -5018,8 +4988,6 @@ sees_invisible: 1
 size: small
 sound: silent
 speed: 15
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 3
@@ -6209,8 +6177,6 @@ resist:
 size: huge
 sound: silent
 speed: 36
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 2
@@ -6248,8 +6214,6 @@ resist:
 size: huge
 sound: silent
 speed: 12
-vegan: 1
-vegetarian: 1
 weight: 0
 ---
 ac: 2
@@ -6285,8 +6249,6 @@ resist:
 size: huge
 sound: silent
 speed: 6
-vegan: 1
-vegetarian: 1
 weight: 2500
 ---
 ac: 2
@@ -6318,8 +6280,6 @@ resist:
 size: huge
 sound: silent
 speed: 6
-vegan: 1
-vegetarian: 1
 weight: 2500
 ---
 ac: 9
@@ -6350,8 +6310,6 @@ resist: {}
 size: small
 sound: silent
 speed: 1
-vegan: 1
-vegetarian: 1
 weight: 20
 ---
 ac: 9
@@ -6386,8 +6344,6 @@ resist:
 size: small
 sound: silent
 speed: 0
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 9
@@ -6421,8 +6377,6 @@ resist:
 size: small
 sound: silent
 speed: 0
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 9
@@ -6457,8 +6411,6 @@ resist:
 size: small
 sound: silent
 speed: 0
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 9
@@ -6494,8 +6446,6 @@ resist:
 size: small
 sound: silent
 speed: 0
-vegan: 1
-vegetarian: 1
 weight: 50
 ---
 ac: 7
@@ -6525,8 +6475,6 @@ resist:
 size: small
 sound: shriek
 speed: 1
-vegan: 1
-vegetarian: 1
 weight: 100
 ---
 ac: 7
@@ -6562,8 +6510,6 @@ resist:
 size: small
 sound: silent
 speed: 1
-vegan: 1
-vegetarian: 1
 weight: 100
 ---
 ac: 10
@@ -7985,7 +7931,6 @@ resist:
 size: medium
 sound: silent
 speed: 1
-vegetarian: 1
 weight: 500
 ---
 ac: 8
@@ -8027,7 +7972,6 @@ resist:
 size: medium
 sound: silent
 speed: 3
-vegetarian: 1
 weight: 500
 ---
 ac: 6
@@ -8115,7 +8059,6 @@ resist:
 size: large
 sound: silent
 speed: 6
-vegetarian: 1
 weight: 400
 ---
 ac: 3
@@ -8911,8 +8854,6 @@ resist:
 size: medium
 sound: roar
 speed: 9
-vegan: 1
-vegetarian: 1
 weight: 1200
 ---
 ac: 6
@@ -9504,8 +9445,6 @@ resist:
 size: large
 sound: silent
 speed: 12
-vegan: 1
-vegetarian: 1
 weight: 400
 ---
 ac: 10
@@ -9535,8 +9474,6 @@ resist:
 size: large
 sound: silent
 speed: 12
-vegan: 1
-vegetarian: 1
 weight: 400
 ---
 ac: 8
@@ -9572,8 +9509,6 @@ resist:
 size: large
 sound: silent
 speed: 9
-vegan: 1
-vegetarian: 1
 weight: 450
 ---
 ac: 6
@@ -9608,8 +9543,6 @@ resist:
 size: large
 sound: silent
 speed: 9
-vegan: 1
-vegetarian: 1
 weight: 450
 ---
 ac: 6
@@ -9672,8 +9605,6 @@ resist:
 size: large
 sound: silent
 speed: 3
-vegan: 1
-vegetarian: 1
 weight: 900
 ---
 ac: 9
@@ -9743,8 +9674,6 @@ resist:
 size: large
 sound: silent
 speed: 7
-vegan: 1
-vegetarian: 1
 weight: 1550
 ---
 ac: 5
@@ -9776,8 +9705,6 @@ resist:
 size: large
 sound: silent
 speed: 6
-vegan: 1
-vegetarian: 1
 weight: 1900
 ---
 ac: 1
@@ -9812,8 +9739,6 @@ resist:
 size: large
 sound: silent
 speed: 6
-vegan: 1
-vegetarian: 1
 weight: 1800
 ---
 ac: 3
@@ -9851,8 +9776,6 @@ resist:
 size: large
 sound: silent
 speed: 6
-vegan: 1
-vegetarian: 1
 wants_wargear: 1
 weight: 2000
 ---
@@ -10830,8 +10753,6 @@ resist:
 size: medium
 sound: silent
 speed: 3
-vegan: 1
-vegetarian: 1
 weight: 1450
 ---
 ac: 10
@@ -10875,8 +10796,6 @@ sees_invisible: 1
 size: medium
 sound: wail
 speed: 10
-vegan: 1
-vegetarian: 1
 weight: 1450
 ---
 ac: -4

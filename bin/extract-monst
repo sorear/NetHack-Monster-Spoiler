@@ -257,17 +257,6 @@ sub process {
         $_{wants_wargear} = 1;
     }
 
-    if ($_{glyph} =~ /[bjFvyE'X]/
-     && $_{name} ne 'stalker'
-     && $_{name} ne 'flesh golem'
-     && $_{name} ne 'leather golem') {
-        $_{vegan} = 1;
-    }
-
-    if ($_{vegan} || ($_{glyph} eq 'P' && $_{name} ne 'black pudding')) {
-        $_{vegetarian} = 1;
-    }
-
     print Dump \%_ unless $blacklist{$_{name}};
 }
 
