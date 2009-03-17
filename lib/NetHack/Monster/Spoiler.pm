@@ -914,6 +914,12 @@ pred has_horns => sub {
     shift->name =~ /horned devil|minotaur|Asmodeus|balrog|ki-rin|unicorn/;
 };
 
+=head2 vegan
+
+Return true if eating this monster or its corpse won't break vegan conduct.
+
+=cut
+
 pred vegan => sub {
     my $self = shift;
     return 0 if $self->name eq 'stalker'
@@ -922,6 +928,12 @@ pred vegan => sub {
     return 1 if $self->glyph =~ /[bjFvyE'X]/;
     return 0;
 };
+
+=head2 vegetarian
+
+Return true if eating this monster or its corpse won't break vegetarian conduct.
+
+=cut
 
 pred vegetarian => sub {
     my $self = shift;
