@@ -304,9 +304,9 @@ has [qw/absent_from_gehennom acidic_corpse always_hostile always_peaceful
   is_undead is_unique is_very_strong is_wanderer lacks_eyes lacks_hands
   lacks_head lacks_limbs large_group lays_eggs made_of_gas never_drops_corpse
   not_randomly_generated poisonous_corpse regenerates_quickly sees_invisible
-  serpentine_body small_group throws_boulders tunnels_with_pick wants_amulet
-  wants_bell wants_book wants_candelabrum wants_gems wants_gold
-  wants_magic_items wants_quest_artifact wants_wargear/] => (
+  serpentine_body small_group throws_boulders tunnels_with_pick vegan
+  vegetarian wants_amulet wants_bell wants_book wants_candelabrum wants_gems
+  wants_gold wants_magic_items wants_quest_artifact wants_wargear/] => (
     is      => 'ro',
     isa     => 'Bool',
     default => 0,
