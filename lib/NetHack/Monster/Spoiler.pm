@@ -914,7 +914,22 @@ pred has_horns => sub {
     shift->name =~ /horned devil|minotaur|Asmodeus|balrog|ki-rin|unicorn/;
 };
 
-# vegan & vegetarian omitted: NHI domain
+pred vegan => sub {
+    my $self = shift;
+    return 0 if $self->name eq 'stalker'
+             || $self->name eq 'leather golem'
+             || $self->name eq 'flesh golem';
+    return 1 if $self->glyph =~ /[bjFvyE'X]/;
+    return 0;
+};
+
+pred vegetarian => sub {
+    my $self = shift;
+    return 1 if $self->vegan;
+    return 0 if $self->name eq 'black pudding';
+    return 1 if $self->glyph eq 'P';
+    return 0;
+};
 
 =head2 parse_description $name
 
