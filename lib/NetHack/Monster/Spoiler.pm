@@ -337,25 +337,13 @@ same as NetHack's MZ_XXX defines.
 
 =cut
 
-sub derived ($$&) {
-    my ($name, $type, $code) = @_;
-
-    has($name, is => 'ro', init_arg => 'undef', isa => $type,
-            reader => { $name => $code });
-}
-
-sub pred ($&) {
-    my ($name, $code) = @_;
-    derived($name, 'Bool', sub { $code->(@_) ? 1 : 0; });
-}
-
 my %numeric_sizes = qw/tiny 0 small 1 medium 2 large 3 huge 4 gigantic 7/;
 
-derived numeric_size => 'Int', sub {
+sub numeric_size {
     my $thing = shift;
 
     $numeric_sizes{ ref $thing ? $thing->size : $thing };
-};
+}
 
 has [qw/sound name glyph color/] => (
     is      => 'ro',
@@ -379,11 +367,11 @@ Plane^W^WApocalypse.
 
 =cut
 
-pred is_rider => sub {
+sub is_rider {
     my $self = shift;
 
     return $self->name =~ /Death|Pestilence|Famine/ ? 1 : 0;
-};
+}
 
 =head2 ignores_elbereth
 
@@ -392,14 +380,14 @@ monsters, and monsters with special AIs will ignore regardless.
 
 =cut
 
-pred ignores_elbereth => sub {
+sub ignores_elbereth {
     my $self = shift;
 
     return 1 if $self->glyph =~ /[A@]/;
     return 1 if $self->name eq 'minotaur';
     return 1 if $self->is_rider;
     return 0;
-};
+}
 
 =head2 has_attack MODE
 
@@ -414,7 +402,7 @@ sub has_attack {
         @{$self->attacks};
 
     return @atk ? $atk[0] : undef;
-};
+}
 
 =head2 is_spellcaster
 
@@ -423,11 +411,11 @@ of magic used.
 
 =cut
 
-derived is_spellcaster => 'Maybe[Str]', sub {
+sub is_spellcaster {
     my $cast = shift->has_attack('magic');
 
     return $cast ? $cast->{type} : undef;
-};
+}
 
 my %elements = qw(petrification stone  stoning stone  electricity elec
     shock elec  disintegration disint);
@@ -446,7 +434,7 @@ sub resists {
     $element = $elements{$element} || $element;
 
     return $self->resist->{$element} || 0;
-};
+}
 
 =head2 can_float
 
@@ -454,11 +442,11 @@ Return true if the monster is capable of levitation, if not flight.
 
 =cut
 
-pred can_float => sub {
+sub can_float {
     my ($self) = @_;
 
     return $self->glyph eq 'e';
-};
+}
 
 =head2 is_noncorporeal
 
@@ -466,11 +454,11 @@ Return true if the monster is non-corporeal (a ghost or shade).
 
 =cut
 
-pred is_noncorporeal => sub {
+sub is_noncorporeal {
     my ($self) = @_;
 
     return $self->name =~ /shade|ghost/;
-};
+}
 
 =head2 is_whirly
 
@@ -479,11 +467,11 @@ disrupted with slowing.
 
 =cut
 
-pred is_whirly => sub {
+sub is_whirly {
     my ($self) = @_;
 
     return $self->glyph eq 'v' || $self->name eq 'air elemental';
-};
+}
 
 =head2 is_flaming
 
@@ -491,11 +479,11 @@ Return true if the monster is already on fire and cannot be ignited further.
 
 =cut
 
-pred is_flaming => sub {
+sub is_flaming {
     my ($self) = @_;
 
     return $self->name =~ /fire (?:vortex|elemental)|flaming sphere|salamander/;
-};
+}
 
 =head2 is_telepathic
 
@@ -503,11 +491,11 @@ Return true if the monster is intrinsically telepathic.
 
 =cut
 
-pred is_telepathic => sub {
+sub is_telepathic {
     my ($self) = @_;
 
     return $self->name =~ /floating eye|mind flayer/;
-};
+}
 
 =head2 uses_weapons
 
@@ -516,9 +504,9 @@ you want could_wield, not this.
 
 =cut
 
-pred uses_weapons => sub {
+sub uses_weapons {
     return defined shift->has_attack('weapon');
-};
+}
 
 =head2 is_unicorn
 
@@ -527,7 +515,7 @@ this monster is a unicorn.
 
 =cut
 
-derived is_unicorn => 'Maybe[Str]', sub {
+sub is_unicorn {
     my ($self) = @_;
 
     return undef if $self->glyph ne 'u';
@@ -537,7 +525,7 @@ derived is_unicorn => 'Maybe[Str]', sub {
     return 'Cha' if $self->color eq 'black';
 
     return undef;
-};
+}
 
 =head2 is_bat
 
@@ -545,9 +533,9 @@ Return true if the current monster is a true bat, not a bird.
 
 =cut
 
-pred is_bat => sub {
+sub is_bat {
     return shift->name =~ /^(vampire |giant |)bat$/;
-};
+}
 
 =head2 is_golem
 
@@ -555,9 +543,9 @@ Return true for golems.
 
 =cut
 
-pred is_golem => sub {
+sub is_golem {
     return shift->glyph eq "'";
-};
+}
 
 =head2 is_verysmall
 
@@ -565,9 +553,9 @@ Return true if this monster is very small (can pass between bars, etc).
 
 =cut
 
-pred is_verysmall => sub {
+sub is_verysmall {
     return shift->size eq 'tiny';
-};
+}
 
 =head2 is_bigmonst
 
@@ -575,9 +563,9 @@ Return true if this monster is quite large (cannot fit through crevice, etc).
 
 =cut
 
-pred is_bigmonst => sub {
+sub is_bigmonst {
     return shift->numeric_size >= numeric_size('large');
-};
+}
 
 =head2 could_wield
 
@@ -586,11 +574,11 @@ use weapons in the wild, see uses_weapons.
 
 =cut
 
-pred could_wield => sub {
+sub could_wield {
     my ($self) = @_;
 
     return !$self->lacks_hands && !$self->is_verysmall;
-};
+}
 
 =head2 could_wear_armor
 
@@ -600,11 +588,11 @@ not actually ever wear anything.
 
 =cut
 
-pred could_wear_armor => sub {
+sub could_wear_armor {
     my ($self) = @_;
 
     return !$self->would_break_armor && !$self->would_slip_armor;
-};
+}
 
 =head2 can_dualwield
 
@@ -612,12 +600,12 @@ Return true if the player can dualwield while polymorphed into this.
 
 =cut
 
-pred can_dualwield => sub {
+sub can_dualwield {
     my ($self) = @_;
 
     # Yes, this is the NetHack check!
     return @{$self->attacks} >= 2 && $self->attacks->[1]->{mode} eq 'weapon';
-};
+}
 
 =head2 is_normal_demon
 
@@ -625,11 +613,11 @@ Return true if this is a non-unique true demon.
 
 =cut
 
-pred is_normal_demon => sub {
+sub is_normal_demon {
     my ($self) = @_;
 
     return $self->is_demon && !$self->is_rank_lord && !$self->is_rank_prince;
-};
+}
 
 =head2 is_demon_prince
 
@@ -637,11 +625,11 @@ Return true if this is a demon prince.
 
 =cut
 
-pred is_demon_prince => sub {
+sub is_demon_prince {
     my ($self) = @_;
 
     return $self->is_demon && $self->is_rank_prince;
-};
+}
 
 =head2 is_demon_lord
 
@@ -649,11 +637,11 @@ Return true if this is a demon lord.
 
 =cut
 
-pred is_demon_lord => sub {
+sub is_demon_lord {
     my ($self) = @_;
 
     return $self->is_demon && $self->is_rank_lord;
-};
+}
 
 =head2 makes_webs
 
@@ -661,9 +649,9 @@ Returns true if this monster is capable of spinning webs.
 
 =cut
 
-pred makes_webs => sub {
+sub makes_webs {
     return shift->name =~ /^(cave|giant) spider$/;
-};
+}
 
 =head2 can_breathe
 
@@ -671,9 +659,9 @@ Returns true if this monster has a breath weapon.
 
 =cut
 
-pred can_breathe => sub {
+sub can_breathe {
     return defined shift->has_attack('breathe');
-};
+}
 
 # is_longworm omitted
 
@@ -683,12 +671,12 @@ Return true if this is a role monster (valkyrie, etc).
 
 =cut
 
-pred is_player_monster => sub {
+sub is_player_monster {
     my ($self) = @_;
 
     return $self->hitdice == 10 && $self->glyph eq '@' &&
         $self->color eq 'white' && $self->name ne 'elf';
-};
+}
 
 =head2 is_covetous
 
@@ -697,12 +685,12 @@ you, picking up invocation items; does B<not> imply a theft attack).
 
 =cut
 
-pred is_covetous => sub {
+sub is_covetous {
     my ($self) = @_;
 
     return $self->wants_amulet || $self->wants_book || $self->wants_bell ||
         $self->wants_candelabrum || $self->wants_quest_artifact;
-};
+}
 
 # reviver omitted: NHI
 
@@ -712,12 +700,12 @@ Return true if this monster is always surrounded by a 1-square lit region.
 
 =cut
 
-pred emits_light => sub {
+sub emits_light {
     my ($self) = @_;
 
     return $self->glyph eq 'y' || $self->name =~
         /^(?:(?:flam|shock)ing sphere|fire (?:vortex|elemental))$/;
-};
+}
 
 =head2 likes_lava
 
@@ -725,11 +713,11 @@ Return true if this monster suffers no penalties in lava.
 
 =cut
 
-pred likes_lava => sub {
+sub likes_lava {
     my ($self) = @_;
 
     return $self->name eq 'salamander' || $self->name eq 'fire elemental';
-};
+}
 
 =head2 naturally_invisible
 
@@ -737,11 +725,11 @@ Return true if this monster is automatically invisible.
 
 =cut
 
-pred naturally_invisible => sub {
+sub naturally_invisible {
     my ($self) = @_;
 
     return $self->name eq 'stalker' || $self->name eq 'black light';
-};
+}
 
 =head2 likes_fire
 
@@ -749,9 +737,9 @@ Return true if this monster is not penalized by fire.
 
 =cut
 
-pred likes_fire => sub {
+sub likes_fire {
     shift->is_flaming;
-};
+}
 
 =head2 touch_petrifies
 
@@ -759,9 +747,9 @@ Return true for monsters whose flesh is fatal on contact petrification.
 
 =cut
 
-pred touch_petrifies => sub {
+sub touch_petrifies {
     shift->name =~ /^c(?:o|hi)ckatrice$/;
-};
+}
 
 =head2 is_mind_flayer
 
@@ -769,9 +757,9 @@ Can this monster use mental blasts?
 
 =cut
 
-pred is_mind_flayer => sub {
+sub is_mind_flayer {
     shift->name =~ /mind flayer/;
-};
+}
 
 =head2 is_nonliving
 
@@ -779,12 +767,12 @@ Return true if this monster is not considered alive.
 
 =cut
 
-pred is_nonliving => sub {
+sub is_nonliving {
     my ($self) = @_;
 
     return $self->name eq 'manes' || $self->is_undead || $self->glyph eq 'v' ||
         $self->is_golem;
-};
+}
 
 # attacktype_fordmg omitted, dead code in NH
 
@@ -796,12 +784,12 @@ Return true if this monster intrinsically cannot be life drained.
 
 =cut
 
-pred resists_drain_life => sub {
+sub resists_drain_life {
     my ($self) = @_;
 
     return $self->is_lycanthrope || $self->is_undead || $self->is_demon ||
        $self->name eq 'Death';
-};
+}
 
 =head2 resists_magic
 
@@ -811,11 +799,11 @@ mr accessor, which is a percentage save against a much wider range of attacks.
 
 =cut
 
-pred resists_magic => sub {
+sub resists_magic {
     my ($self) = @_;
 
     return $self->name =~ /gray dragon|Yeenoghu|Oracle|Angel|Chromatic Dragon/;
-};
+}
 
 =head2 resists_blinding
 
@@ -823,11 +811,11 @@ Return true if this monster intrinsically cannot be blinded.
 
 =cut
 
-pred resists_blinding => sub {
+sub resists_blinding {
     my ($self) = @_;
 
     return $self->lacks_eyes || $self->name =~ /yellow light|Archon/;
-};
+}
 
 # can_blind omitted, depends too much on mon data
 
@@ -839,13 +827,13 @@ Return true if this monster takes d20 bonus damage from silver attacks.
 
 =cut
 
-pred is_vulnerable_to_silver => sub {
+sub is_vulnerable_to_silver {
     my ($self) = @_;
 
     return 0 if $self->name eq 'tengu';
     return $self->glyph =~ /[iV]/ || $self->is_lycanthrope || $self->is_demon
         || $self->name eq 'shade';
-};
+}
 
 =head2 ignores_bars
 
@@ -853,12 +841,12 @@ Return true if this monster can walk through, between, or around iron bars.
 
 =cut
 
-pred ignores_bars => sub {
+sub ignores_bars {
     my ($self) = @_;
 
     return $self->ignores_walls || $self->is_amorphous || $self->is_whirly ||
         $self->is_verysmall || ($self->serpentine_body && !$self->is_bigmonst);
-};
+}
 
 =head2 would_slip_armor
 
@@ -866,12 +854,12 @@ Return true if body armor would always fall off this monster.
 
 =cut
 
-pred would_slip_armor => sub {
+sub would_slip_armor {
     my ($self) = @_;
 
     return $self->is_whirly || $self->is_noncorporeal || $self->numeric_size <=
         numeric_size('small');
-};
+}
 
 =head2 would_break_armor
 
@@ -879,14 +867,14 @@ Return true if any armor worn by this monster would break.
 
 =cut
 
-pred would_break_armor => sub {
+sub would_break_armor {
     my ($self) = @_;
 
     return 0 if $self->would_slip_armor;
 
     return !$self->humanoid_body || $self->is_bigmonst
         || $self->name eq 'marilith' || $self->name eq 'winged gargoyle';
-};
+}
 
 =head2 can_stick
 
@@ -895,12 +883,12 @@ such attacks.
 
 =cut
 
-pred can_stick => sub {
+sub can_stick {
     my ($self) = @_;
 
     return scalar grep { $_->{mode} eq 'crush' || $_->{type} eq 'stick'
         || $_->{type} eq 'wrap' } @{ $self->attacks };
-};
+}
 
 =head2 has_horns
 
@@ -908,9 +896,9 @@ Return true if this monster has one or more horns preventing the use of helmets.
 
 =cut
 
-pred has_horns => sub {
+sub has_horns {
     shift->name =~ /horned devil|minotaur|Asmodeus|balrog|ki-rin|unicorn/;
-};
+}
 
 =head2 vegan
 
@@ -918,14 +906,14 @@ Return true if eating this monster or its corpse won't break vegan conduct.
 
 =cut
 
-pred vegan => sub {
+sub vegan {
     my $self = shift;
     return 0 if $self->name eq 'stalker'
              || $self->name eq 'leather golem'
              || $self->name eq 'flesh golem';
     return 1 if $self->glyph =~ /[bjFvyE'X]/;
     return 0;
-};
+}
 
 =head2 vegetarian
 
@@ -933,13 +921,13 @@ Return true if eating this monster or its corpse won't break vegetarian conduct.
 
 =cut
 
-pred vegetarian => sub {
+sub vegetarian {
     my $self = shift;
     return 1 if $self->vegan;
     return 0 if $self->name eq 'black pudding';
     return 1 if $self->glyph eq 'P';
     return 0;
-};
+}
 
 =head2 corpse
 
@@ -1329,8 +1317,6 @@ sub parse_description {
 
     return \%r;
 }
-
-undef *pred; undef *derived;
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
