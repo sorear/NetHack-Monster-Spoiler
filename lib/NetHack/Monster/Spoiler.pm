@@ -89,10 +89,10 @@ one field in the NetHack monster structure, with three exceptions: all
 breathless monsters get amphibious for free, mimics do not cling to the ceiling,
 and dwarves do not eat rock.
 
-The return values of C<resist> and C<corpse> are hashrefs which map a truth
-value to each resistance the monster possesses or will grant on eating,
-respectively.  The return value of C<attacks> is an arrayref of hashrefs which
-describe each of the monster's attack(s) in terms of mode, type, and damage.
+The return values of C<resist> is a hashref which maps a truth value to each
+resistance the monster possesses The return value of C<attacks> is an arrayref
+of hashrefs which describe each of the monster's attack(s) in terms of mode,
+type, and damage.
 
 =over
 
@@ -123,8 +123,6 @@ describe each of the monster's attack(s) in terms of mode, type, and damage.
 =item clings_to_ceiling
 
 =item color
-
-=item corpse
 
 =item corpse_nutrition
 
@@ -364,7 +362,7 @@ has [qw/sound name glyph color/] => (
     isa     => 'Str',
 );
 
-has [qw/resist corpse/] => (
+has resist => (
     is      => 'ro',
     isa     => 'HashRef',
 );
@@ -1255,7 +1253,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 10
 glyph: a
 hitdice: 2
@@ -1283,8 +1280,6 @@ attacks:
     type: poison
 can_fly: 1
 color: yellow
-corpse:
-  poison: 1
 corpse_nutrition: 5
 glyph: a
 hitdice: 1
@@ -1315,8 +1310,6 @@ attacks:
     mode: sting
     type: poison
 color: blue
-corpse:
-  poison: 1
 corpse_nutrition: 5
 glyph: a
 hitdice: 3
@@ -1348,8 +1341,6 @@ attacks:
     mode: bite
     type: fire
 color: red
-corpse:
-  fire: 1
 corpse_nutrition: 10
 glyph: a
 hitdice: 3
@@ -1378,8 +1369,6 @@ attacks:
     mode: bite
     type: physical
 color: black
-corpse:
-  poison: 1
 corpse_nutrition: 10
 glyph: a
 hitdice: 5
@@ -1407,8 +1396,6 @@ attacks:
     type: poison
 can_fly: 1
 color: magenta
-corpse:
-  poison: 1
 corpse_nutrition: 5
 glyph: a
 hitdice: 9
@@ -1437,8 +1424,6 @@ attacks:
     mode: passive
     type: acid
 color: green
-corpse:
-  stone: 1
 corpse_nutrition: 10
 glyph: b
 hitdice: 1
@@ -1473,8 +1458,6 @@ attacks:
     mode: touch
     type: physical
 color: white
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: b
 hitdice: 5
@@ -1508,11 +1491,6 @@ attacks:
     mode: passive
     type: paralyze
 color: cyan
-corpse:
-  cold: 1
-  elec: 1
-  fire: 1
-  sleep: 1
 corpse_nutrition: 150
 glyph: b
 hitdice: 6
@@ -1555,9 +1533,6 @@ attacks:
     mode: passive
     type: petrify
 color: brown
-corpse:
-  poison: 1
-  stone: 1
 corpse_nutrition: 10
 glyph: c
 hitdice: 4
@@ -1593,9 +1568,6 @@ attacks:
     mode: passive
     type: petrify
 color: yellow
-corpse:
-  poison: 1
-  stone: 1
 corpse_nutrition: 30
 glyph: c
 hitdice: 5
@@ -1625,9 +1597,6 @@ attacks:
     mode: gaze
     type: fire
 color: red
-corpse:
-  fire: 1
-  poison: 1
 corpse_nutrition: 30
 glyph: c
 hitdice: 6
@@ -1657,7 +1626,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: d
 hitdice: 0
@@ -1684,7 +1652,6 @@ attacks:
     mode: bite
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 250
 glyph: d
 hitdice: 0
@@ -1710,7 +1677,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: d
 hitdice: 1
@@ -1737,7 +1703,6 @@ attacks:
     mode: bite
     type: lycanthropy
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: d
 hitdice: 2
@@ -1766,7 +1731,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 150
 food_makes_peaceful: 1
 glyph: d
@@ -1792,7 +1756,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 200
 food_makes_peaceful: 1
 glyph: d
@@ -1818,7 +1781,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 250
 food_makes_peaceful: 1
 glyph: d
@@ -1846,7 +1808,6 @@ attacks:
     mode: bite
     type: physical
 color: yellow
-corpse: {}
 corpse_nutrition: 200
 glyph: d
 hitdice: 4
@@ -1872,7 +1833,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: d
 hitdice: 5
@@ -1899,7 +1859,6 @@ attacks:
     mode: bite
     type: lycanthropy
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: d
 hitdice: 5
@@ -1929,7 +1888,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 350
 glyph: d
 hitdice: 7
@@ -1960,8 +1918,6 @@ attacks:
     mode: breathe
     type: cold
 color: cyan
-corpse:
-  cold: 1
 corpse_nutrition: 200
 glyph: d
 hitdice: 5
@@ -1992,8 +1948,6 @@ attacks:
     mode: breathe
     type: cold
 color: cyan
-corpse:
-  cold: 1
 corpse_nutrition: 300
 glyph: d
 hitdice: 7
@@ -2023,8 +1977,6 @@ attacks:
     mode: breathe
     type: fire
 color: red
-corpse:
-  fire: 1
 corpse_nutrition: 200
 gehennom_exclusive: 1
 glyph: d
@@ -2056,8 +2008,6 @@ attacks:
     mode: breathe
     type: fire
 color: red
-corpse:
-  fire: 1
 corpse_nutrition: 300
 gehennom_exclusive: 1
 glyph: d
@@ -2087,7 +2037,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 10
 glyph: e
 hitdice: 1
@@ -2118,7 +2067,6 @@ attacks:
 can_fly: 1
 cannot_pickup_items: 1
 color: blue
-corpse: {}
 corpse_nutrition: 10
 glyph: e
 hitdice: 2
@@ -2148,8 +2096,6 @@ attacks:
 can_fly: 1
 cannot_pickup_items: 1
 color: white
-corpse:
-  cold: 1
 corpse_nutrition: 10
 glyph: e
 hitdice: 6
@@ -2181,8 +2127,6 @@ attacks:
     type: fire
 can_fly: 1
 color: red
-corpse:
-  fire: 1
 corpse_nutrition: 10
 glyph: e
 hitdice: 6
@@ -2214,8 +2158,6 @@ attacks:
     type: electricity
 can_fly: 1
 color: bright_blue
-corpse:
-  elec: 1
 corpse_nutrition: 10
 glyph: e
 hitdice: 6
@@ -2245,7 +2187,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 150
 food_makes_peaceful: 1
 glyph: f
@@ -2272,7 +2213,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 200
 food_makes_peaceful: 1
 glyph: f
@@ -2305,7 +2245,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 300
 glyph: f
 hitdice: 4
@@ -2337,7 +2276,6 @@ attacks:
     mode: bite
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 300
 glyph: f
 hitdice: 5
@@ -2369,7 +2307,6 @@ attacks:
     mode: bite
     type: physical
 color: black
-corpse: {}
 corpse_nutrition: 300
 glyph: f
 hitdice: 5
@@ -2394,7 +2331,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 250
 food_makes_peaceful: 1
 glyph: f
@@ -2428,7 +2364,6 @@ attacks:
     mode: bite
     type: physical
 color: yellow
-corpse: {}
 corpse_nutrition: 300
 glyph: f
 hitdice: 6
@@ -2463,8 +2398,6 @@ attacks:
     type: stealintrinsic
 can_swim: 1
 color: green
-corpse:
-  poison: 1
 corpse_nutrition: 20
 follows_stair_users: 1
 glyph: g
@@ -2497,8 +2430,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse:
-  stone: 1
 corpse_nutrition: 200
 glyph: g
 has_thick_hide: 1
@@ -2533,8 +2464,6 @@ attacks:
     type: physical
 can_fly: 1
 color: magenta
-corpse:
-  stone: 1
 corpse_nutrition: 300
 glyph: g
 has_thick_hide: 1
@@ -2564,7 +2493,6 @@ attacks:
     mode: weapon
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 200
 glyph: h
 has_infravision: 1
@@ -2591,7 +2519,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 300
 glyph: h
 has_infravision: 1
@@ -2624,7 +2551,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: h
 has_infravision: 1
@@ -2655,7 +2581,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 300
 glyph: h
 has_infravision: 1
@@ -2692,7 +2617,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 300
 glyph: h
 has_infravision: 1
@@ -2737,7 +2661,6 @@ attacks:
     type: eatbrain
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 glyph: h
@@ -2785,7 +2708,6 @@ attacks:
     type: eatbrain
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 glyph: h
@@ -2823,7 +2745,6 @@ attacks:
     mode: bite
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 100
 follows_stair_users: 1
 glyph: i
@@ -2853,9 +2774,6 @@ attacks:
     type: sleep
 can_fly: 1
 color: green
-corpse:
-  poison: 1
-  sleep: 1
 corpse_nutrition: 100
 follows_stair_users: 1
 glyph: i
@@ -2882,7 +2800,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 10
 follows_stair_users: 1
 glyph: i
@@ -2909,8 +2826,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse:
-  sleep: 1
 corpse_nutrition: 100
 follows_stair_users: 1
 gehennom_exclusive: 1
@@ -2949,8 +2864,6 @@ attacks:
     mode: bite
     type: physical
 color: blue
-corpse:
-  poison: 1
 corpse_nutrition: 200
 follows_stair_users: 1
 glyph: i
@@ -2976,8 +2889,6 @@ attacks:
     mode: bite
     type: physical
 color: cyan
-corpse:
-  poison: 1
 corpse_nutrition: 200
 follows_stair_users: 1
 glyph: i
@@ -3006,9 +2917,6 @@ attacks:
     type: cold
 cannot_pickup_items: 1
 color: blue
-corpse:
-  cold: 1
-  poison: 1
 corpse_nutrition: 20
 glyph: j
 hitdice: 4
@@ -3042,7 +2950,6 @@ attacks:
     type: acid
 cannot_pickup_items: 1
 color: green
-corpse: {}
 corpse_nutrition: 20
 glyph: j
 hitdice: 5
@@ -3079,7 +2986,6 @@ attacks:
     type: acid
 cannot_pickup_items: 1
 color: brown
-corpse: {}
 corpse_nutrition: 20
 glyph: j
 hitdice: 6
@@ -3111,7 +3017,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 100
 glyph: k
 has_infravision: 1
@@ -3141,7 +3046,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 150
 glyph: k
 has_infravision: 1
@@ -3171,7 +3075,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 200
 glyph: k
 has_infravision: 1
@@ -3203,7 +3106,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: bright_blue
-corpse: {}
 corpse_nutrition: 150
 glyph: k
 has_infravision: 1
@@ -3233,7 +3135,6 @@ attacks:
     mode: claw
     type: stealgold
 color: green
-corpse: {}
 corpse_nutrition: 30
 glyph: l
 has_teleportitis: 1
@@ -3259,7 +3160,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 200
 glyph: m
 has_thick_hide: 1
@@ -3292,7 +3192,6 @@ attacks:
     type: stick
 clings_to_ceiling: 1
 color: red
-corpse: {}
 corpse_nutrition: 400
 glyph: m
 has_thick_hide: 1
@@ -3329,7 +3228,6 @@ attacks:
     type: stick
 clings_to_ceiling: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 glyph: m
 has_thick_hide: 1
@@ -3365,7 +3263,6 @@ attacks:
     mode: claw
     type: seduce
 color: green
-corpse: {}
 corpse_nutrition: 300
 glyph: n
 has_teleportitis: 1
@@ -3396,7 +3293,6 @@ attacks:
     type: seduce
 can_swim: 1
 color: blue
-corpse: {}
 corpse_nutrition: 300
 glyph: n
 has_teleportitis: 1
@@ -3426,7 +3322,6 @@ attacks:
     mode: claw
     type: seduce
 color: brown
-corpse: {}
 corpse_nutrition: 300
 glyph: n
 has_teleportitis: 1
@@ -3452,7 +3347,6 @@ attacks:
     mode: weapon
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 100
 glyph: o
 has_infravision: 1
@@ -3480,7 +3374,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 200
 glyph: o
 has_infravision: 1
@@ -3509,7 +3402,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 150
 glyph: o
 has_infravision: 1
@@ -3542,7 +3434,6 @@ attacks:
     mode: weapon
     type: physical
 color: yellow
-corpse: {}
 corpse_nutrition: 200
 glyph: o
 has_infravision: 1
@@ -3574,7 +3465,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 200
 glyph: o
 has_infravision: 1
@@ -3606,7 +3496,6 @@ attacks:
     mode: weapon
     type: physical
 color: black
-corpse: {}
 corpse_nutrition: 300
 glyph: o
 has_infravision: 1
@@ -3638,7 +3527,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: bright_blue
-corpse: {}
 corpse_nutrition: 300
 glyph: o
 has_infravision: 1
@@ -3672,7 +3560,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 350
 glyph: o
 has_infravision: 1
@@ -3706,7 +3593,6 @@ attacks:
 cannot_pickup_items: 1
 clings_to_ceiling: 1
 color: gray
-corpse: {}
 corpse_nutrition: 200
 glyph: p
 hides_on_ceiling: 1
@@ -3735,7 +3621,6 @@ attacks:
 cannot_pickup_items: 1
 clings_to_ceiling: 1
 color: cyan
-corpse: {}
 corpse_nutrition: 300
 glyph: p
 hides_on_ceiling: 1
@@ -3764,7 +3649,6 @@ attacks:
 cannot_pickup_items: 1
 clings_to_ceiling: 1
 color: white
-corpse: {}
 corpse_nutrition: 300
 glyph: p
 hides_on_ceiling: 1
@@ -3798,7 +3682,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 100
 glyph: q
 hitdice: 2
@@ -3829,7 +3712,6 @@ attacks:
     mode: bite
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 500
 glyph: q
 has_thick_hide: 1
@@ -3863,7 +3745,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 500
 glyph: q
 hitdice: 6
@@ -3892,7 +3773,6 @@ attacks:
     type: physical
 clings_to_ceiling: 1
 color: cyan
-corpse: {}
 corpse_nutrition: 500
 glyph: q
 hitdice: 8
@@ -3920,7 +3800,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 650
 glyph: q
 has_thick_hide: 1
@@ -3951,7 +3830,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 800
 glyph: q
 has_thick_hide: 1
@@ -3982,7 +3860,6 @@ attacks:
     mode: headbutt
     type: physical
 color: black
-corpse: {}
 corpse_nutrition: 800
 glyph: q
 has_thick_hide: 1
@@ -4010,7 +3887,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 12
 glyph: r
 hitdice: 0
@@ -4037,7 +3913,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 30
 glyph: r
 hitdice: 1
@@ -4064,7 +3939,6 @@ attacks:
     mode: bite
     type: poisoncon
 color: brown
-corpse: {}
 corpse_nutrition: 5
 glyph: r
 hitdice: 2
@@ -4092,7 +3966,6 @@ attacks:
     mode: bite
     type: lycanthropy
 color: brown
-corpse: {}
 corpse_nutrition: 30
 glyph: r
 hitdice: 2
@@ -4124,7 +3997,6 @@ attacks:
 can_eat_metal: 1
 can_eat_rock: 1
 color: gray
-corpse: {}
 corpse_nutrition: 30
 glyph: r
 hitdice: 3
@@ -4154,7 +4026,6 @@ attacks:
 can_eat_rock: 1
 can_swim: 1
 color: brown
-corpse: {}
 corpse_nutrition: 30
 glyph: r
 hitdice: 3
@@ -4181,8 +4052,6 @@ attacks:
     mode: bite
     type: physical
 color: gray
-corpse:
-  poison: 1
 corpse_nutrition: 50
 glyph: s
 hides_under_item: 1
@@ -4211,8 +4080,6 @@ attacks:
     mode: bite
     type: poison
 color: yellow
-corpse:
-  poison: 1
 corpse_nutrition: 50
 glyph: s
 hides_under_item: 1
@@ -4240,8 +4107,6 @@ attacks:
     mode: bite
     type: poison
 color: magenta
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: s
 hitdice: 5
@@ -4276,8 +4141,6 @@ attacks:
     mode: sting
     type: poison
 color: red
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: s
 hides_under_item: 1
@@ -4307,7 +4170,6 @@ attacks:
     type: digest
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 350
 follows_stair_users: 1
 glyph: t
@@ -4337,7 +4199,6 @@ attacks:
     mode: engulf
     type: digest
 color: green
-corpse: {}
 corpse_nutrition: 350
 follows_stair_users: 1
 glyph: t
@@ -4369,8 +4230,6 @@ attacks:
     mode: kick
     type: physical
 color: white
-corpse:
-  poison: 1
 corpse_nutrition: 300
 glyph: u
 hitdice: 4
@@ -4401,8 +4260,6 @@ attacks:
     mode: kick
     type: physical
 color: gray
-corpse:
-  poison: 1
 corpse_nutrition: 300
 glyph: u
 hitdice: 4
@@ -4433,8 +4290,6 @@ attacks:
     mode: kick
     type: physical
 color: black
-corpse:
-  poison: 1
 corpse_nutrition: 300
 glyph: u
 hitdice: 4
@@ -4465,7 +4320,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 250
 food_makes_peaceful: 1
 glyph: u
@@ -4496,7 +4350,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 300
 food_makes_peaceful: 1
 glyph: u
@@ -4527,7 +4380,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 350
 food_makes_peaceful: 1
 glyph: u
@@ -4557,7 +4409,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 glyph: v
 hitdice: 3
 is_amorphous: 1
@@ -4593,7 +4444,6 @@ attacks:
     type: blind
 can_fly: 1
 color: brown
-corpse: {}
 glyph: v
 hitdice: 4
 is_amphibious: 1
@@ -4628,7 +4478,6 @@ attacks:
     type: cold
 can_fly: 1
 color: cyan
-corpse: {}
 glyph: v
 hitdice: 5
 infravision_detectable: 1
@@ -4670,7 +4519,6 @@ attacks:
     type: electricity
 can_fly: 1
 color: bright_blue
-corpse: {}
 glyph: v
 hitdice: 6
 is_amphibious: 1
@@ -4707,7 +4555,6 @@ attacks:
     type: fire
 can_fly: 1
 color: blue
-corpse: {}
 gehennom_exclusive: 1
 glyph: v
 hitdice: 7
@@ -4748,7 +4595,6 @@ attacks:
     type: fire
 can_fly: 1
 color: yellow
-corpse: {}
 gehennom_exclusive: 1
 glyph: v
 hitdice: 8
@@ -4786,7 +4632,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: w
 hitdice: 8
@@ -4811,7 +4656,6 @@ attacks:
     mode: bite
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 250
 glyph: w
 hitdice: 8
@@ -4837,7 +4681,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: brown
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 glyph: w
@@ -4869,7 +4712,6 @@ attacks:
     mode: engulf
     type: digest
 color: magenta
-corpse: {}
 corpse_nutrition: 700
 extra_nasty: 1
 glyph: w
@@ -4898,7 +4740,6 @@ attacks:
     mode: bite
     type: electricity
 color: magenta
-corpse: {}
 corpse_nutrition: 10
 glyph: x
 hitdice: 0
@@ -4927,8 +4768,6 @@ attacks:
     type: legs
 can_fly: 1
 color: red
-corpse:
-  poison: 1
 corpse_nutrition: 300
 glyph: x
 hitdice: 7
@@ -4957,7 +4796,6 @@ attacks:
 can_fly: 1
 cannot_pickup_items: 1
 color: yellow
-corpse: {}
 glyph: y
 hitdice: 3
 infravision_detectable: 1
@@ -5000,7 +4838,6 @@ attacks:
 can_fly: 1
 cannot_pickup_items: 1
 color: black
-corpse: {}
 glyph: y
 hitdice: 5
 is_amorphous: 1
@@ -5047,7 +4884,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 600
 glyph: z
 hitdice: 9
@@ -5081,7 +4917,6 @@ attacks:
     type: wrap
 can_fly: 1
 color: green
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -5118,7 +4953,6 @@ attacks:
     mode: kick
     type: physical
 color: yellow
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -5162,7 +4996,6 @@ attacks:
     type: magicmissile
 can_fly: 1
 color: white
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -5208,7 +5041,6 @@ attacks:
     type: wizardspell
 can_fly: 1
 color: yellow
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -5252,7 +5084,6 @@ attacks:
     type: wizardspell
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -5292,7 +5123,6 @@ attacks:
     type: physical
 can_fly: 1
 color: brown
-corpse: {}
 corpse_nutrition: 20
 glyph: B
 hitdice: 0
@@ -5321,7 +5151,6 @@ attacks:
     type: physical
 can_fly: 1
 color: red
-corpse: {}
 corpse_nutrition: 30
 glyph: B
 hitdice: 2
@@ -5352,7 +5181,6 @@ attacks:
     type: blind
 can_fly: 1
 color: black
-corpse: {}
 corpse_nutrition: 20
 glyph: B
 hitdice: 4
@@ -5383,7 +5211,6 @@ attacks:
     type: poison
 can_fly: 1
 color: black
-corpse: {}
 corpse_nutrition: 20
 glyph: B
 hitdice: 5
@@ -5416,7 +5243,6 @@ attacks:
     mode: kick
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 500
 glyph: C
 hitdice: 4
@@ -5447,7 +5273,6 @@ attacks:
     mode: kick
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 600
 glyph: C
 hitdice: 5
@@ -5481,7 +5306,6 @@ attacks:
     mode: kick
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 500
 glyph: C
 hitdice: 6
@@ -5511,7 +5335,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5539,7 +5362,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5567,7 +5389,6 @@ attacks:
     type: physical
 can_fly: 1
 color: red
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5597,7 +5418,6 @@ attacks:
     type: physical
 can_fly: 1
 color: white
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5626,7 +5446,6 @@ attacks:
     type: physical
 can_fly: 1
 color: orange
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5655,7 +5474,6 @@ attacks:
     type: physical
 can_fly: 1
 color: black
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5684,7 +5502,6 @@ attacks:
     type: physical
 can_fly: 1
 color: blue
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5713,7 +5530,6 @@ attacks:
     type: physical
 can_fly: 1
 color: green
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5744,7 +5560,6 @@ attacks:
     type: physical
 can_fly: 1
 color: yellow
-corpse: {}
 corpse_nutrition: 500
 glyph: D
 has_thick_hide: 1
@@ -5783,7 +5598,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -5825,7 +5639,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -5868,8 +5681,6 @@ attacks:
     type: physical
 can_fly: 1
 color: red
-corpse:
-  fire: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -5913,8 +5724,6 @@ attacks:
     type: physical
 can_fly: 1
 color: white
-corpse:
-  cold: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -5957,8 +5766,6 @@ attacks:
     type: physical
 can_fly: 1
 color: orange
-corpse:
-  sleep: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -6001,8 +5808,6 @@ attacks:
     type: physical
 can_fly: 1
 color: black
-corpse:
-  disint: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -6045,8 +5850,6 @@ attacks:
     type: physical
 can_fly: 1
 color: blue
-corpse:
-  elec: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -6089,8 +5892,6 @@ attacks:
     type: physical
 can_fly: 1
 color: green
-corpse:
-  poison: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -6135,8 +5936,6 @@ attacks:
     type: physical
 can_fly: 1
 color: yellow
-corpse:
-  stone: 1
 corpse_nutrition: 1500
 extra_nasty: 1
 glyph: D
@@ -6171,7 +5970,6 @@ attacks:
     type: physical
 can_fly: 1
 color: white
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: E
@@ -6199,7 +5997,6 @@ attacks:
     type: physical
 can_fly: 1
 color: cyan
-corpse: {}
 glyph: E
 hitdice: 8
 is_genderless: 1
@@ -6234,7 +6031,6 @@ attacks:
 can_fly: 1
 cannot_pickup_items: 1
 color: yellow
-corpse: {}
 glyph: E
 hitdice: 8
 infravision_detectable: 1
@@ -6266,7 +6062,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 glyph: E
 has_thick_hide: 1
 hitdice: 8
@@ -6302,7 +6097,6 @@ attacks:
     type: physical
 can_swim: 1
 color: blue
-corpse: {}
 glyph: E
 hitdice: 8
 is_amphibious: 1
@@ -6334,7 +6128,6 @@ attacks:
     type: stick
 cannot_pickup_items: 1
 color: bright_green
-corpse: {}
 corpse_nutrition: 200
 glyph: F
 hitdice: 0
@@ -6364,9 +6157,6 @@ attacks:
     type: cold
 cannot_pickup_items: 1
 color: brown
-corpse:
-  cold: 1
-  poison: 1
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
@@ -6398,8 +6188,6 @@ attacks:
     type: stun
 cannot_pickup_items: 1
 color: yellow
-corpse:
-  poison: 1
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
@@ -6432,8 +6220,6 @@ attacks:
     type: acid
 cannot_pickup_items: 1
 color: green
-corpse:
-  stone: 1
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
@@ -6465,9 +6251,6 @@ attacks:
     type: fire
 cannot_pickup_items: 1
 color: red
-corpse:
-  fire: 1
-  poison: 1
 corpse_nutrition: 30
 glyph: F
 hitdice: 1
@@ -6497,8 +6280,6 @@ always_hostile: 1
 attacks: []
 cannot_pickup_items: 1
 color: magenta
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: F
 hitdice: 3
@@ -6532,8 +6313,6 @@ attacks:
     type: stick
 cannot_pickup_items: 1
 color: magenta
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: F
 hitdice: 3
@@ -6562,7 +6341,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 100
 glyph: G
 has_infravision: 1
@@ -6592,7 +6370,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 120
 glyph: G
 has_infravision: 1
@@ -6622,7 +6399,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: bright_blue
-corpse: {}
 corpse_nutrition: 120
 glyph: G
 has_infravision: 1
@@ -6650,7 +6426,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 150
 glyph: G
 has_infravision: 1
@@ -6680,7 +6455,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 750
 extra_nasty: 1
 glyph: H
@@ -6712,7 +6486,6 @@ attacks:
     mode: weapon
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 750
 extra_nasty: 1
 glyph: H
@@ -6744,7 +6517,6 @@ attacks:
     mode: weapon
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 700
 extra_nasty: 1
 glyph: H
@@ -6776,8 +6548,6 @@ attacks:
     mode: weapon
     type: physical
 color: yellow
-corpse:
-  fire: 1
 corpse_nutrition: 750
 extra_nasty: 1
 glyph: H
@@ -6811,8 +6581,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse:
-  cold: 1
 corpse_nutrition: 750
 extra_nasty: 1
 glyph: H
@@ -6845,8 +6613,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse:
-  elec: 1
 corpse_nutrition: 750
 extra_nasty: 1
 glyph: H
@@ -6883,7 +6649,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 glyph: H
@@ -6916,7 +6681,6 @@ attacks:
     type: wizardspell
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 900
 extra_nasty: 1
 glyph: H
@@ -6953,7 +6717,6 @@ attacks:
     mode: headbutt
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 700
 extra_nasty: 1
 glyph: H
@@ -6992,7 +6755,6 @@ attacks:
     type: physical
 can_fly: 1
 color: orange
-corpse: {}
 corpse_nutrition: 600
 extra_nasty: 1
 glyph: J
@@ -7020,7 +6782,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 200
 glyph: K
 hitdice: 1
@@ -7049,7 +6810,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 200
 glyph: K
 hitdice: 2
@@ -7079,7 +6839,6 @@ attacks:
     mode: weapon
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 200
 glyph: K
 hitdice: 3
@@ -7108,7 +6867,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 200
 glyph: K
 hitdice: 4
@@ -7140,8 +6898,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: brown
-corpse:
-  cold: 1
 corpse_nutrition: 100
 glyph: L
 has_infravision: 1
@@ -7178,8 +6934,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: red
-corpse:
-  cold: 1
 corpse_nutrition: 100
 glyph: L
 has_infravision: 1
@@ -7216,9 +6970,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: magenta
-corpse:
-  cold: 1
-  fire: 1
 corpse_nutrition: 100
 gehennom_exclusive: 1
 glyph: L
@@ -7258,9 +7009,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: magenta
-corpse:
-  cold: 1
-  fire: 1
 corpse_nutrition: 100
 gehennom_exclusive: 1
 glyph: L
@@ -7298,7 +7046,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 50
 glyph: M
 has_infravision: 1
@@ -7331,7 +7078,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 50
 glyph: M
 has_infravision: 1
@@ -7365,7 +7111,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 75
 glyph: M
 has_infravision: 1
@@ -7401,7 +7146,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 150
 glyph: M
 has_infravision: 1
@@ -7437,7 +7181,6 @@ attacks:
     mode: claw
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 175
 glyph: M
 has_infravision: 1
@@ -7474,7 +7217,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 200
 glyph: M
 has_infravision: 1
@@ -7510,7 +7252,6 @@ attacks:
     mode: claw
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 250
 glyph: M
 has_infravision: 1
@@ -7547,7 +7288,6 @@ attacks:
     mode: claw
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 375
 glyph: M
 has_infravision: 1
@@ -7583,9 +7323,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: red
-corpse:
-  fire: 1
-  poison: 1
 corpse_nutrition: 100
 glyph: N
 has_thick_hide: 1
@@ -7616,9 +7353,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: black
-corpse:
-  poison: 1
-  stone: 1
 corpse_nutrition: 100
 glyph: N
 has_thick_hide: 1
@@ -7647,8 +7381,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: yellow
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: N
 has_thick_hide: 1
@@ -7676,8 +7408,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: green
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: N
 has_thick_hide: 1
@@ -7708,9 +7438,6 @@ attacks:
     type: fire
 cannot_pickup_items: 1
 color: red
-corpse:
-  fire: 1
-  poison: 1
 corpse_nutrition: 400
 glyph: N
 has_thick_hide: 1
@@ -7746,9 +7473,6 @@ attacks:
     type: acid
 cannot_pickup_items: 1
 color: black
-corpse:
-  poison: 1
-  stone: 1
 corpse_nutrition: 400
 glyph: N
 has_thick_hide: 1
@@ -7782,8 +7506,6 @@ attacks:
     type: wizardspell
 cannot_pickup_items: 1
 color: yellow
-corpse:
-  poison: 1
 corpse_nutrition: 400
 glyph: N
 has_thick_hide: 1
@@ -7819,8 +7541,6 @@ attacks:
     type: physical
 cannot_pickup_items: 1
 color: green
-corpse:
-  poison: 1
 corpse_nutrition: 400
 glyph: N
 has_thick_hide: 1
@@ -7850,7 +7570,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 500
 glyph: O
 has_infravision: 1
@@ -7880,7 +7599,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 700
 glyph: O
 has_infravision: 1
@@ -7911,7 +7629,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 750
 glyph: O
 has_infravision: 1
@@ -7944,10 +7661,6 @@ attacks:
     mode: bite
     type: rust
 color: gray
-corpse:
-  cold: 1
-  fire: 1
-  poison: 1
 corpse_nutrition: 250
 glyph: P
 hitdice: 3
@@ -7985,10 +7698,6 @@ attacks:
     mode: bite
     type: decay
 color: brown
-corpse:
-  cold: 1
-  elec: 1
-  poison: 1
 corpse_nutrition: 250
 glyph: P
 hitdice: 5
@@ -8029,10 +7738,6 @@ attacks:
     mode: passive
     type: corrode
 color: black
-corpse:
-  cold: 1
-  elec: 1
-  poison: 1
 corpse_nutrition: 250
 glyph: P
 hitdice: 10
@@ -8073,7 +7778,6 @@ attacks:
     mode: passive
     type: slime
 color: green
-corpse: {}
 corpse_nutrition: 150
 gehennom_exclusive: 1
 glyph: P
@@ -8112,7 +7816,6 @@ attacks:
     mode: claw
     type: teleport
 color: cyan
-corpse: {}
 corpse_nutrition: 20
 glyph: Q
 has_teleportitis: 1
@@ -8149,7 +7852,6 @@ attacks:
 can_eat_metal: 1
 can_swim: 1
 color: brown
-corpse: {}
 corpse_nutrition: 250
 glyph: R
 hitdice: 5
@@ -8177,7 +7879,6 @@ attacks:
     mode: passive
     type: disenchant
 color: blue
-corpse: {}
 corpse_nutrition: 200
 gehennom_exclusive: 1
 glyph: R
@@ -8204,7 +7905,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: green
-corpse: {}
 corpse_nutrition: 60
 glyph: S
 hides_under_item: 1
@@ -8235,8 +7935,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: brown
-corpse:
-  poison: 1
 corpse_nutrition: 80
 glyph: S
 hides_under_item: 1
@@ -8268,8 +7966,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: red
-corpse:
-  poison: 1
 corpse_nutrition: 80
 glyph: S
 hides_under_item: 1
@@ -8305,8 +8001,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: blue
-corpse:
-  poison: 1
 corpse_nutrition: 60
 glyph: S
 has_infravision: 1
@@ -8348,7 +8042,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 100
 glyph: S
 has_infravision: 1
@@ -8382,8 +8075,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: blue
-corpse:
-  poison: 1
 corpse_nutrition: 100
 glyph: S
 hides_under_item: 1
@@ -8419,7 +8110,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 350
 follows_stair_users: 1
 glyph: T
@@ -8456,8 +8146,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse:
-  cold: 1
 corpse_nutrition: 300
 follows_stair_users: 1
 glyph: T
@@ -8494,7 +8182,6 @@ attacks:
     mode: bite
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 300
 follows_stair_users: 1
 glyph: T
@@ -8531,7 +8218,6 @@ attacks:
     type: physical
 can_swim: 1
 color: blue
-corpse: {}
 corpse_nutrition: 350
 follows_stair_users: 1
 glyph: T
@@ -8567,7 +8253,6 @@ attacks:
     mode: bite
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: T
@@ -8606,7 +8291,6 @@ attacks:
     type: conf
 can_eat_rock: 1
 color: brown
-corpse: {}
 corpse_nutrition: 500
 glyph: U
 hitdice: 9
@@ -8635,7 +8319,6 @@ attacks:
     type: drain
 can_fly: 1
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -8674,7 +8357,6 @@ attacks:
     type: drain
 can_fly: 1
 color: blue
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -8715,7 +8397,6 @@ attacks:
     type: drain
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -8763,7 +8444,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 follows_stair_users: 1
 glyph: W
 hitdice: 3
@@ -8796,7 +8476,6 @@ attacks:
     type: drain
 can_fly: 1
 color: black
-corpse: {}
 follows_stair_users: 1
 glyph: W
 hitdice: 6
@@ -8831,7 +8510,6 @@ attacks:
     mode: breathe
     type: sleep
 color: magenta
-corpse: {}
 follows_stair_users: 1
 glyph: W
 hitdice: 13
@@ -8876,8 +8554,6 @@ attacks:
     type: physical
 can_eat_metal: 1
 color: brown
-corpse:
-  stone: 1
 corpse_nutrition: 700
 glyph: X
 has_thick_hide: 1
@@ -8909,7 +8585,6 @@ attacks:
     mode: bite
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 50
 glyph: Y
 hitdice: 2
@@ -8940,7 +8615,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 500
 glyph: Y
 hitdice: 4
@@ -8974,7 +8648,6 @@ attacks:
     mode: crush
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 700
 extra_nasty: 1
 glyph: Y
@@ -9008,8 +8681,6 @@ attacks:
     mode: bite
     type: physical
 color: white
-corpse:
-  cold: 1
 corpse_nutrition: 700
 glyph: Y
 hitdice: 5
@@ -9043,7 +8714,6 @@ attacks:
     mode: crush
     type: physical
 color: black
-corpse: {}
 corpse_nutrition: 550
 glyph: Y
 hitdice: 6
@@ -9075,7 +8745,6 @@ attacks:
     mode: kick
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 750
 glyph: Y
 hitdice: 7
@@ -9104,7 +8773,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 50
 follows_stair_users: 1
 glyph: Z
@@ -9138,7 +8806,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 50
 follows_stair_users: 1
 glyph: Z
@@ -9173,7 +8840,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 75
 follows_stair_users: 1
 glyph: Z
@@ -9209,7 +8875,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 150
 follows_stair_users: 1
 glyph: Z
@@ -9245,7 +8910,6 @@ attacks:
     mode: claw
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 175
 follows_stair_users: 1
 glyph: Z
@@ -9280,7 +8944,6 @@ attacks:
     mode: claw
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 200
 follows_stair_users: 1
 glyph: Z
@@ -9317,7 +8980,6 @@ attacks:
     mode: claw
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 250
 follows_stair_users: 1
 glyph: Z
@@ -9354,7 +9016,6 @@ attacks:
     mode: claw
     type: physical
 color: cyan
-corpse: {}
 corpse_nutrition: 375
 follows_stair_users: 1
 glyph: Z
@@ -9392,7 +9053,6 @@ attacks:
     mode: claw
     type: physical
 color: black
-corpse: {}
 corpse_nutrition: 50
 glyph: Z
 has_infravision: 1
@@ -9429,7 +9089,6 @@ attacks:
     mode: touch
     type: slow
 color: white
-corpse: {}
 corpse_nutrition: 5
 extra_nasty: 1
 glyph: Z
@@ -9469,7 +9128,6 @@ attacks:
     mode: claw
     type: physical
 color: yellow
-corpse: {}
 glyph: "'"
 hitdice: 3
 humanoid_body: 1
@@ -9498,7 +9156,6 @@ attacks:
     mode: claw
     type: physical
 color: white
-corpse: {}
 glyph: "'"
 hitdice: 3
 humanoid_body: 1
@@ -9533,7 +9190,6 @@ attacks:
     mode: crush
     type: physical
 color: brown
-corpse: {}
 glyph: "'"
 hitdice: 4
 humanoid_body: 1
@@ -9565,7 +9221,6 @@ attacks:
     mode: claw
     type: physical
 color: yellow
-corpse: {}
 glyph: "'"
 has_thick_hide: 1
 hitdice: 5
@@ -9599,7 +9254,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 glyph: "'"
 hitdice: 6
 humanoid_body: 1
@@ -9628,7 +9282,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 glyph: "'"
 has_thick_hide: 1
 hitdice: 7
@@ -9661,12 +9314,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse:
-  cold: 1
-  elec: 1
-  fire: 1
-  poison: 1
-  sleep: 1
 corpse_nutrition: 600
 glyph: "'"
 hitdice: 9
@@ -9697,7 +9344,6 @@ attacks:
     mode: claw
     type: physical
 color: brown
-corpse: {}
 glyph: "'"
 has_thick_hide: 1
 hitdice: 11
@@ -9727,7 +9373,6 @@ attacks:
     mode: claw
     type: physical
 color: gray
-corpse: {}
 glyph: "'"
 has_thick_hide: 1
 hitdice: 14
@@ -9761,7 +9406,6 @@ attacks:
     mode: claw
     type: physical
 color: cyan
-corpse: {}
 glyph: "'"
 has_thick_hide: 1
 hitdice: 16
@@ -9795,7 +9439,6 @@ attacks:
     mode: breathe
     type: poison
 color: cyan
-corpse: {}
 glyph: "'"
 has_thick_hide: 1
 hitdice: 18
@@ -9829,7 +9472,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 0
@@ -9858,7 +9500,6 @@ attacks:
     mode: weapon
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 2
@@ -9890,7 +9531,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 2
@@ -9922,7 +9562,6 @@ attacks:
     mode: weapon
     type: physical
 color: orange
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -9953,8 +9592,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse:
-  sleep: 1
 corpse_nutrition: 350
 glyph: '@'
 has_infravision: 1
@@ -9985,8 +9622,6 @@ attacks:
     mode: weapon
     type: physical
 color: green
-corpse:
-  sleep: 1
 corpse_nutrition: 350
 glyph: '@'
 has_infravision: 1
@@ -10017,8 +9652,6 @@ attacks:
     mode: weapon
     type: physical
 color: bright_green
-corpse:
-  sleep: 1
 corpse_nutrition: 350
 glyph: '@'
 has_infravision: 1
@@ -10049,8 +9682,6 @@ attacks:
     mode: weapon
     type: physical
 color: gray
-corpse:
-  sleep: 1
 corpse_nutrition: 350
 glyph: '@'
 has_infravision: 1
@@ -10084,8 +9715,6 @@ attacks:
     mode: weapon
     type: physical
 color: bright_blue
-corpse:
-  sleep: 1
 corpse_nutrition: 350
 glyph: '@'
 has_infravision: 1
@@ -10122,8 +9751,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse:
-  sleep: 1
 corpse_nutrition: 350
 glyph: '@'
 has_infravision: 1
@@ -10157,7 +9784,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 9
@@ -10188,8 +9814,6 @@ attacks:
     mode: claw
     type: heal
 color: white
-corpse:
-  poison: 1
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 11
@@ -10221,7 +9845,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 12
@@ -10251,7 +9874,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 12
@@ -10281,7 +9903,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 12
@@ -10311,7 +9932,6 @@ attacks:
     mode: passive
     type: magicmissile
 color: bright_blue
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 12
@@ -10346,7 +9966,6 @@ attacks:
     mode: magic
     type: clericalspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 12
@@ -10384,7 +10003,6 @@ attacks:
     mode: magic
     type: clericalspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 glyph: '@'
@@ -10422,7 +10040,6 @@ attacks:
     mode: weapon
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '@'
@@ -10455,7 +10072,6 @@ attacks:
     mode: weapon
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '@'
@@ -10491,7 +10107,6 @@ attacks:
     mode: weapon
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '@'
@@ -10526,7 +10141,6 @@ attacks:
     mode: weapon
     type: physical
 color: blue
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '@'
@@ -10558,7 +10172,6 @@ attacks:
     mode: weapon
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '@'
@@ -10595,7 +10208,6 @@ attacks:
     mode: weapon
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '@'
@@ -10639,9 +10251,6 @@ attacks:
 can_fly: 1
 can_swim: 1
 color: bright_green
-corpse:
-  poison: 1
-  stone: 1
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -10681,9 +10290,6 @@ attacks:
     type: wizardspell
 can_fly: 1
 color: magenta
-corpse:
-  fire: 1
-  poison: 1
 corpse_nutrition: 400
 extra_nasty: 1
 glyph: '@'
@@ -10730,7 +10336,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -10770,7 +10375,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 follows_stair_users: 1
 glyph: X
 has_infravision: 1
@@ -10810,7 +10414,6 @@ attacks:
     type: slow
 can_fly: 1
 color: black
-corpse: {}
 extra_nasty: 1
 follows_stair_users: 1
 glyph: X
@@ -10856,7 +10459,6 @@ attacks:
     type: physical
 can_swim: 1
 color: blue
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -10898,7 +10500,6 @@ attacks:
     mode: sting
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -10938,7 +10539,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -10977,7 +10577,6 @@ attacks:
     type: physical
 can_fly: 1
 color: gray
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11009,7 +10608,6 @@ attacks:
     mode: weapon
     type: poison
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11052,7 +10650,6 @@ attacks:
     mode: sting
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11100,7 +10697,6 @@ attacks:
     mode: claw
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11148,7 +10744,6 @@ attacks:
     mode: bite
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11186,7 +10781,6 @@ attacks:
     mode: bite
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11222,7 +10816,6 @@ attacks:
     mode: sting
     type: poison
 color: gray
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11264,7 +10857,6 @@ attacks:
     mode: sting
     type: cold
 color: white
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11306,7 +10898,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11344,7 +10935,6 @@ attacks:
     mode: crush
     type: physical
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11381,7 +10971,6 @@ attacks:
     type: physical
 can_fly: 1
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -11420,7 +11009,6 @@ attacks:
     type: acid
 can_fly: 1
 color: bright_green
-corpse: {}
 extra_nasty: 1
 follows_stair_users: 1
 gehennom_exclusive: 1
@@ -11473,7 +11061,6 @@ attacks:
     type: magicmissile
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11525,7 +11112,6 @@ attacks:
     type: poison
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11573,7 +11159,6 @@ attacks:
     type: poison
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11616,7 +11201,6 @@ attacks:
     type: wizardspell
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11660,7 +11244,6 @@ attacks:
     type: stun
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11703,7 +11286,6 @@ attacks:
     type: cold
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11755,7 +11337,6 @@ attacks:
     type: sickness
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 500
 extra_nasty: 1
 follows_stair_users: 1
@@ -11798,7 +11379,6 @@ attacks:
     type: Death
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 1
 extra_nasty: 1
 follows_stair_users: 1
@@ -11841,7 +11421,6 @@ attacks:
     type: Pestilence
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 1
 extra_nasty: 1
 follows_stair_users: 1
@@ -11884,7 +11463,6 @@ attacks:
     type: Famine
 can_fly: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 1
 extra_nasty: 1
 follows_stair_users: 1
@@ -11922,7 +11500,6 @@ attacks: []
 can_fly: 1
 can_swim: 1
 color: bright_blue
-corpse: {}
 corpse_nutrition: 300
 follows_stair_users: 1
 glyph: '&'
@@ -11959,7 +11536,6 @@ attacks:
     type: physical
 can_fly: 1
 color: yellow
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 glyph: '&'
@@ -11991,7 +11567,6 @@ attacks:
     mode: weapon
     type: physical
 color: gray
-corpse: {}
 corpse_nutrition: 400
 follows_stair_users: 1
 gehennom_exclusive: 1
@@ -12024,8 +11599,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: blue
-corpse:
-  poison: 1
 corpse_nutrition: 20
 glyph: ;
 hitdice: 3
@@ -12054,7 +11627,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: red
-corpse: {}
 corpse_nutrition: 30
 glyph: ;
 hitdice: 5
@@ -12085,7 +11657,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: gray
-corpse: {}
 corpse_nutrition: 350
 glyph: ;
 has_thick_hide: 1
@@ -12119,7 +11690,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: cyan
-corpse: {}
 corpse_nutrition: 250
 glyph: ;
 hitdice: 5
@@ -12153,8 +11723,6 @@ attacks:
 can_swim: 1
 cannot_pickup_items: 1
 color: bright_blue
-corpse:
-  elec: 1
 corpse_nutrition: 250
 glyph: ;
 hitdice: 7
@@ -12194,7 +11762,6 @@ attacks:
     type: physical
 can_swim: 1
 color: red
-corpse: {}
 corpse_nutrition: 1000
 glyph: ;
 hitdice: 20
@@ -12224,7 +11791,6 @@ attacks:
     type: physical
 can_swim: 1
 color: yellow
-corpse: {}
 corpse_nutrition: 20
 glyph: ':'
 hitdice: 0
@@ -12250,7 +11816,6 @@ attacks:
     mode: bite
     type: physical
 color: green
-corpse: {}
 corpse_nutrition: 20
 glyph: ':'
 hitdice: 1
@@ -12275,7 +11840,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 30
 glyph: ':'
 hitdice: 2
@@ -12301,7 +11865,6 @@ attacks:
     type: physical
 can_swim: 1
 color: brown
-corpse: {}
 corpse_nutrition: 200
 glyph: ':'
 hitdice: 3
@@ -12326,8 +11889,6 @@ attacks:
     mode: bite
     type: physical
 color: green
-corpse:
-  stone: 1
 corpse_nutrition: 40
 glyph: ':'
 hitdice: 5
@@ -12353,7 +11914,6 @@ attacks:
     mode: bite
     type: physical
 color: brown
-corpse: {}
 corpse_nutrition: 100
 glyph: ':'
 hitdice: 6
@@ -12383,7 +11943,6 @@ attacks:
     type: physical
 can_swim: 1
 color: brown
-corpse: {}
 corpse_nutrition: 400
 glyph: ':'
 has_thick_hide: 1
@@ -12421,8 +11980,6 @@ attacks:
     mode: crush
     type: fire
 color: orange
-corpse:
-  fire: 1
 corpse_nutrition: 400
 follows_stair_users: 1
 gehennom_exclusive: 1
@@ -12456,7 +12013,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12488,7 +12044,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12517,7 +12072,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12546,7 +12100,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12575,7 +12128,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12607,7 +12159,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12638,7 +12189,6 @@ attacks:
     mode: kick
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12666,7 +12216,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12695,7 +12244,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12724,7 +12272,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12755,7 +12302,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12788,7 +12334,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12819,7 +12364,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12850,7 +12394,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12880,7 +12423,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 10
@@ -12910,7 +12452,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -12945,7 +12486,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -12980,7 +12520,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -13014,7 +12553,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -13052,7 +12590,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -13095,7 +12632,6 @@ attacks:
     mode: magic
     type: clericalspell
 color: black
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 glyph: '@'
@@ -13140,7 +12676,6 @@ attacks:
     mode: magic
     type: clericalspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 25
@@ -13178,7 +12713,6 @@ attacks:
     type: physical
 can_swim: 1
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_infravision: 1
@@ -13221,7 +12755,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 20
@@ -13260,7 +12793,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -13297,7 +12829,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -13334,7 +12865,6 @@ attacks:
     mode: weapon
     type: physical
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 20
@@ -13371,7 +12901,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: green
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_proper_name: 1
@@ -13415,7 +12944,6 @@ attacks:
     type: stealamulet
 can_fly: 1
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13462,7 +12990,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13517,14 +13044,6 @@ attacks:
     mode: sting
     type: physical
 color: magenta
-corpse:
-  cold: 1
-  disint: 1
-  elec: 1
-  fire: 1
-  poison: 1
-  sleep: 1
-  stone: 1
 corpse_nutrition: 1700
 extra_nasty: 1
 follows_stair_users: 1
@@ -13576,7 +13095,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: gray
-corpse: {}
 corpse_nutrition: 700
 extra_nasty: 1
 follows_stair_users: 1
@@ -13628,8 +13146,6 @@ attacks:
     type: stealamulet
 can_fly: 1
 color: red
-corpse:
-  fire: 1
 corpse_nutrition: 1600
 extra_nasty: 1
 follows_stair_users: 1
@@ -13677,8 +13193,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: magenta
-corpse:
-  poison: 1
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13726,7 +13240,6 @@ attacks:
     type: stealamulet
 can_fly: 1
 color: red
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13771,8 +13284,6 @@ attacks:
     mode: sting
     type: sickness
 color: magenta
-corpse:
-  poison: 1
 corpse_nutrition: 350
 extra_nasty: 1
 follows_stair_users: 1
@@ -13816,7 +13327,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13858,7 +13368,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: magenta
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13903,8 +13412,6 @@ attacks:
     mode: claw
     type: stealamulet
 color: magenta
-corpse:
-  fire: 1
 corpse_nutrition: 850
 extra_nasty: 1
 follows_stair_users: 1
@@ -13954,7 +13461,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: black
-corpse: {}
 corpse_nutrition: 400
 extra_nasty: 1
 follows_stair_users: 1
@@ -13991,7 +13497,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14021,7 +13526,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14051,7 +13555,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14080,7 +13583,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14113,7 +13615,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14148,7 +13649,6 @@ attacks:
     mode: magic
     type: clericalspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14179,7 +13679,6 @@ attacks:
     mode: magic
     type: clericalspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14208,7 +13707,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 has_infravision: 1
@@ -14242,7 +13740,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14275,7 +13772,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14307,7 +13803,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14339,7 +13834,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14372,7 +13866,6 @@ attacks:
     mode: weapon
     type: physical
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5
@@ -14405,7 +13898,6 @@ attacks:
     mode: magic
     type: wizardspell
 color: white
-corpse: {}
 corpse_nutrition: 400
 glyph: '@'
 hitdice: 5

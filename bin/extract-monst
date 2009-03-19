@@ -257,6 +257,8 @@ sub process {
         $_{wants_wargear} = 1;
     }
 
+    delete $_{corpse};
+
     print Dump \%_ unless $blacklist{$_{name}};
 }
 
