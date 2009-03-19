@@ -943,6 +943,22 @@ pred vegetarian => sub {
     return 0;
 };
 
+sub corpse_type {
+    my $self = shift;
+    my $type;
+    if ($self->glyph eq 'Z') {
+        ($type = $self->name) =~ s/ zombie//;
+    }
+    elsif ($self->glyph eq 'M') {
+        ($type = $self->name) =~ s/ mummy//;
+    }
+    elsif ($self->glyph eq 'V') {
+        $type = 'human';
+    }
+    return $self->lookup(name => $type) if $type;
+    return $self;
+}
+
 =head2 parse_description $name
 
 Attempt to decypher a monster description returned by NetHack. The return
