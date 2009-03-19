@@ -1038,9 +1038,6 @@ sub corpse {
             if $corpse_type->is_telepathic;
     }
 
-    # other
-    $corpse_data{reanimates} = 1 if $glyph eq 'T';
-
     return \%corpse_data;
 }
 
@@ -1065,6 +1062,11 @@ sub corpse_type {
     }
     return $self->lookup(name => $type) if $type;
     return $self;
+}
+
+sub corpse_reanimates {
+    my $self = shift;
+    return $self->glyph = 'T';
 }
 
 =head2 parse_description $name
