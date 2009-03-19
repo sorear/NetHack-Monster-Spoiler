@@ -1000,7 +1000,7 @@ sub corpse {
     elsif ($name eq 'chameleon' || $name eq 'doppleganger') {
         $corpse_data{polymorph} = 1;
     }
-    elsif ($name =~ /mind flayer/) {
+    elsif ($corpse_type->is_mind_flayer) {
         $corpse_data{intelligence} = 1;
         $corpse_data{telepathy} = 1;
     }
