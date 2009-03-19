@@ -1064,6 +1064,13 @@ sub corpse_type {
     return $self;
 }
 
+=head2 corpse_reanimates
+
+Return true if the corpse will reanimate after sitting on the floor for a
+while.
+
+=cut
+
 sub corpse_reanimates {
     my $self = shift;
     return $self->glyph = 'T';
