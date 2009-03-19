@@ -16,6 +16,7 @@ sub mon {
 }
 
 sub test_pred {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
     my ($pred, $will, $wont) = @_;
 
     for my $m (@$will) {

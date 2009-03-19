@@ -7,6 +7,7 @@ use Test::More tests => 19;
 use NetHack::Monster::Spoiler;
 
 sub parse {
+    local $Test::Builder::Level = $Test::Builder::Level + 1;
     my ($str, $want) = @_;
 
     my $got = NetHack::Monster::Spoiler->parse_description($str);
