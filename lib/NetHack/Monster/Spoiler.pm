@@ -942,21 +942,32 @@ sub corpse {
     my $name = $corpse_type->name;
     my $glyph = $corpse_type->glyph;
 
+    my %corpse_data;
+
     # initial effects (cprefx)
     # XXX: should we mark these separately?
-    my %corpse_data = (
-        acidic     => $corpse_type->acidic_corpse,
-        poisonous  => $corpse_type->poisonous_corpse,
-        petrify    => $corpse_type->touch_petrifies || $name eq 'Medusa',
-        die        => $corpse_type->is_rider,
-        aggravate  => $name =~ /(?:dog|cat|kitten)$/,
-        cure_stone => $name eq 'lizard' || $corpse_type->acidic_corpse,
-        slime      => $name eq 'green slime',
-    );
-    $corpse_data{cannibal} = 'Hum' if $corpse_type->is_human;
-    $corpse_data{cannibal} = 'Dwa' if $corpse_type->is_dwarf;
-    $corpse_data{cannibal} = 'Elf' if $corpse_type->is_elf;
-    $corpse_data{cannibal} = 'Gno' if $corpse_type->is_gnome;
+    $corpse_data{acidic} = 1
+        if $corpse_type->acidic_corpse;
+    $corpse_data{poisonous} = 1
+        if $corpse_type->poisonous_corpse;
+    $corpse_data{petrify} = 1
+        if $corpse_type->touch_petrifies || $name eq 'Medusa';
+    $corpse_data{die} = 1
+        if $corpse_type->is_rider;
+    $corpse_data{aggravate} = 1
+        if $name =~ /(?:dog|cat|kitten)$/;
+    $corpse_data{cure_stone} = 1
+        if $name eq 'lizard' || $corpse_type->acidic_corpse;
+    $corpse_data{slime} = 1
+        if $name eq 'green slime';
+    $corpse_data{cannibal} = 'Hum'
+        if $corpse_type->is_human;
+    $corpse_data{cannibal} = 'Dwa'
+        if $corpse_type->is_dwarf;
+    $corpse_data{cannibal} = 'Elf'
+        if $corpse_type->is_elf;
+    $corpse_data{cannibal} = 'Gno'
+        if $corpse_type->is_gnome;
 
     # final effects (cpostfx)
     if ($name eq 'newt') {
