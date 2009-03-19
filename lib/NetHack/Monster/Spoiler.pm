@@ -941,6 +941,103 @@ pred vegetarian => sub {
     return 0;
 };
 
+sub corpse {
+    my $self = shift;
+
+    my $corpse_type = $self->corpse_type;
+    my $name = $corpse_type->name;
+    my $glyph = $corpse_type->glyph;
+
+    # initial effects (cprefx)
+    # XXX: should we mark these separately?
+    my %corpse_data = (
+        acidic     => $corpse_type->acidic_corpse,
+        poisonous  => $corpse_type->poisonous_corpse,
+        petrify    => $corpse_type->touch_petrifies || $name eq 'Medusa',
+        die        => $corpse_type->is_rider,
+        aggravate  => $name =~ /(?:dog|cat|kitten)$/,
+        cure_stone => $name eq 'lizard' || $corpse_type->acidic_corpse,
+        slime      => $name eq 'green slime',
+    );
+    $corpse_data{cannibal} = 'Hum' if $corpse_type->is_human;
+    $corpse_data{cannibal} = 'Dwa' if $corpse_type->is_dwarf;
+    $corpse_data{cannibal} = 'Elf' if $corpse_type->is_elf;
+    $corpse_data{cannibal} = 'Gno' if $corpse_type->is_gnome;
+
+    # final effects (cpostfx)
+    if ($name eq 'newt') {
+        $corpse_data{energy} = 1;
+    }
+    elsif ($name eq 'wraith') {
+        $corpse_data{gain_level} = 1;
+    }
+    elsif ($name =~ /^were/) {
+        $corpse_data{lycanthropy} = 1;
+    }
+    elsif ($name eq 'nurse') {
+        $corpse_data{heal} = 1;
+    }
+    elsif ($name eq 'stalker') {
+        $corpse_data{invisibility} = 1;
+        $corpse_data{see_invisible} = 1; # XXX ?
+        $corpse_data{stun} = 60;
+    }
+    elsif ($name eq 'yellow light') {
+        $corpse_data{stun} = 60;
+    }
+    elsif ($name eq 'giant bat') {
+        $corpse_data{stun} = 60;
+    }
+    elsif ($name eq 'bat') {
+        $corpse_data{stun} = 30;
+    }
+    elsif ($glyph eq 'm') {
+        $corpse_data{mimic} = $name =~ /giant/ ? 50
+                            : $name =~ /large/ ? 40
+                            :                    20;
+    }
+    elsif ($name eq 'quantum mechanic') {
+        $corpse_data{speed_toggle} = 1;
+    }
+    elsif ($name eq 'lizard') {
+        $corpse_data{less_confused} = 2;
+        $corpse_data{less_stunned} = 2;
+    }
+    elsif ($name eq 'chameleon' || $name eq 'doppleganger') {
+        $corpse_data{polymorph} = 1;
+    }
+    elsif ($name =~ /mind flayer/) {
+        $corpse_data{intelligence} = 1;
+        $corpse_data{telepathy} = 1;
+    }
+    else {
+        if ($corpse_type->has_attack('stun')
+         || $corpse_type->has_attack('hallucination')
+         || $name eq 'violet fungus') {
+            $corpse_data{hallucination} = 200;
+        }
+        if ($corpse_type->is_giant) {
+            $corpse_data{strength} = 1;
+        }
+
+        for my $resist (qw/fire sleep cold disintegration shock poison/) {
+            $corpse_data{"${resist}_resistance"} = 1
+                if $corpse_type->resists($resist);
+        }
+        $corpse_data{teleportitis} = 1
+            if $corpse_type->has_teleportitis;
+        $corpse_data{teleport_control} = 1
+            if $corpse_type->has_teleport_control;
+        $corpse_data{telepathy} = 1
+            if $corpse_type->is_telepathic;
+    }
+
+    # other
+    $corpse_data{reanimates} = 1 if $glyph eq 'T';
+
+    return \%corpse_data;
+}
+
 sub corpse_type {
     my $self = shift;
     my $type;
