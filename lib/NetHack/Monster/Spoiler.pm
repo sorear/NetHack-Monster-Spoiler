@@ -941,6 +941,12 @@ pred vegetarian => sub {
     return 0;
 };
 
+=head2 corpse
+
+Returns a hashref with all effects that eating a corpse will provide.
+
+=cut
+
 sub corpse {
     my $self = shift;
 
@@ -1037,6 +1043,13 @@ sub corpse {
 
     return \%corpse_data;
 }
+
+=head2 corpse_type
+
+Returns the monster corresponding to the type of corpse that a monster will
+leave (i.e. vampires leave human corpses).
+
+=cut
 
 sub corpse_type {
     my $self = shift;
