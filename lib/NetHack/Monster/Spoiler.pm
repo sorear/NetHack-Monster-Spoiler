@@ -1075,7 +1075,7 @@ while.
 
 sub corpse_reanimates {
     my $self = shift;
-    return $self->glyph = 'T';
+    return $self->glyph eq 'T';
 }
 
 =head2 parse_description $name
