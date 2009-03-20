@@ -39,7 +39,7 @@ my %corpses = (
                             poison_resistance => 1,
                             cure_stone        => 1 },
     abbot              => { cannibal          => 'Hum',
-                            hallucination     => 1 },
+                            hallucination     => 200 },
     doppelganger       => { cannibal          => 'Hum',
                             polymorph         => 1 },
     'Lord Surtur'      => { strength          => 1,
