@@ -10,7 +10,7 @@ sub test_corpse {
     my ($name, $expected_corpse) = @_;
     my $monster = NetHack::Monster::Spoiler->lookup($name);
     my $got_corpse = $monster->corpse;
-    isa_ok($got_corpse, 'HASH', "$name corpse is a hashref");
+    isa_ok($got_corpse, 'HASH');
     is_deeply($got_corpse, $expected_corpse, "correct corpse info for $name");
 }
 
