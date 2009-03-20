@@ -1025,9 +1025,11 @@ sub corpse {
             $corpse_data{strength} = 1;
         }
 
+        my %trans = (shock => 'elec', disintegration => 'disint');
         for my $resist (qw/fire sleep cold disintegration shock poison/) {
+            my $trans_resist = $trans{$resist} || $resist;
             $corpse_data{"${resist}_resistance"} = 1
-                if exists $corpse_type->_corpse->{$resist};
+                if exists $corpse_type->_corpse->{$trans_resist};
         }
         $corpse_data{teleportitis} = 1
             if $corpse_type->has_teleportitis;
