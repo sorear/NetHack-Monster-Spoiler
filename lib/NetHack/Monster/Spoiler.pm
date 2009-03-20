@@ -1008,7 +1008,7 @@ sub corpse {
         $corpse_data{less_confused} = 2;
         $corpse_data{less_stunned} = 2;
     }
-    elsif ($name eq 'chameleon' || $name eq 'doppleganger') {
+    elsif ($name eq 'chameleon' || $name eq 'doppelganger') {
         $corpse_data{polymorph} = 1;
     }
     elsif ($corpse_type->is_mind_flayer) {
