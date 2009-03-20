@@ -957,7 +957,7 @@ sub corpse {
     $corpse_data{aggravate} = 1
         if $name =~ /(?:dog|cat|kitten)$/;
     $corpse_data{cure_stone} = 1
-        if $name eq 'lizard' || $corpse_type->acidic_corpse;
+        if ($name eq 'lizard') || $corpse_type->acidic_corpse;
     $corpse_data{slime} = 1
         if $name eq 'green slime';
     $corpse_data{cannibal} = 'Hum'
