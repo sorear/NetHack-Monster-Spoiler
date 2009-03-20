@@ -946,14 +946,14 @@ sub corpse {
 
     # initial effects (cprefx)
     # XXX: should we mark these separately?
+    return { die => 1 }
+        if $corpse_type->is_rider;
     $corpse_data{acidic} = 1
         if $corpse_type->acidic_corpse;
     $corpse_data{poisonous} = 1
         if $corpse_type->poisonous_corpse;
     $corpse_data{petrify} = 1
         if $corpse_type->touch_petrifies || $name eq 'Medusa';
-    $corpse_data{die} = 1
-        if $corpse_type->is_rider;
     $corpse_data{aggravate} = 1
         if $name =~ /(?:dog|cat|kitten)$/;
     $corpse_data{cure_stone} = 1
