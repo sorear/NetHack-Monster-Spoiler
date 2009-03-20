@@ -117,7 +117,7 @@ my %gmap = map {$al =~ s/^(.)//; $_ => $1 } qw/ant blob cockatrice dog eye
         i('nutrition'), sub { s/^0|sizeof\(.*?\)//; }, # extension
         i('sound'), i('size', human => 'medium')),
 
-    nest('resist', flag_set('MR')), nest('corpse', flag_set('MR')),
+    nest('resist', flag_set('MR')), nest('_corpse', flag_set('MR')),
 
     flag_set('M1'), flag_set('M2'), flag_set('M3'),
 
@@ -256,8 +256,6 @@ sub process {
     if (grep { $_->{mode} eq 'weapon' } @{$_{attacks}}) {
         $_{wants_wargear} = 1;
     }
-
-    delete $_{corpse};
 
     print Dump \%_ unless $blacklist{$_{name}};
 }

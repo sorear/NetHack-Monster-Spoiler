@@ -350,7 +350,7 @@ has [qw/sound name glyph color/] => (
     isa     => 'Str',
 );
 
-has resist => (
+has [qw/resist _corpse/] => (
     is      => 'ro',
     isa     => 'HashRef',
 );
@@ -1027,7 +1027,7 @@ sub corpse {
 
         for my $resist (qw/fire sleep cold disintegration shock poison/) {
             $corpse_data{"${resist}_resistance"} = 1
-                if $corpse_type->resists($resist);
+                if exists $corpse_type->_corpse->{$resist};
         }
         $corpse_data{teleportitis} = 1
             if $corpse_type->has_teleportitis;
@@ -1361,6 +1361,7 @@ L<NetHack::Item>, L<MooseX::Role::Matcher>
 
 __DATA__
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -1387,6 +1388,8 @@ sound: silent
 speed: 18
 weight: 10
 ---
+_corpse:
+  poison: 1
 ac: -1
 alignment: 0
 always_hostile: 1
@@ -1415,6 +1418,8 @@ sound: buzz
 speed: 18
 weight: 1
 ---
+_corpse:
+  poison: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -1446,6 +1451,8 @@ sound: silent
 speed: 18
 weight: 20
 ---
+_corpse:
+  fire: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -1477,6 +1484,8 @@ sound: silent
 speed: 18
 weight: 30
 ---
+_corpse:
+  poison: 1
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -1503,6 +1512,8 @@ sound: silent
 speed: 6
 weight: 10
 ---
+_corpse:
+  poison: 1
 ac: -4
 alignment: 0
 always_hostile: 1
@@ -1532,6 +1543,8 @@ sound: buzz
 speed: 24
 weight: 1
 ---
+_corpse:
+  stone: 1
 ac: 8
 acidic_corpse: 1
 alignment: 0
@@ -1566,6 +1579,8 @@ sound: silent
 speed: 3
 weight: 30
 ---
+_corpse:
+  poison: 1
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -1595,6 +1610,11 @@ sound: silent
 speed: 1
 weight: 200
 ---
+_corpse:
+  cold: 1
+  elec: 1
+  fire: 1
+  sleep: 1
 ac: 8
 acidic_corpse: 1
 alignment: 0
@@ -1635,6 +1655,9 @@ sound: silent
 speed: 6
 weight: 600
 ---
+_corpse:
+  poison: 1
+  stone: 1
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -1670,6 +1693,9 @@ sound: hiss
 speed: 4
 weight: 10
 ---
+_corpse:
+  poison: 1
+  stone: 1
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -1705,6 +1731,9 @@ sound: hiss
 speed: 6
 weight: 30
 ---
+_corpse:
+  fire: 1
+  poison: 1
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -1734,6 +1763,7 @@ sound: hiss
 speed: 6
 weight: 30
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -1760,6 +1790,7 @@ sound: bark
 speed: 12
 weight: 300
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -1785,6 +1816,7 @@ sound: bark
 speed: 15
 weight: 300
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -1811,6 +1843,7 @@ sound: bark
 speed: 12
 weight: 300
 ---
+_corpse: {}
 ac: 7
 alignment: -7
 always_hostile: 1
@@ -1840,6 +1873,7 @@ sound: bark
 speed: 12
 weight: 300
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 attacks:
@@ -1865,6 +1899,7 @@ sound: bark
 speed: 18
 weight: 150
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 attacks:
@@ -1890,6 +1925,7 @@ sound: bark
 speed: 16
 weight: 400
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 attacks:
@@ -1916,6 +1952,7 @@ sound: bark
 speed: 15
 weight: 800
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -1941,6 +1978,7 @@ sound: bark
 speed: 16
 weight: 400
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -1967,6 +2005,7 @@ sound: bark
 speed: 12
 weight: 500
 ---
+_corpse: {}
 ac: 4
 alignment: -7
 always_hostile: 1
@@ -1996,6 +2035,7 @@ sound: bark
 speed: 12
 weight: 500
 ---
+_corpse: {}
 ac: 4
 alignment: -5
 always_hostile: 1
@@ -2022,6 +2062,8 @@ sound: bark
 speed: 12
 weight: 850
 ---
+_corpse:
+  cold: 1
 absent_from_gehennom: 1
 ac: 4
 alignment: -5
@@ -2052,6 +2094,8 @@ sound: bark
 speed: 12
 weight: 250
 ---
+_corpse:
+  cold: 1
 absent_from_gehennom: 1
 ac: 4
 alignment: 0
@@ -2082,6 +2126,8 @@ sound: bark
 speed: 12
 weight: 700
 ---
+_corpse:
+  fire: 1
 ac: 4
 alignment: -5
 always_hostile: 1
@@ -2113,6 +2159,8 @@ sound: bark
 speed: 12
 weight: 200
 ---
+_corpse:
+  fire: 1
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -2144,6 +2192,7 @@ sound: bark
 speed: 14
 weight: 600
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_hostile: 1
@@ -2173,6 +2222,7 @@ sound: silent
 speed: 3
 weight: 10
 ---
+_corpse: {}
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -2201,6 +2251,8 @@ sound: silent
 speed: 1
 weight: 10
 ---
+_corpse:
+  cold: 1
 absent_from_gehennom: 1
 ac: 4
 alignment: 0
@@ -2234,6 +2286,8 @@ sound: silent
 speed: 13
 weight: 10
 ---
+_corpse:
+  fire: 1
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -2265,6 +2319,8 @@ sound: silent
 speed: 13
 weight: 10
 ---
+_corpse:
+  elec: 1
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -2296,6 +2352,7 @@ sound: silent
 speed: 13
 weight: 10
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 attacks:
@@ -2322,6 +2379,7 @@ sound: mew
 speed: 18
 weight: 150
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 attacks:
@@ -2347,6 +2405,7 @@ sound: mew
 speed: 16
 weight: 200
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -2378,6 +2437,7 @@ sound: growl
 speed: 15
 weight: 600
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -2409,6 +2469,7 @@ sound: growl
 speed: 15
 weight: 600
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -2440,6 +2501,7 @@ sound: growl
 speed: 15
 weight: 600
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 attacks:
@@ -2466,6 +2528,7 @@ sound: mew
 speed: 15
 weight: 250
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -2497,6 +2560,8 @@ sound: growl
 speed: 12
 weight: 600
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: -9
 attacks:
@@ -2532,6 +2597,8 @@ sound: laugh
 speed: 12
 weight: 100
 ---
+_corpse:
+  stone: 1
 ac: -4
 alignment: -9
 always_hostile: 1
@@ -2565,6 +2632,8 @@ sound: grunt
 speed: 10
 weight: 1000
 ---
+_corpse:
+  stone: 1
 ac: -2
 alignment: -12
 always_hostile: 1
@@ -2602,6 +2671,7 @@ speed: 15
 wants_magic_items: 1
 weight: 1200
 ---
+_corpse: {}
 ac: 10
 alignment: 6
 attacks:
@@ -2628,6 +2698,7 @@ speed: 9
 wants_wargear: 1
 weight: 500
 ---
+_corpse: {}
 ac: 10
 alignment: 4
 attacks:
@@ -2660,6 +2731,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 900
 ---
+_corpse: {}
 ac: 5
 alignment: -6
 attacks:
@@ -2687,6 +2759,7 @@ speed: 9
 wants_wargear: 1
 weight: 1250
 ---
+_corpse: {}
 ac: 10
 alignment: 5
 attacks:
@@ -2723,6 +2796,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 900
 ---
+_corpse: {}
 ac: 10
 alignment: 6
 attacks:
@@ -2759,6 +2833,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 900
 ---
+_corpse: {}
 ac: 5
 alignment: -8
 always_hostile: 1
@@ -2800,6 +2875,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -8
 always_hostile: 1
@@ -2847,6 +2923,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 7
 alignment: -7
 always_hostile: 1
@@ -2882,6 +2959,9 @@ sound: silent
 speed: 3
 weight: 100
 ---
+_corpse:
+  poison: 1
+  sleep: 1
 ac: 6
 alignment: -7
 attacks:
@@ -2909,6 +2989,7 @@ sound: silent
 speed: 12
 weight: 60
 ---
+_corpse: {}
 ac: 2
 alignment: -7
 attacks:
@@ -2934,6 +3015,8 @@ sound: cuss
 speed: 12
 weight: 20
 ---
+_corpse:
+  sleep: 1
 ac: 7
 alignment: -7
 always_hostile: 1
@@ -2967,6 +3050,8 @@ sound: silent
 speed: 3
 weight: 150
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: -7
 attacks:
@@ -2998,6 +3083,8 @@ sound: silent
 speed: 15
 weight: 200
 ---
+_corpse:
+  poison: 1
 ac: 5
 alignment: 7
 attacks:
@@ -3024,6 +3111,9 @@ sound: sqawk
 speed: 13
 weight: 300
 ---
+_corpse:
+  cold: 1
+  poison: 1
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -3056,6 +3146,7 @@ sound: silent
 speed: 0
 weight: 50
 ---
+_corpse: {}
 ac: 8
 acidic_corpse: 1
 alignment: 0
@@ -3089,6 +3180,7 @@ sound: silent
 speed: 0
 weight: 50
 ---
+_corpse: {}
 ac: 8
 acidic_corpse: 1
 alignment: 0
@@ -3125,6 +3217,7 @@ sound: silent
 speed: 3
 weight: 50
 ---
+_corpse: {}
 ac: 10
 alignment: -2
 always_hostile: 1
@@ -3154,6 +3247,7 @@ speed: 6
 wants_wargear: 1
 weight: 400
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 always_hostile: 1
@@ -3183,6 +3277,7 @@ speed: 6
 wants_wargear: 1
 weight: 450
 ---
+_corpse: {}
 ac: 10
 alignment: -4
 always_hostile: 1
@@ -3214,6 +3309,7 @@ speed: 6
 wants_wargear: 1
 weight: 500
 ---
+_corpse: {}
 ac: 6
 alignment: -4
 always_hostile: 1
@@ -3243,6 +3339,7 @@ speed: 6
 wants_magic_items: 1
 weight: 450
 ---
+_corpse: {}
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -3268,6 +3365,7 @@ speed: 15
 wants_gold: 1
 weight: 60
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -3299,6 +3397,7 @@ sound: silent
 speed: 3
 weight: 300
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -3332,6 +3431,7 @@ sound: silent
 speed: 3
 weight: 600
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -3368,6 +3468,7 @@ sound: silent
 speed: 3
 weight: 800
 ---
+_corpse: {}
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -3397,6 +3498,7 @@ speed: 12
 wants_wargear: 1
 weight: 600
 ---
+_corpse: {}
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -3427,6 +3529,7 @@ speed: 12
 wants_wargear: 1
 weight: 600
 ---
+_corpse: {}
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -3456,6 +3559,7 @@ speed: 12
 wants_wargear: 1
 weight: 600
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 attacks:
@@ -3483,6 +3587,7 @@ speed: 6
 wants_wargear: 1
 weight: 400
 ---
+_corpse: {}
 ac: 10
 alignment: -4
 attacks:
@@ -3511,6 +3616,7 @@ speed: 9
 wants_wargear: 1
 weight: 1000
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 attacks:
@@ -3543,6 +3649,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 850
 ---
+_corpse: {}
 ac: 10
 alignment: -4
 attacks:
@@ -3574,6 +3681,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1000
 ---
+_corpse: {}
 ac: 10
 alignment: -5
 attacks:
@@ -3605,6 +3713,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1200
 ---
+_corpse: {}
 ac: 10
 alignment: -4
 attacks:
@@ -3636,6 +3745,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1300
 ---
+_corpse: {}
 ac: 5
 alignment: -5
 attacks:
@@ -3666,6 +3776,7 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 1000
 ---
+_corpse: {}
 ac: 10
 alignment: -5
 attacks:
@@ -3699,6 +3810,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1350
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -3727,6 +3839,7 @@ sound: silent
 speed: 1
 weight: 200
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -3755,6 +3868,7 @@ sound: silent
 speed: 1
 weight: 400
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -3784,6 +3898,7 @@ sound: silent
 speed: 1
 weight: 400
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -3817,6 +3932,7 @@ sound: silent
 speed: 9
 weight: 400
 ---
+_corpse: {}
 ac: 0
 alignment: -2
 always_hostile: 1
@@ -3847,6 +3963,7 @@ sound: roar
 speed: 9
 weight: 2500
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -3880,6 +3997,7 @@ sound: imitate
 speed: 18
 weight: 1200
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -3908,6 +4026,7 @@ sound: burble
 speed: 3
 weight: 2500
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -3935,6 +4054,7 @@ sound: silent
 speed: 12
 weight: 2650
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -3965,6 +4085,7 @@ sound: silent
 speed: 12
 weight: 3800
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -3995,6 +4116,7 @@ sound: silent
 speed: 12
 weight: 3800
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -4021,6 +4143,7 @@ sound: sqeek
 speed: 12
 weight: 20
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -4047,6 +4170,7 @@ sound: sqeek
 speed: 10
 weight: 30
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -4074,6 +4198,7 @@ sound: sqeek
 speed: 12
 weight: 30
 ---
+_corpse: {}
 ac: 6
 alignment: -7
 always_hostile: 1
@@ -4103,6 +4228,7 @@ sound: sqeek
 speed: 12
 weight: 40
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -4132,6 +4258,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 30
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -4160,6 +4287,8 @@ sound: silent
 speed: 3
 weight: 30
 ---
+_corpse:
+  poison: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -4188,6 +4317,8 @@ sound: silent
 speed: 12
 weight: 50
 ---
+_corpse:
+  poison: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -4215,6 +4346,8 @@ sound: silent
 speed: 4
 weight: 50
 ---
+_corpse:
+  poison: 1
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -4243,6 +4376,8 @@ sound: silent
 speed: 15
 weight: 100
 ---
+_corpse:
+  poison: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -4277,6 +4412,7 @@ sound: silent
 speed: 15
 weight: 50
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -4307,6 +4443,7 @@ sound: silent
 speed: 3
 weight: 800
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -4336,6 +4473,8 @@ sound: silent
 speed: 3
 weight: 800
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: 7
 attacks:
@@ -4366,6 +4505,8 @@ speed: 24
 wants_gems: 1
 weight: 1300
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: 0
 attacks:
@@ -4396,6 +4537,8 @@ speed: 24
 wants_gems: 1
 weight: 1300
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: -7
 attacks:
@@ -4426,6 +4569,7 @@ speed: 24
 wants_gems: 1
 weight: 1300
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 attacks:
@@ -4456,6 +4600,7 @@ sound: neigh
 speed: 16
 weight: 1300
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 attacks:
@@ -4486,6 +4631,7 @@ sound: neigh
 speed: 20
 weight: 1500
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 attacks:
@@ -4516,6 +4662,7 @@ sound: neigh
 speed: 24
 weight: 1800
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -4551,6 +4698,7 @@ sound: silent
 speed: 1
 weight: 0
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -4584,6 +4732,7 @@ sound: silent
 speed: 20
 weight: 0
 ---
+_corpse: {}
 absent_from_gehennom: 1
 ac: 2
 alignment: 0
@@ -4620,6 +4769,7 @@ sound: silent
 speed: 20
 weight: 0
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -4662,6 +4812,7 @@ sound: silent
 speed: 20
 weight: 0
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -4699,6 +4850,7 @@ sound: silent
 speed: 22
 weight: 0
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -4739,6 +4891,7 @@ sound: silent
 speed: 22
 weight: 0
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -4764,6 +4917,7 @@ sound: silent
 speed: 3
 weight: 600
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -4788,6 +4942,7 @@ sound: silent
 speed: 3
 weight: 600
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -4817,6 +4972,7 @@ sound: silent
 speed: 3
 weight: 1500
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -4848,6 +5004,7 @@ sound: silent
 speed: 9
 weight: 2700
 ---
+_corpse: {}
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -4875,6 +5032,8 @@ sound: buzz
 speed: 12
 weight: 15
 ---
+_corpse:
+  poison: 1
 ac: -4
 alignment: 0
 always_hostile: 1
@@ -4902,6 +5061,7 @@ sound: buzz
 speed: 18
 weight: 300
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -4944,6 +5104,7 @@ sound: silent
 speed: 15
 weight: 0
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -4986,6 +5147,7 @@ sound: silent
 speed: 15
 weight: 0
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -5018,6 +5180,7 @@ sound: silent
 speed: 8
 weight: 1200
 ---
+_corpse: {}
 absent_from_gehennom: 1
 ac: 5
 alignment: 7
@@ -5055,6 +5218,7 @@ sound: hiss
 speed: 10
 weight: 900
 ---
+_corpse: {}
 absent_from_gehennom: 1
 ac: 0
 alignment: 7
@@ -5094,6 +5258,7 @@ speed: 8
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 absent_from_gehennom: 1
 ac: -4
 alignment: 12
@@ -5139,6 +5304,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 absent_from_gehennom: 1
 ac: -5
 alignment: 15
@@ -5179,6 +5345,7 @@ sound: neigh
 speed: 18
 weight: 1450
 ---
+_corpse: {}
 absent_from_gehennom: 1
 ac: -6
 alignment: 15
@@ -5231,6 +5398,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 8
 alignment: 0
 attacks:
@@ -5258,6 +5426,7 @@ sound: sqeek
 speed: 22
 weight: 20
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -5285,6 +5454,7 @@ sound: sqeek
 speed: 22
 weight: 30
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -5315,6 +5485,7 @@ sound: sqawk
 speed: 20
 weight: 40
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -5349,6 +5520,7 @@ sound: sqeek
 speed: 20
 weight: 30
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 attacks:
@@ -5379,6 +5551,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 2500
 ---
+_corpse: {}
 ac: 3
 alignment: -1
 attacks:
@@ -5409,6 +5582,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 2550
 ---
+_corpse: {}
 ac: 2
 alignment: -3
 attacks:
@@ -5442,6 +5616,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 2550
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5469,6 +5644,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5496,6 +5672,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5525,6 +5702,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5553,6 +5731,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5581,6 +5760,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5609,6 +5789,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5637,6 +5818,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -5666,6 +5848,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 acidic_corpse: 1
 alignment: 0
@@ -5696,6 +5879,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -1
 alignment: 4
 always_hostile: 1
@@ -5737,6 +5921,7 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse: {}
 ac: -1
 alignment: 4
 always_hostile: 1
@@ -5779,6 +5964,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  fire: 1
 ac: -1
 alignment: -4
 always_hostile: 1
@@ -5822,6 +6009,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  cold: 1
 ac: -1
 alignment: -5
 always_hostile: 1
@@ -5864,6 +6053,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  sleep: 1
 ac: -1
 alignment: 5
 always_hostile: 1
@@ -5906,6 +6097,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  disint: 1
 ac: -1
 alignment: -6
 always_hostile: 1
@@ -5948,6 +6141,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  elec: 1
 ac: -1
 alignment: -7
 always_hostile: 1
@@ -5990,6 +6185,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  poison: 1
 ac: -1
 alignment: 6
 always_hostile: 1
@@ -6033,6 +6230,8 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse:
+  stone: 1
 ac: -1
 acidic_corpse: 1
 alignment: 7
@@ -6077,6 +6276,7 @@ wants_gold: 1
 wants_magic_items: 1
 weight: 4500
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -6105,6 +6305,7 @@ sound: silent
 speed: 12
 weight: 900
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 attacks:
@@ -6135,6 +6336,7 @@ sound: silent
 speed: 36
 weight: 0
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 attacks:
@@ -6171,6 +6373,7 @@ sound: silent
 speed: 12
 weight: 0
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 attacks:
@@ -6205,6 +6408,7 @@ sound: silent
 speed: 6
 weight: 2500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 attacks:
@@ -6235,6 +6439,7 @@ sound: silent
 speed: 6
 weight: 2500
 ---
+_corpse: {}
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -6264,6 +6469,9 @@ sound: silent
 speed: 1
 weight: 20
 ---
+_corpse:
+  cold: 1
+  poison: 1
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -6295,6 +6503,8 @@ sound: silent
 speed: 0
 weight: 50
 ---
+_corpse:
+  poison: 1
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -6326,6 +6536,8 @@ sound: silent
 speed: 0
 weight: 50
 ---
+_corpse:
+  stone: 1
 ac: 9
 acidic_corpse: 1
 alignment: 0
@@ -6358,6 +6570,9 @@ sound: silent
 speed: 0
 weight: 50
 ---
+_corpse:
+  fire: 1
+  poison: 1
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -6390,6 +6605,8 @@ sound: silent
 speed: 0
 weight: 50
 ---
+_corpse:
+  poison: 1
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -6417,6 +6634,8 @@ sound: shriek
 speed: 1
 weight: 100
 ---
+_corpse:
+  poison: 1
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -6450,6 +6669,7 @@ sound: silent
 speed: 1
 weight: 100
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -6479,6 +6699,7 @@ speed: 6
 wants_wargear: 1
 weight: 650
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -6508,6 +6729,7 @@ speed: 8
 wants_wargear: 1
 weight: 700
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 attacks:
@@ -6535,6 +6757,7 @@ speed: 10
 wants_magic_items: 1
 weight: 700
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -6564,6 +6787,7 @@ speed: 10
 wants_wargear: 1
 weight: 750
 ---
+_corpse: {}
 ac: 0
 alignment: 2
 attacks:
@@ -6595,6 +6819,7 @@ wants_gems: 1
 wants_wargear: 1
 weight: 2250
 ---
+_corpse: {}
 ac: 0
 alignment: 2
 attacks:
@@ -6626,6 +6851,7 @@ wants_gems: 1
 wants_wargear: 1
 weight: 2250
 ---
+_corpse: {}
 ac: 6
 alignment: -2
 attacks:
@@ -6657,6 +6883,8 @@ wants_gems: 1
 wants_wargear: 1
 weight: 2200
 ---
+_corpse:
+  fire: 1
 ac: 4
 alignment: 2
 attacks:
@@ -6689,6 +6917,8 @@ wants_gems: 1
 wants_wargear: 1
 weight: 2250
 ---
+_corpse:
+  cold: 1
 absent_from_gehennom: 1
 ac: 3
 alignment: -3
@@ -6722,6 +6952,8 @@ wants_gems: 1
 wants_wargear: 1
 weight: 2250
 ---
+_corpse:
+  elec: 1
 ac: 3
 alignment: -3
 attacks:
@@ -6754,6 +6986,7 @@ wants_gems: 1
 wants_wargear: 1
 weight: 2250
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -6786,6 +7019,7 @@ speed: 12
 wants_wargear: 1
 weight: 1700
 ---
+_corpse: {}
 ac: -3
 alignment: 9
 attacks:
@@ -6819,6 +7053,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 2300
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -6853,6 +7088,7 @@ sound: silent
 speed: 15
 weight: 1500
 ---
+_corpse: {}
 ac: -2
 alignment: 0
 always_hostile: 1
@@ -6890,6 +7126,7 @@ speed: 12
 wants_wargear: 1
 weight: 1300
 ---
+_corpse: {}
 ac: 10
 alignment: 9
 always_hostile: 1
@@ -6918,6 +7155,7 @@ speed: 6
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 10
 always_hostile: 1
@@ -6947,6 +7185,7 @@ speed: 8
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 11
 always_hostile: 1
@@ -6975,6 +7214,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 12
 always_hostile: 1
@@ -7003,6 +7243,8 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  cold: 1
 ac: 0
 alignment: -9
 always_hostile: 1
@@ -7039,6 +7281,8 @@ speed: 6
 wants_magic_items: 1
 weight: 1200
 ---
+_corpse:
+  cold: 1
 ac: -2
 alignment: -12
 always_hostile: 1
@@ -7075,6 +7319,9 @@ speed: 9
 wants_magic_items: 1
 weight: 1200
 ---
+_corpse:
+  cold: 1
+  fire: 1
 ac: -4
 alignment: -15
 always_hostile: 1
@@ -7114,6 +7361,9 @@ wants_book: 1
 wants_magic_items: 1
 weight: 1200
 ---
+_corpse:
+  cold: 1
+  fire: 1
 ac: -6
 alignment: -15
 always_hostile: 1
@@ -7154,6 +7404,7 @@ wants_book: 1
 wants_magic_items: 1
 weight: 1200
 ---
+_corpse: {}
 ac: 6
 alignment: -2
 always_hostile: 1
@@ -7186,6 +7437,7 @@ sound: silent
 speed: 8
 weight: 400
 ---
+_corpse: {}
 ac: 6
 alignment: -3
 always_hostile: 1
@@ -7219,6 +7471,7 @@ sound: silent
 speed: 10
 weight: 650
 ---
+_corpse: {}
 ac: 5
 alignment: -4
 always_hostile: 1
@@ -7254,6 +7507,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 850
 ---
+_corpse: {}
 ac: 5
 alignment: -4
 always_hostile: 1
@@ -7289,6 +7543,7 @@ wants_gems: 1
 wants_gold: 1
 weight: 900
 ---
+_corpse: {}
 ac: 4
 alignment: -5
 always_hostile: 1
@@ -7322,6 +7577,7 @@ sound: silent
 speed: 12
 weight: 800
 ---
+_corpse: {}
 ac: 4
 alignment: -5
 always_hostile: 1
@@ -7357,6 +7613,7 @@ sound: silent
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: 4
 alignment: -6
 always_hostile: 1
@@ -7393,6 +7650,7 @@ sound: silent
 speed: 12
 weight: 1700
 ---
+_corpse: {}
 ac: 3
 alignment: -7
 always_hostile: 1
@@ -7431,6 +7689,9 @@ speed: 14
 wants_gems: 1
 weight: 2050
 ---
+_corpse:
+  fire: 1
+  poison: 1
 ac: 6
 alignment: 0
 attacks:
@@ -7460,6 +7721,9 @@ sound: mumble
 speed: 10
 weight: 500
 ---
+_corpse:
+  poison: 1
+  stone: 1
 ac: 6
 acidic_corpse: 1
 alignment: 0
@@ -7489,6 +7753,8 @@ sound: mumble
 speed: 10
 weight: 500
 ---
+_corpse:
+  poison: 1
 ac: 6
 alignment: 0
 attacks:
@@ -7516,6 +7782,8 @@ sound: mumble
 speed: 10
 weight: 500
 ---
+_corpse:
+  poison: 1
 ac: 6
 alignment: 0
 attacks:
@@ -7543,6 +7811,9 @@ sound: mumble
 speed: 10
 weight: 500
 ---
+_corpse:
+  fire: 1
+  poison: 1
 ac: 4
 alignment: -4
 attacks:
@@ -7577,6 +7848,9 @@ sound: mumble
 speed: 12
 weight: 2600
 ---
+_corpse:
+  poison: 1
+  stone: 1
 ac: 2
 acidic_corpse: 1
 alignment: 4
@@ -7611,6 +7885,8 @@ sound: mumble
 speed: 14
 weight: 2600
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: 5
 attacks:
@@ -7643,6 +7919,8 @@ sound: mumble
 speed: 14
 weight: 2600
 ---
+_corpse:
+  poison: 1
 ac: 0
 alignment: 7
 attacks:
@@ -7679,6 +7957,7 @@ sound: mumble
 speed: 16
 weight: 2600
 ---
+_corpse: {}
 ac: 5
 alignment: -3
 attacks:
@@ -7708,6 +7987,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1600
 ---
+_corpse: {}
 ac: 3
 alignment: -5
 attacks:
@@ -7738,6 +8018,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1700
 ---
+_corpse: {}
 ac: 4
 alignment: -7
 attacks:
@@ -7768,6 +8049,10 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1700
 ---
+_corpse:
+  cold: 1
+  fire: 1
+  poison: 1
 ac: 8
 acidic_corpse: 1
 alignment: 0
@@ -7805,6 +8090,10 @@ sound: silent
 speed: 1
 weight: 500
 ---
+_corpse:
+  cold: 1
+  elec: 1
+  poison: 1
 ac: 8
 acidic_corpse: 1
 alignment: 0
@@ -7842,6 +8131,10 @@ sound: silent
 speed: 3
 weight: 500
 ---
+_corpse:
+  cold: 1
+  elec: 1
+  poison: 1
 ac: 6
 acidic_corpse: 1
 alignment: 0
@@ -7882,6 +8175,7 @@ sound: silent
 speed: 6
 weight: 900
 ---
+_corpse: {}
 ac: 6
 acidic_corpse: 1
 alignment: 0
@@ -7924,6 +8218,7 @@ sound: silent
 speed: 6
 weight: 400
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -7952,6 +8247,7 @@ sound: humanoid
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -7984,6 +8280,7 @@ sound: silent
 speed: 18
 weight: 1000
 ---
+_corpse: {}
 ac: -10
 alignment: -3
 always_hostile: 1
@@ -8012,6 +8309,7 @@ sound: growl
 speed: 12
 weight: 750
 ---
+_corpse: {}
 ac: 8
 alignment: 0
 attacks:
@@ -8041,6 +8339,8 @@ sound: hiss
 speed: 8
 weight: 50
 ---
+_corpse:
+  poison: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -8072,6 +8372,8 @@ sound: hiss
 speed: 15
 weight: 100
 ---
+_corpse:
+  poison: 1
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -8104,6 +8406,8 @@ sound: hiss
 speed: 15
 weight: 150
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -8139,6 +8443,7 @@ sound: hiss
 speed: 15
 weight: 100
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -8178,6 +8483,8 @@ sound: hiss
 speed: 3
 weight: 250
 ---
+_corpse:
+  poison: 1
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -8212,6 +8519,7 @@ sound: hiss
 speed: 18
 weight: 250
 ---
+_corpse: {}
 ac: 4
 alignment: -3
 always_hostile: 1
@@ -8247,6 +8555,8 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse:
+  cold: 1
 absent_from_gehennom: 1
 ac: 2
 alignment: -3
@@ -8284,6 +8594,7 @@ speed: 10
 wants_wargear: 1
 weight: 1000
 ---
+_corpse: {}
 ac: 0
 alignment: -3
 always_hostile: 1
@@ -8319,6 +8630,7 @@ speed: 12
 wants_wargear: 1
 weight: 1200
 ---
+_corpse: {}
 ac: 4
 alignment: -3
 always_hostile: 1
@@ -8355,6 +8667,7 @@ speed: 14
 wants_wargear: 1
 weight: 1200
 ---
+_corpse: {}
 ac: -4
 alignment: -7
 always_hostile: 1
@@ -8390,6 +8703,7 @@ speed: 12
 wants_wargear: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 attacks:
@@ -8423,6 +8737,7 @@ sound: silent
 speed: 6
 weight: 1200
 ---
+_corpse: {}
 ac: 1
 alignment: -8
 always_hostile: 1
@@ -8461,6 +8776,7 @@ sound: vampire
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -9
 always_hostile: 1
@@ -8501,6 +8817,7 @@ sound: vampire
 speed: 14
 weight: 1450
 ---
+_corpse: {}
 ac: -3
 alignment: -10
 always_hostile: 1
@@ -8546,6 +8863,7 @@ wants_candelabrum: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 5
 alignment: -3
 always_hostile: 1
@@ -8583,6 +8901,7 @@ speed: 12
 wants_wargear: 1
 weight: 1200
 ---
+_corpse: {}
 ac: 4
 alignment: -6
 always_hostile: 1
@@ -8615,6 +8934,7 @@ sound: silent
 speed: 12
 weight: 0
 ---
+_corpse: {}
 ac: 0
 alignment: -17
 always_hostile: 1
@@ -8652,6 +8972,8 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  stone: 1
 ac: -2
 alignment: 0
 always_hostile: 1
@@ -8691,6 +9013,7 @@ sound: roar
 speed: 9
 weight: 1200
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 attacks:
@@ -8718,6 +9041,7 @@ sound: growl
 speed: 12
 weight: 100
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 attacks:
@@ -8750,6 +9074,7 @@ sound: growl
 speed: 12
 weight: 1100
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -8783,6 +9108,8 @@ sound: roar
 speed: 12
 weight: 1700
 ---
+_corpse:
+  cold: 1
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -8816,6 +9143,7 @@ sound: growl
 speed: 15
 weight: 1600
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -8848,6 +9176,7 @@ sound: growl
 speed: 12
 weight: 1250
 ---
+_corpse: {}
 ac: 6
 alignment: 2
 attacks:
@@ -8881,6 +9210,7 @@ sound: growl
 speed: 15
 weight: 1550
 ---
+_corpse: {}
 ac: 10
 alignment: -2
 always_hostile: 1
@@ -8914,6 +9244,7 @@ sound: silent
 speed: 6
 weight: 400
 ---
+_corpse: {}
 ac: 10
 alignment: -2
 always_hostile: 1
@@ -8948,6 +9279,7 @@ sound: silent
 speed: 6
 weight: 650
 ---
+_corpse: {}
 ac: 9
 alignment: -3
 always_hostile: 1
@@ -8983,6 +9315,7 @@ sound: silent
 speed: 6
 weight: 850
 ---
+_corpse: {}
 ac: 9
 alignment: -3
 always_hostile: 1
@@ -9018,6 +9351,7 @@ sound: silent
 speed: 6
 weight: 900
 ---
+_corpse: {}
 ac: 9
 alignment: -3
 always_hostile: 1
@@ -9052,6 +9386,7 @@ sound: silent
 speed: 6
 weight: 800
 ---
+_corpse: {}
 ac: 8
 alignment: -3
 always_hostile: 1
@@ -9085,6 +9420,7 @@ sound: silent
 speed: 6
 weight: 1450
 ---
+_corpse: {}
 ac: 6
 alignment: -4
 always_hostile: 1
@@ -9121,6 +9457,7 @@ sound: silent
 speed: 8
 weight: 1700
 ---
+_corpse: {}
 ac: 6
 alignment: -4
 always_hostile: 1
@@ -9158,6 +9495,7 @@ sound: silent
 speed: 8
 weight: 2050
 ---
+_corpse: {}
 ac: 10
 alignment: -2
 always_hostile: 1
@@ -9194,6 +9532,7 @@ sound: silent
 speed: 6
 weight: 400
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -9233,6 +9572,7 @@ speed: 8
 wants_wargear: 1
 weight: 300
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_hostile: 1
@@ -9264,6 +9604,7 @@ sound: silent
 speed: 12
 weight: 400
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_hostile: 1
@@ -9292,6 +9633,7 @@ sound: silent
 speed: 12
 weight: 400
 ---
+_corpse: {}
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -9326,6 +9668,7 @@ sound: silent
 speed: 9
 weight: 450
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -9359,6 +9702,7 @@ sound: silent
 speed: 9
 weight: 450
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -9390,6 +9734,7 @@ sound: silent
 speed: 6
 weight: 800
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -9419,6 +9764,12 @@ sound: silent
 speed: 3
 weight: 900
 ---
+_corpse:
+  cold: 1
+  elec: 1
+  fire: 1
+  poison: 1
+  sleep: 1
 ac: 9
 alignment: 0
 always_hostile: 1
@@ -9452,6 +9803,7 @@ sound: silent
 speed: 8
 weight: 1400
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -9481,6 +9833,7 @@ sound: silent
 speed: 7
 weight: 1550
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -9511,6 +9864,7 @@ sound: silent
 speed: 6
 weight: 1900
 ---
+_corpse: {}
 ac: 1
 alignment: 0
 always_hostile: 1
@@ -9544,6 +9898,7 @@ sound: silent
 speed: 6
 weight: 1800
 ---
+_corpse: {}
 ac: 3
 alignment: 0
 always_hostile: 1
@@ -9581,6 +9936,7 @@ speed: 6
 wants_wargear: 1
 weight: 2000
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -9608,6 +9964,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -7
 always_hostile: 1
@@ -9639,6 +9996,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -7
 always_hostile: 1
@@ -9670,6 +10028,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -7
 always_hostile: 1
@@ -9701,6 +10060,8 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  sleep: 1
 ac: 10
 alignment: -3
 attacks:
@@ -9731,6 +10092,8 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse:
+  sleep: 1
 ac: 10
 alignment: -5
 attacks:
@@ -9761,6 +10124,8 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse:
+  sleep: 1
 ac: 10
 alignment: -6
 attacks:
@@ -9791,6 +10156,8 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse:
+  sleep: 1
 ac: 10
 alignment: -7
 attacks:
@@ -9821,6 +10188,8 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse:
+  sleep: 1
 ac: 10
 alignment: -9
 attacks:
@@ -9857,6 +10226,8 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse:
+  sleep: 1
 ac: 10
 alignment: -10
 attacks:
@@ -9892,6 +10263,7 @@ speed: 12
 wants_wargear: 1
 weight: 800
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -9922,6 +10294,8 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  poison: 1
 ac: 0
 alignment: 0
 always_hostile: 1
@@ -9950,6 +10324,7 @@ sound: nurse
 speed: 6
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -9982,6 +10357,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 10
 always_peaceful: 1
@@ -10011,6 +10387,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -10040,6 +10417,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -10068,6 +10446,7 @@ sound: oracle
 speed: 0
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -10103,6 +10482,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 attacks:
@@ -10148,6 +10528,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -2
 always_hostile: 1
@@ -10180,6 +10561,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 always_hostile: 1
@@ -10212,6 +10594,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -4
 always_hostile: 1
@@ -10246,6 +10629,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -5
 always_hostile: 1
@@ -10280,6 +10664,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -2
 always_peaceful: 1
@@ -10313,6 +10698,7 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -4
 always_peaceful: 1
@@ -10348,6 +10734,9 @@ speed: 10
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  poison: 1
+  stone: 1
 ac: 2
 alignment: -15
 always_hostile: 1
@@ -10394,6 +10783,9 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  fire: 1
+  poison: 1
 ac: -8
 alignment: none
 always_hostile: 1
@@ -10444,6 +10836,7 @@ wants_magic_items: 1
 wants_quest_artifact: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 15
 always_hostile: 1
@@ -10482,6 +10875,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -5
 alignment: -5
 always_hostile: 1
@@ -10518,6 +10912,7 @@ sound: silent
 speed: 3
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_hostile: 1
@@ -10560,6 +10955,7 @@ sound: wail
 speed: 10
 weight: 1450
 ---
+_corpse: {}
 ac: -4
 alignment: -7
 always_hostile: 1
@@ -10599,6 +10995,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -5
 alignment: 11
 always_hostile: 1
@@ -10640,6 +11037,7 @@ speed: 9
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -9
 always_hostile: 1
@@ -10678,6 +11076,7 @@ sound: seduce
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -9
 always_hostile: 1
@@ -10716,6 +11115,7 @@ sound: seduce
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: 2
 alignment: 10
 always_hostile: 1
@@ -10752,6 +11152,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 8
 always_hostile: 1
@@ -10790,6 +11191,7 @@ sound: silent
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: -6
 alignment: -12
 always_hostile: 1
@@ -10840,6 +11242,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -9
 always_hostile: 1
@@ -10883,6 +11286,7 @@ sound: silent
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: -2
 alignment: -10
 always_hostile: 1
@@ -10921,6 +11325,7 @@ sound: silent
 speed: 6
 weight: 1450
 ---
+_corpse: {}
 ac: -1
 alignment: -9
 always_hostile: 1
@@ -10956,6 +11361,7 @@ speed: 15
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -4
 alignment: -12
 always_hostile: 1
@@ -10997,6 +11403,7 @@ sound: silent
 speed: 6
 weight: 1450
 ---
+_corpse: {}
 ac: -1
 alignment: -11
 always_hostile: 1
@@ -11037,6 +11444,7 @@ sound: spell
 speed: 9
 weight: 1450
 ---
+_corpse: {}
 ac: -3
 alignment: -13
 always_hostile: 1
@@ -11075,6 +11483,7 @@ speed: 6
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -2
 alignment: -14
 always_hostile: 1
@@ -11112,6 +11521,7 @@ speed: 5
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -7
 acidic_corpse: 1
 alignment: -15
@@ -11159,6 +11569,7 @@ speed: 3
 wants_amulet: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -5
 alignment: -15
 always_hostile: 1
@@ -11207,6 +11618,7 @@ wants_amulet: 1
 wants_wargear: 1
 weight: 900
 ---
+_corpse: {}
 ac: -6
 alignment: -20
 always_hostile: 1
@@ -11260,6 +11672,7 @@ wants_book: 1
 wants_wargear: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -3
 alignment: 15
 always_hostile: 1
@@ -11305,6 +11718,7 @@ speed: 3
 wants_amulet: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -2
 alignment: 15
 always_hostile: 1
@@ -11348,6 +11762,7 @@ wants_amulet: 1
 wants_wargear: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -5
 alignment: 20
 always_hostile: 1
@@ -11390,6 +11805,7 @@ speed: 9
 wants_amulet: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -7
 alignment: 20
 always_hostile: 1
@@ -11435,6 +11851,7 @@ speed: 12
 wants_amulet: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -8
 alignment: -20
 always_hostile: 1
@@ -11483,6 +11900,7 @@ speed: 15
 wants_amulet: 1
 weight: 1500
 ---
+_corpse: {}
 ac: -5
 alignment: 0
 always_hostile: 1
@@ -11525,6 +11943,7 @@ sound: rider
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: -5
 alignment: 0
 always_hostile: 1
@@ -11567,6 +11986,7 @@ sound: rider
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: -5
 alignment: 0
 always_hostile: 1
@@ -11609,6 +12029,7 @@ sound: rider
 speed: 12
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -11644,6 +12065,7 @@ sound: silent
 speed: 24
 weight: 600
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 attacks:
@@ -11673,6 +12095,7 @@ speed: 12
 wants_wargear: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 4
 alignment: -5
 attacks:
@@ -11705,6 +12128,8 @@ speed: 12
 wants_wargear: 1
 weight: 1500
 ---
+_corpse:
+  poison: 1
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -11733,6 +12158,7 @@ sound: silent
 speed: 3
 weight: 80
 ---
+_corpse: {}
 ac: 4
 alignment: 0
 always_hostile: 1
@@ -11763,6 +12189,7 @@ sound: silent
 speed: 12
 weight: 60
 ---
+_corpse: {}
 ac: 2
 alignment: 0
 always_hostile: 1
@@ -11793,6 +12220,7 @@ sound: silent
 speed: 12
 weight: 500
 ---
+_corpse: {}
 ac: -1
 alignment: 0
 always_hostile: 1
@@ -11826,6 +12254,8 @@ sound: silent
 speed: 9
 weight: 200
 ---
+_corpse:
+  elec: 1
 ac: -3
 alignment: 0
 always_hostile: 1
@@ -11860,6 +12290,7 @@ sound: silent
 speed: 10
 weight: 200
 ---
+_corpse: {}
 ac: 6
 alignment: -3
 always_hostile: 1
@@ -11898,6 +12329,7 @@ sound: silent
 speed: 3
 weight: 1800
 ---
+_corpse: {}
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -11924,6 +12356,7 @@ sound: silent
 speed: 6
 weight: 10
 ---
+_corpse: {}
 ac: 8
 alignment: 0
 always_hostile: 1
@@ -11948,6 +12381,7 @@ sound: sqeek
 speed: 6
 weight: 10
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -11972,6 +12406,7 @@ sound: silent
 speed: 6
 weight: 30
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_hostile: 1
@@ -11997,6 +12432,8 @@ sound: silent
 speed: 6
 weight: 200
 ---
+_corpse:
+  stone: 1
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -12022,6 +12459,7 @@ sound: silent
 speed: 6
 weight: 10
 ---
+_corpse: {}
 ac: 6
 alignment: 0
 always_hostile: 1
@@ -12047,6 +12485,7 @@ sound: silent
 speed: 5
 weight: 100
 ---
+_corpse: {}
 ac: 5
 alignment: 0
 always_hostile: 1
@@ -12079,6 +12518,8 @@ sound: silent
 speed: 9
 weight: 1450
 ---
+_corpse:
+  fire: 1
 ac: -1
 alignment: -9
 always_hostile: 1
@@ -12119,6 +12560,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1500
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 attacks:
@@ -12150,6 +12592,7 @@ tunnels_with_pick: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12181,6 +12624,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 1
 attacks:
@@ -12209,6 +12653,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 1
 attacks:
@@ -12237,6 +12682,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12265,6 +12711,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 attacks:
@@ -12295,6 +12742,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12325,6 +12773,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12353,6 +12802,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12381,6 +12831,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 attacks:
@@ -12408,6 +12859,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 attacks:
@@ -12440,6 +12892,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 attacks:
@@ -12470,6 +12923,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12500,6 +12954,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -1
 attacks:
@@ -12532,6 +12987,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 attacks:
@@ -12560,6 +13016,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 20
 always_peaceful: 1
@@ -12594,6 +13051,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -12628,6 +13086,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 20
 always_peaceful: 1
@@ -12661,6 +13120,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -12695,6 +13155,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 20
 always_peaceful: 1
@@ -12731,6 +13192,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -12775,6 +13237,7 @@ speed: 12
 wants_magic_items: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 7
 alignment: 0
 always_peaceful: 1
@@ -12820,6 +13283,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -12857,6 +13321,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -20
 always_peaceful: 1
@@ -12898,6 +13363,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 20
 always_peaceful: 1
@@ -12934,6 +13400,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -12970,6 +13437,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -13006,6 +13474,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: 0
 always_peaceful: 1
@@ -13042,6 +13511,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -2
 alignment: -14
 always_hostile: 1
@@ -13089,6 +13559,7 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -14
 always_hostile: 1
@@ -13137,6 +13608,14 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  cold: 1
+  disint: 1
+  elec: 1
+  fire: 1
+  poison: 1
+  sleep: 1
+  stone: 1
 ac: 0
 alignment: -14
 always_hostile: 1
@@ -13197,6 +13676,7 @@ wants_magic_items: 1
 wants_quest_artifact: 1
 weight: 4500
 ---
+_corpse: {}
 ac: 0
 alignment: -15
 always_hostile: 1
@@ -13241,6 +13721,8 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1900
 ---
+_corpse:
+  fire: 1
 ac: -1
 alignment: -14
 always_hostile: 1
@@ -13292,6 +13774,8 @@ wants_magic_items: 1
 wants_quest_artifact: 1
 weight: 4500
 ---
+_corpse:
+  poison: 1
 ac: -10
 alignment: -20
 always_hostile: 1
@@ -13338,6 +13822,7 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: -2
 alignment: -127
 always_hostile: 1
@@ -13386,6 +13871,8 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  poison: 1
 ac: 10
 alignment: -15
 always_hostile: 1
@@ -13429,6 +13916,7 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 750
 ---
+_corpse: {}
 ac: 0
 alignment: 18
 always_hostile: 1
@@ -13470,6 +13958,7 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 0
 alignment: -13
 always_hostile: 1
@@ -13514,6 +14003,8 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse:
+  fire: 1
 ac: 2
 alignment: 12
 always_hostile: 1
@@ -13560,6 +14051,7 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 2250
 ---
+_corpse: {}
 ac: 0
 alignment: -10
 always_hostile: 1
@@ -13605,6 +14097,7 @@ wants_quest_artifact: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 always_peaceful: 1
@@ -13634,6 +14127,7 @@ tunnels_with_pick: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -13663,6 +14157,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 1
 always_peaceful: 1
@@ -13691,6 +14186,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 always_peaceful: 1
@@ -13720,6 +14216,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 always_peaceful: 1
@@ -13751,6 +14248,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -13784,6 +14282,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -13815,6 +14314,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -7
 always_peaceful: 1
@@ -13845,6 +14345,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -3
 always_peaceful: 1
@@ -13877,6 +14378,7 @@ wants_gold: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 always_hostile: 1
@@ -13908,6 +14410,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 3
 always_peaceful: 1
@@ -13939,6 +14442,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
@@ -13971,6 +14475,7 @@ wants_magic_items: 1
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: -1
 always_peaceful: 1
@@ -14003,6 +14508,7 @@ speed: 12
 wants_wargear: 1
 weight: 1450
 ---
+_corpse: {}
 ac: 10
 alignment: 0
 always_peaceful: 1
