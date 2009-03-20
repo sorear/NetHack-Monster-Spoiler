@@ -391,15 +391,16 @@ sub ignores_elbereth {
 
 =head2 has_attack MODE
 
-Return true if the monster has an attack of the specified mode.
+Return true if the monster has an attack of the specified mode or type.
 
 =cut
 
 sub has_attack {
     my ($self, $mode) = @_;
 
-    my @atk = grep { defined $mode ? $_->{mode} eq $mode : 1 }
-        @{$self->attacks};
+    my @atk = grep { defined $mode
+                   ? ($_->{mode} eq $mode || $_->{type} eq $mode)
+                   : 1 } @{$self->attacks};
 
     return @atk ? $atk[0] : undef;
 }
