@@ -54,7 +54,7 @@ class_has list => (
     lazy       => 1,
     auto_deref => 1,
     default    => sub {
-        my $class = shift->name;
+        my $class = shift;
 
         [ map { $class->new(%$_) } $class->_list ];
     },
